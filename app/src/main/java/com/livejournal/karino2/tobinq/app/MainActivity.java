@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import org.achartengine.ChartFactory;
+import org.achartengine.GraphicalView;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 
@@ -42,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-        View chart;
+        GraphicalView chart;
 
 
         @Override
@@ -78,6 +79,7 @@ public class MainActivity extends ActionBarActivity {
 //            popupWindow = new PopupWindow(popupView, 600, 400, false);
                 resetChart();
             }
+            chart.repaint();
             popup.showAtLocation(findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
 
         }
