@@ -1,5 +1,9 @@
 package com.livejournal.karino2.tobinq.app;
 
+import org.achartengine.model.XYMultipleSeriesDataset;
+import org.achartengine.model.XYSeries;
+import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.achartengine.renderer.XYSeriesRenderer;
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
@@ -106,8 +110,11 @@ public class QFunction extends QObject {
 	
 	public static Plotable _plotable;
 
-	// "plot"
-    /*
+    private static XYMultipleSeriesDataset dataset = new XYMultipleSeriesDataset();
+    private static XYMultipleSeriesRenderer renderer = new XYMultipleSeriesRenderer();
+
+
+    // "plot"
 	public static QObject createPlot(Plotable plotable) {
 		_plotable = plotable;
 		return new QFunction(parseFormalList("x, y, main=NULL, xlim=NULL, ylim=NULL, type=\"p\""), null) {
@@ -120,37 +127,45 @@ public class QFunction extends QObject {
 				QObject main = funcEnv.get("main");
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("x, y length differ");
-				_plotable.resetChart();
-				GChart chart = _plotable.getChart();
-				chart.clearCurves();
-				
+				// _plotable.resetChart();
+
+                dataset.clear();
+                renderer.removeAllRenderers();
+
+                XYSeriesRenderer oneRenderer = new XYSeriesRenderer();
+                renderer.addSeriesRenderer(oneRenderer);
+
 				if(ylim != QObject.Null)
 				{
 					if(ylim.getLength() != 2)
 						throw new RuntimeException("ylim is not 2 element object");
-					Axis axis = chart.getYAxis();
-					axis.setAxisMin(ylim.get(0).getDouble());
-					axis.setAxisMax(ylim.get(1).getDouble());
+                    renderer.setYAxisMin(ylim.get(0).getDouble());
+                    renderer.setYAxisMax(ylim.get(1).getDouble());
 				}
 
-				if(main != QObject.Null)
-					chart.setChartTitle((String)main.getValue());
-				
-			    chart.setChartSize(350, 250);
-			    chart.addCurve();
-				GChart.Curve curve = chart.getCurve();
-			    addPoints(x, y, curve);
+                if(main != QObject.Null)
+                    renderer.setChartTitle((String)main.getValue());
+
+                XYSeries series = new XYSeries("first");
+
+			    addPoints(x, y, series);
+                /*
 			    // chart.getCurve().setLegendLabel("x, y");
 			    chart.getXAxis().setAxisLabel("x");
 			    chart.getXAxis().setTickCount(9);
 			    chart.getXAxis().setTicksPerLabel(2);
 			    chart.getYAxis().setAxisLabel("y");
+			    */
 
+                /*
 			    QObject typ = funcEnv.get("type");
 			    if ((String)typ.getValue() == "o"  ||
 			    		(String)typ.getValue() == "l" ||
 			    		(String)typ.getValue() == "b")
 			    	curve.getSymbol().setSymbolType(GChart.SymbolType.LINE);
+			    	*/
+                dataset.addSeries(series);
+                _plotable.setDatasetRenderer(dataset, renderer);
 			    
 			    _plotable.showChart();
 			    
@@ -172,26 +187,24 @@ public class QFunction extends QObject {
 					throw new RuntimeException("lines: y=NULL, NYI");
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("lines: x, y length differ");
-				GChart chart = _plotable.getChart();
-				chart.addCurve();
-				GChart.Curve curve = chart.getCurve();
-		        curve.getSymbol().setSymbolType(GChart.SymbolType.LINE);
-			    addPoints(x, y, curve);
+
+                XYSeries series = new XYSeries("lines");
+			    addPoints(x, y, series);
+                dataset.addSeries(series);
 				
 			    _plotable.showChart();
 				return QObject.Null;
 			}			
 		};
 	}
-	private static void addPoints(QObject x, QObject y, GChart.Curve curve) {
-		for (int i = 0; i < x.getLength(); i++)
-		{
-			double x1 = x.get(i).getDouble();
-			double y1 = y.get(i).getDouble();
-			curve.addPoint(x1, y1);
-		}
-	}
-		*/
+    private static void addPoints(QObject x, QObject y, XYSeries series) {
+        for (int i = 0; i < x.getLength(); i++)
+        {
+            double x1 = x.get(i).getDouble();
+            double y1 = y.get(i).getDouble();
+            series.add(x1, y1);
+        }
+    }
 
 
     public static double sumObj(QObject obj)
