@@ -132,8 +132,7 @@ public class QFunction extends QObject {
                 dataset.clear();
                 renderer.removeAllRenderers();
 
-                XYSeriesRenderer oneRenderer = new XYSeriesRenderer();
-                renderer.addSeriesRenderer(oneRenderer);
+                renderer.addSeriesRenderer(new XYSeriesRenderer());
 
 				if(ylim != QObject.Null)
 				{
@@ -191,6 +190,8 @@ public class QFunction extends QObject {
                 XYSeries series = new XYSeries("lines");
 			    addPoints(x, y, series);
                 dataset.addSeries(series);
+                renderer.addSeriesRenderer(new XYSeriesRenderer());
+
 				
 			    _plotable.showChart();
 				return QObject.Null;
