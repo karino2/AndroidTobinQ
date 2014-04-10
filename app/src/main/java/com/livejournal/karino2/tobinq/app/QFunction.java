@@ -438,27 +438,7 @@ public class QFunction extends QObject {
 				QObject url = funcEnv.get("url");
 				CsvTable table = _csvRetrievable.retrieve(url.getValue().toString());
 				return QList.createDataFrameFromCsvTable(table);
-
-				/*
-				CsvServiceAsync csvSvc = GWT.create(CsvService.class);
-				AsyncCallback<CsvTable> callback = new AsyncCallback<CsvTable>() {
-
-					@Override
-					public void onFailure(Throwable caught) {
-						_intp.getConsole().write("failur" + caught.toString());						
-					}
-
-					@Override
-					public void onSuccess(CsvTable result) {
-						_intp.getConsole().write("result: " + result.getRowNum() + ", " + result.getColNum());
-					}
-					
-				};
-				csvSvc.getRemoteCsv(url.getValue().toString(), callback);
-				
-				return QObject.Null;
-				*/
-			}			
+			}
 		};
 	}
 	

@@ -11,11 +11,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
+import org.antlr.runtime.tree.Tree;
+import org.apache.http.impl.client.DefaultHttpClient;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -33,8 +36,30 @@ public class MainActivity extends ActionBarActivity {
                 String res = cs.toString()+ et.getText().toString();
                 et.setText(res);
             }
-        }, new ChartWrapper(), null);
+        }, new ChartWrapper(), new CsvTableRetriever(new CsvTableRetriever.ResumeListener() {
+            @Override
+            public void onResume() {
+                onScriptResume();
+            }
+
+            @Override
+            public void onResumeFail(String message) {
+                onScriptResumeFail(message);
+            }
+
+            @Override
+            public void notifyStatus(String message) {
+                showMessage(message);
+            }
+        }, new Retriever(new DefaultHttpClient(), getDatabase())));
     }
+
+    void showMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    Database getDatabase() { return Database.getInstance(this); }
+
 
     class ChartWrapper implements Plotable {
 
@@ -76,7 +101,6 @@ public class MainActivity extends ActionBarActivity {
                     }
                 });
                 popup = new PopupWindow(popupView, getChartWidth(), getChartHeight(), false);
-//            popupWindow = new PopupWindow(popupView, 600, 400, false);
                 resetChart();
             }
             chart.repaint();
@@ -120,6 +144,7 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -128,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == R.id.action_run) {
             String code = findEditText(R.id.etScript).getText().toString();
-            interpreter.eval(code);
+            eval(code);
             return true;
         }
         if(id==R.id.action_clear) {
@@ -137,5 +162,37 @@ public class MainActivity extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    Tree suspendedValue;
+    private void eval(String code) {
+        try {
+            interpreter.eval(code);
+        } catch (BlockException be) {
+            suspendedValue = be._currentValueNode;
+        } catch (RuntimeException re) {
+            interpreter.println("error: " + re.toString());
+        }
+    }
+
+    void onScriptResume() {
+        try{
+            interpreter.continueEval(suspendedValue);
+        }
+        catch(BlockException be)
+        {
+            suspendedValue = be._currentValueNode;
+        }
+        catch(RuntimeException e)
+        {
+            interpreter.println("error: " + e.toString());
+        }
+    }
+
+    public void onScriptResumeFail(String message) {
+        interpreter.println("Block call failure:" + message);
+    }
+
+
+
 
 }
