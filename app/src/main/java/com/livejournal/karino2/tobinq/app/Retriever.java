@@ -1,7 +1,9 @@
 package com.livejournal.karino2.tobinq.app;
 
 import android.os.AsyncTask;
-import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -10,6 +12,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by karino on 4/10/14.
@@ -28,17 +32,43 @@ public class Retriever {
         // return (res.getStatusLine().getStatusCode() & 200) != 0;
     }
 
+
+    public interface OnScriptEntityReadyListener {
+        void onReady(List<ScriptEntity> ents);
+        void onFail(String message);
+    }
+
+    public void retrieveScriptList(long lastChecked, final OnScriptEntityReadyListener listener) {
+        GetScriptEntityTask task = new GetScriptEntityTask(lastChecked, new OnScriptEntityReadyListener() {
+            @Override
+            public void onReady(List<ScriptEntity> ents) {
+                for(ScriptEntity ent : ents) {
+                    database.saveScript(ent);
+                    // ent.id must be filled by above save
+                    assert(ent.id != -1);
+                }
+                listener.onReady(ents);
+            }
+
+            @Override
+            public void onFail(String message) {
+                listener.onFail(message);
+            }
+        });
+    }
+
     public interface OnContentReadyListener {
         void onReady(String responseText);
         void onFail(String message);
     }
+
 
     String retrieveFromCache(String url) {
         return database.retrieveContent(url);
     }
 
     public void retrieveFromRemote(final String url, final OnContentReadyListener listener) {
-        GetTask task = new GetTask(url, new OnContentReadyListener() {
+        GetStringTask task = new GetStringTask(url, new OnContentReadyListener() {
             @Override
             public void onReady(String responseText) {
                 database.insertContent(url, responseText);
@@ -53,11 +83,72 @@ public class Retriever {
         task.execute();
     }
 
-    class GetTask extends AsyncTask<Object, String, Boolean> {
+    class GetScriptEntityTask extends AsyncTask<Object, String, Boolean> {
+        final String baseUrl = "http://tobinqscriptbackend.appspot.com/_je/tobinqscripts";
+
+        OnScriptEntityReadyListener resultListener;
+        long lastChecked;
+        GetScriptEntityTask(long lastChecked, OnScriptEntityReadyListener listener) {
+            resultListener = listener;
+            this.lastChecked = lastChecked;
+        }
+
+
+        String errorMessage = null;
+        List<ScriptEntity> results;
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            String url;
+            if(lastChecked == -1)
+                url = baseUrl;
+            else
+                url = baseUrl +  "?cond=_updatedAt.gt." + String.valueOf(lastChecked);
+
+            HttpGet httpGet = new HttpGet(url);
+            try {
+                HttpResponse res = httpClient.execute(httpGet);
+                if(res.getStatusLine().getStatusCode() != 200) {
+                    errorMessage = "HttpGet is not 200: " + res.getStatusLine().getStatusCode();
+                    return false;
+                }
+                results = readScripts(res);
+                return true;
+            } catch (IOException e) {
+                errorMessage = "fail retrieve:" + e.getMessage();
+                return false;
+            }
+        }
+
+        private List<ScriptEntity> readScripts(HttpResponse response) throws IOException {
+            Gson gson = new Gson();
+            ArrayList<ScriptEntity> res = new ArrayList<ScriptEntity>();
+            JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+            reader.beginArray();
+            while (reader.hasNext()) {
+                ScriptEntity message = gson.fromJson(reader, ScriptEntity.class);
+                res.add(message);
+            }
+            reader.endArray();
+            reader.close();
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if(success)
+                resultListener.onReady(results);
+            else
+                resultListener.onFail(errorMessage);
+        }
+    }
+
+
+    class GetStringTask extends AsyncTask<Object, String, Boolean> {
 
         OnContentReadyListener resultListener;
         String url;
-        GetTask(String url, OnContentReadyListener listener) {
+        GetStringTask(String url, OnContentReadyListener listener) {
             this.url = url;
             resultListener = listener;
         }

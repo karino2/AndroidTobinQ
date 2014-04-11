@@ -3,16 +3,10 @@ package com.livejournal.karino2.tobinq.app;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -23,7 +17,7 @@ public class Database {
     private class OpenHelper extends SQLiteOpenHelper {
 		
 		OpenHelper(Context context) {
-			super(context, "tobinq.db", null, 1);
+			super(context, "tobinq.db", null, 2);
 		}
 
 		@Override
@@ -44,10 +38,18 @@ public class Database {
                 +",content text not null"
                 +",retrieveAt bigint not null"
                 +");");
+        db.execSQL("CREATE TABLE script_table (_id integer primary key autoincrement"
+                +",docId text"
+                +",title text"
+                +",description text"
+                +",script text"
+                +",date bigint not null "
+                +");");
 	}
 
 	private void dropTables(SQLiteDatabase db) {
 		db.execSQL("DROP TABLE IF EXISTS remote_content_table;");
+        db.execSQL("DROP TABLE IF EXISTS script_table;");
 	}
 	
 	private void recreate(SQLiteDatabase db) {
@@ -135,6 +137,62 @@ public class Database {
                 database.delete("remote_content_table", "_id = ?", new String[]{ String.valueOf(id) });
             }
         }
+    }
+
+
+    public ScriptEntity find(long id) {
+        if(id == -1)
+            return null;
+        Cursor cursor = database.query("script_table", new String[]{"_id", "docId", "title", "description", "script", "date"},
+                "_id = ?", new String[]{String.valueOf(id)}, null, null, null);
+        try {
+            if(cursor.getCount() == 0)
+                return null;
+            cursor.moveToFirst();
+            ScriptEntity ent = toScript(cursor);
+            return ent;
+        }finally {
+            cursor.close();
+        }
+    }
+
+    private ScriptEntity toScript(Cursor cursor) {
+        ScriptEntity ent = new ScriptEntity();
+        ent.id = cursor.getInt(0);
+        ent.docId = cursor.getString(1);
+        ent.title = cursor.getString(2);
+        ent.description = cursor.getString(3);
+        ent.script = cursor.getString(4);
+        ent.date = cursor.getLong(5);
+        return ent;
+    }
+
+    public void saveScript(ScriptEntity ent) {
+        ScriptEntity found = find(ent.id);
+        if(found == null)
+            insertScript(ent);
+        else
+            updateScript(ent);
+    }
+
+    private void insertScript(ScriptEntity ent) {
+        ContentValues values = toContentValue(ent);
+        ent.id = database.insert("script_table", null, values);
+    }
+
+    private ContentValues toContentValue(ScriptEntity ent) {
+        ContentValues values = new ContentValues();
+        values.put("title", ent.title);
+        values.put("docId", ent.docId);
+        values.put("script", ent.script);
+        values.put("date", ent.date);
+        return values;
+    }
+
+    private void updateScript(ScriptEntity ent) {
+        ContentValues values = toContentValue(ent);
+        database.update("script_table", values, "_id=?", new String[]{String.valueOf(ent.id)});
+
     }
 
 
