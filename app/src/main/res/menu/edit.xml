@@ -1,16 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.livejournal.karino2.tobinq.app.MainActivity" >
+    tools:context="com.livejournal.karino2.tobinq.app.EditActivity" >
+
     <item android:id="@+id/action_run"
         android:title="@string/action_run"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_edit"
-        android:title="Edit"
-        app:showAsAction="ifRoom" />
-
-    <item android:id="@+id/action_clear"
-        android:title="@string/action_clear"
-        app:showAsAction="ifRoom" />
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 </menu>

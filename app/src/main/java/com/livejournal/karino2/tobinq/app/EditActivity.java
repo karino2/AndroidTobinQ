@@ -1,6 +1,5 @@
 package com.livejournal.karino2.tobinq.app;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -9,10 +8,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
@@ -22,13 +23,36 @@ import org.antlr.runtime.tree.Tree;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 
-public class MainActivity extends ActionBarActivity {
+public class EditActivity extends ActionBarActivity {
+    PopupWindow popup;
+
+    QInterpreter interpreter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // setContentView(R.layout.activity_main);
-        setContentView(R.layout.activity_debug);
+        setContentView(R.layout.activity_edit);
+
+        findToggleButtonShowChart().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (popup == null) {
+                    showMessage("no chart");
+                    return;
+                }
+                if (isChecked)
+                    showChartPopup();
+                else
+                    popup.dismiss();
+            }
+        });
+
+        ((Button)findViewById(R.id.btClear)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                findEditText(R.id.etOutput).setText("");
+            }
+        });
 
         interpreter = new QInterpreter(new Writable() {
             @Override
@@ -53,6 +77,11 @@ public class MainActivity extends ActionBarActivity {
                 showMessage(message);
             }
         }, new Retriever(new DefaultHttpClient(), getDatabase())));
+
+    }
+
+    private ToggleButton findToggleButtonShowChart() {
+        return ((ToggleButton)findViewById(R.id.tbShowChart));
     }
 
     void showMessage(String msg) {
@@ -86,34 +115,32 @@ public class MainActivity extends ActionBarActivity {
             if(chart != null) {
                 holder.removeView(chart);
             }
-            chart = ChartFactory.getLineChartView(MainActivity.this, dataset, renderer);
+            chart = ChartFactory.getLineChartView(EditActivity.this, dataset, renderer);
             holder.addView(chart);
         }
 
         @Override
         public void showChart() {
+            findToggleButtonShowChart().setChecked(true);
             if(popup == null) {
                 LayoutInflater inflater = getLayoutInflater();
                 View popupView = inflater.inflate(R.layout.popup_chart, null);
-                /*
-                ((Button)popupView.findViewById(R.id.button_close)).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        popup.dismiss();
-                    }
-                });
-                */
                 popup = new PopupWindow(popupView, getChartWidth(), getChartHeight(), false);
                 resetChart();
             }
             chart.repaint();
-            popup.showAtLocation(findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
+            showChartPopup();
 
         }
     }
 
+    private void showChartPopup() {
+        popup.showAtLocation(findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
+    }
+
     private int getChartHeight() {
-        return findViewById(R.id.root).getMeasuredHeight();
+        ToggleButton tb = findToggleButtonShowChart();
+        return findViewById(R.id.root).getMeasuredHeight()-tb.getBottom();
     }
 
     private int getChartWidth() {
@@ -130,23 +157,15 @@ public class MainActivity extends ActionBarActivity {
         super.onStop();
     }
 
-    PopupWindow popup;
-
-    QInterpreter interpreter;
-
     EditText findEditText(int rid) {
         return (EditText)findViewById(rid);
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.edit, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -154,17 +173,12 @@ public class MainActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_run) {
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id==R.id.action_run) {
             String code = findEditText(R.id.etScript).getText().toString();
             eval(code);
-            return true;
-        }
-        if(id==R.id.action_clear) {
-            findEditText(R.id.etOutput).setText("");
-            return true;
-        }
-        if(id==R.id.action_edit) {
-            startActivity(new Intent(this, EditActivity.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -198,8 +212,5 @@ public class MainActivity extends ActionBarActivity {
     public void onScriptResumeFail(String message) {
         interpreter.println("Block call failure:" + message);
     }
-
-
-
 
 }

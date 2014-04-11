@@ -18,6 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.livejournal.karino2.tobinq.app.EditActivity"
+            android:label="@string/title_activity_edit"
+            android:parentActivityName="com.livejournal.karino2.tobinq.app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="MainActivity" />
+        </activity>
     </application>
 
 </manifest>
