@@ -13,6 +13,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class Database {
 
 
+    public Cursor queryScripts() {
+        return database.query("script_table",  new String[] {"_id", "docId", "title", "description", "script", "date"}, null, null, null, null, "date DESC, _id DESC");
+    }
+
+    public void recreateRemoteContentTable() {
+        dropRemoteContentTable(database);
+        createRemoteContentTable(database);
+    }
+
+    public void recreateScriptTable() {
+        dropScriptTable(database);
+        createScriptTable(database);
+    }
 
     private class OpenHelper extends SQLiteOpenHelper {
 		
@@ -33,11 +46,11 @@ public class Database {
 	}
 
 	private void createTables(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE remote_content_table (_id integer primary key autoincrement"
-                +",url text not null"
-                +",content text not null"
-                +",retrieveAt bigint not null"
-                +");");
+        createRemoteContentTable(db);
+        createScriptTable(db);
+    }
+
+    private void createScriptTable(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE script_table (_id integer primary key autoincrement"
                 +",docId text"
                 +",title text"
@@ -45,14 +58,30 @@ public class Database {
                 +",script text"
                 +",date bigint not null "
                 +");");
-	}
+    }
 
-	private void dropTables(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE IF EXISTS remote_content_table;");
+    private void createRemoteContentTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE remote_content_table (_id integer primary key autoincrement"
+                +",url text not null"
+                +",content text not null"
+                +",retrieveAt bigint not null"
+                +");");
+    }
+
+    private void dropTables(SQLiteDatabase db) {
+        dropRemoteContentTable(db);
+        dropScriptTable(db);
+    }
+
+    private void dropScriptTable(SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS script_table;");
-	}
-	
-	private void recreate(SQLiteDatabase db) {
+    }
+
+    private void dropRemoteContentTable(SQLiteDatabase db) {
+        db.execSQL("DROP TABLE IF EXISTS remote_content_table;");
+    }
+
+    private void recreate(SQLiteDatabase db) {
 		dropTables(db);
 		createTables(db);
 	}
@@ -159,11 +188,11 @@ public class Database {
     private ScriptEntity toScript(Cursor cursor) {
         ScriptEntity ent = new ScriptEntity();
         ent.id = cursor.getInt(0);
-        ent.docId = cursor.getString(1);
+        ent.setDocId(cursor.getString(1));
         ent.title = cursor.getString(2);
-        ent.description = cursor.getString(3);
-        ent.script = cursor.getString(4);
-        ent.date = cursor.getLong(5);
+        ent.setDescription(cursor.getString(3));
+        ent.setScript(cursor.getString(4));
+        ent.setDate(cursor.getLong(5));
         return ent;
     }
 
@@ -183,9 +212,10 @@ public class Database {
     private ContentValues toContentValue(ScriptEntity ent) {
         ContentValues values = new ContentValues();
         values.put("title", ent.title);
-        values.put("docId", ent.docId);
-        values.put("script", ent.script);
-        values.put("date", ent.date);
+        values.put("docId", ent.getDocId());
+        values.put("description", ent.getDescription());
+        values.put("script", ent.getScript());
+        values.put("date", ent.getDate());
         return values;
     }
 

@@ -55,6 +55,7 @@ public class Retriever {
                 listener.onFail(message);
             }
         });
+        task.execute();
     }
 
     public interface OnContentReadyListener {
@@ -126,8 +127,8 @@ public class Retriever {
             JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             reader.beginArray();
             while (reader.hasNext()) {
-                ScriptEntity message = gson.fromJson(reader, ScriptEntity.class);
-                res.add(message);
+                ScriptEntity ent = gson.fromJson(reader, ScriptEntity.class);
+                res.add(ent);
             }
             reader.endArray();
             reader.close();
