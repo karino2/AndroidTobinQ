@@ -185,8 +185,30 @@ public class Database {
         }
     }
 
+    public ScriptEntity findByDocId(String docId) {
+        if(isNullOrEmpty(docId))
+            return null;
+        Cursor cursor = database.query("script_table", new String[]{"_id", "docId", "title", "description", "script", "date"},
+                "docId = ?", new String[]{docId}, null, null, null);
+        try {
+            if(cursor.getCount() == 0)
+                return null;
+            cursor.moveToFirst();
+            ScriptEntity ent = toScript(cursor);
+            return ent;
+        }finally {
+            cursor.close();
+        }
+    }
 
-    public ScriptEntity find(long id) {
+    private boolean isNullOrEmpty(String str) {
+        if(str == null)
+            return true;
+        return str.equals("");
+    }
+
+
+    public ScriptEntity findById(long id) {
         if(id == -1)
             return null;
         Cursor cursor = database.query("script_table", new String[]{"_id", "docId", "title", "description", "script", "date"},
@@ -213,12 +235,23 @@ public class Database {
         return ent;
     }
 
+
+
     public void saveScript(ScriptEntity ent) {
-        ScriptEntity found = find(ent.id);
+        ScriptEntity found = findSameEntity(ent);
         if(found == null)
             insertScript(ent);
-        else
+        else {
+            ent.id = found.id;
             updateScript(ent);
+        }
+    }
+
+    private ScriptEntity findSameEntity(ScriptEntity ent) {
+        ScriptEntity found = findById(ent.id);
+        if(found == null)
+            found = findByDocId(ent.getDocId());
+        return found;
     }
 
     private void insertScript(ScriptEntity ent) {
