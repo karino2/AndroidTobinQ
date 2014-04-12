@@ -22,7 +22,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class MainActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class ScriptListActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     final int SETTING_ACTIVITY_ID = 1;
 

@@ -24,7 +24,7 @@ import org.antlr.runtime.tree.Tree;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 
-public class EditActivity extends ActionBarActivity {
+public class ScratchActivity extends ActionBarActivity {
     PopupWindow popup;
 
     QInterpreter interpreter;
@@ -116,7 +116,7 @@ public class EditActivity extends ActionBarActivity {
             if(chart != null) {
                 holder.removeView(chart);
             }
-            chart = ChartFactory.getLineChartView(EditActivity.this, dataset, renderer);
+            chart = ChartFactory.getLineChartView(ScratchActivity.this, dataset, renderer);
             holder.addView(chart);
         }
 
