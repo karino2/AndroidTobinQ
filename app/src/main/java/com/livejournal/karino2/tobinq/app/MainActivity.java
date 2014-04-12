@@ -30,7 +30,6 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-// new String[] {"_id", "docId", "title", "description", "script", "date"}, null, null, null, null, "date DESC, _id DESC");
 
         retriever = new Retriever(new DefaultHttpClient(), getDatabase());
 
@@ -108,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements LoaderManager.Loa
         if(id==R.id.action_sync) {
             showMessage("Sync scripts");
             startCheck = (new Date()).getTime();
-            retriever.retrieveScriptList(getLastCheckedTime(), new Retriever.OnScriptEntityReadyListener() {
+            retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
                 @Override
                 public void onReady(List<ScriptEntity> ents) {
                     showMessage("sync done.");

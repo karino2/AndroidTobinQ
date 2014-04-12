@@ -22,6 +22,20 @@ public class Database {
         createRemoteContentTable(database);
     }
 
+    public long latestUpdatedAt() {
+        Cursor cursor = database.query("script_table", new String[]{"max(date)"}, null, null, null, null, null);
+        try {
+            if(cursor.getCount() == 0)
+                return -1;
+            cursor.moveToFirst();
+            return cursor.getLong(0) == 0? -1: cursor.getLong(0);
+        }finally {
+            cursor.close();
+        }
+
+    }
+
+
     public void recreateScriptTable() {
         dropScriptTable(database);
         createScriptTable(database);
