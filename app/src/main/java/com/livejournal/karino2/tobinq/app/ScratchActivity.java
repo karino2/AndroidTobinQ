@@ -20,14 +20,13 @@ import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
-import org.antlr.runtime.tree.Tree;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 
 public class ScratchActivity extends ActionBarActivity {
     PopupWindow popup;
 
-    QInterpreter interpreter;
+    InterpreterFacade interpreter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,29 +54,21 @@ public class ScratchActivity extends ActionBarActivity {
             }
         });
 
-        interpreter = new QInterpreter(new Writable() {
+        interpreter = new InterpreterFacade(new Writable() {
             @Override
             public void write(CharSequence cs) {
                 EditText et = findEditText(R.id.etOutput);
                 String res = cs.toString()+ et.getText().toString();
                 et.setText(res);
             }
-        }, new ChartWrapper(), new CsvTableRetriever(new CsvTableRetriever.ResumeListener() {
-            @Override
-            public void onResume() {
-                onScriptResume();
-            }
-
-            @Override
-            public void onResumeFail(String message) {
-                onScriptResumeFail(message);
-            }
-
+        }, new ChartWrapper(), new InterpreterFacade.NotifyListener() {
             @Override
             public void notifyStatus(String message) {
                 showMessage(message);
             }
-        }, new Retriever(new DefaultHttpClient(), getDatabase())));
+        }
+        , new Retriever(new DefaultHttpClient(), getDatabase())));
+
 
     }
 
@@ -186,33 +177,8 @@ public class ScratchActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    Tree suspendedValue;
     private void eval(String code) {
-        try {
-            interpreter.eval(code);
-        } catch (BlockException be) {
-            suspendedValue = be._currentValueNode;
-        } catch (RuntimeException re) {
-            interpreter.println("error: " + re.toString());
-        }
-    }
-
-    void onScriptResume() {
-        try{
-            interpreter.continueEval(suspendedValue);
-        }
-        catch(BlockException be)
-        {
-            suspendedValue = be._currentValueNode;
-        }
-        catch(RuntimeException e)
-        {
-            interpreter.println("error: " + e.toString());
-        }
-    }
-
-    public void onScriptResumeFail(String message) {
-        interpreter.println("Block call failure:" + message);
+        interpreter.eval(code);
     }
 
 }

@@ -65,11 +65,18 @@ public class QInterpreter {
 	{
 		_console.write(str + "\n");
 	}
-	
+
+    boolean isDebug = false;
 	void debugPrint(String str)
 	{
-		println("<deb#>" + str);
+        if(isDebug)
+    		println("<deb#>" + str);
 	}
+
+    public Tree suspendedValue;
+    public QObject resumeEval() {
+        return continueEval(suspendedValue);
+    }
 	
 	Tree _lastTree;
 	public QObject eval(String codestext)
@@ -189,6 +196,7 @@ public class QInterpreter {
 			catch(BlockException e)
 			{
 				Tree xxval = getParentXXValue(term);
+                suspendedValue = xxval;
 				throw new BlockException(xxval);
 			}
 		}
