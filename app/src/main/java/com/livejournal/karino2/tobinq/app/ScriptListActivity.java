@@ -29,7 +29,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_script_list);
 
         retriever = new Retriever(new DefaultHttpClient(), getDatabase());
 
@@ -88,7 +88,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.script_list, menu);
         return true;
     }
 
@@ -100,8 +100,8 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if(id==R.id.action_edit) {
-            startActivity(new Intent(this, EditActivity.class));
+        if(id==R.id.action_scratch) {
+            startActivity(new Intent(this, ScratchActivity.class));
             return true;
         }
         if(id==R.id.action_sync) {

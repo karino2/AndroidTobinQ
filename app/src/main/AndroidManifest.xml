@@ -10,8 +10,8 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.livejournal.karino2.tobinq.app.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".ScriptListActivity"
+            android:label="@string/title_activity_script_list" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,12 +19,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.livejournal.karino2.tobinq.app.EditActivity"
-            android:label="@string/title_activity_edit"
-            android:parentActivityName="com.livejournal.karino2.tobinq.app.MainActivity" >
+            android:name=".ScratchActivity"
+            android:label="@string/title_activity_scratch"
+            android:parentActivityName=".ScriptListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="ScriptListActivity" />
         </activity>
         <activity
             android:name="com.livejournal.karino2.tobinq.app.SettingActivity"

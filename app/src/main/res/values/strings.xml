@@ -5,11 +5,13 @@
     <string name="action_settings">Settings</string>
     <string name="action_run">Run</string>
     <string name="action_clear">Clear</string>
-    <string name="title_activity_edit">EditActivity</string>
+    <string name="title_activity_scratch">Scratch</string>
     <string name="action_sync">Sync</string>
-    <string name="title_activity_setting">SettingActivity</string>
-    <string name="label_clear_csv_cache">Clear stats data cache</string>
+    <string name="title_activity_setting">Setting</string>
+    <string name="label_clear_csv_cache">Clear statistics data cache</string>
     <string name="label_clear">Clear</string>
     <string name="label_delete_all_scripts">Delete all stored scripts.</string>
+    <string name="action_scratch">Scratch</string>
+    <string name="title_activity_script_list">Script List</string>
 
 </resources>

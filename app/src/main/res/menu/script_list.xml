@@ -6,8 +6,8 @@
         android:title="@string/action_sync"
         app:showAsAction="ifRoom" />
 
-    <item android:id="@+id/action_edit"
-        android:title="Edit"
+    <item android:id="@+id/action_scratch"
+        android:title="@string/action_scratch"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_settings"
