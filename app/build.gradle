@@ -15,10 +15,33 @@ android {
         minSdkVersion 8
         targetSdkVersion 19
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
+    lintOptions {
+        checkReleaseBuilds false
+    }
+
+    signingConfigs {
+        myConfig {
+            storeFile file("/Users/karino/Dropbox/backup/releasekey/release.keystore")
+            keyAlias "releasekey"
+            if(System.console() == null) {
+                storePassword "XXXX"
+                keyPassword "XXXX"
+            } else {
+                def pass1 = System.console().readPassword("\n\$ Enter keystore password: ")
+                storePassword new String(pass1)
+                def pass2 = System.console().readPassword("\n\$ Enter key password: ")
+                keyPassword new String(pass2)
+            }
+        }
+    }
+
+
     buildTypes {
         release {
+            debuggable false
+            signingConfig signingConfigs.myConfig
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
