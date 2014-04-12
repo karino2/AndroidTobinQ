@@ -101,7 +101,6 @@ public class ScratchActivity extends ActionBarActivity {
 
         @Override
         public void showChart() {
-            findToggleButtonShowChart().setChecked(true);
             if(popup == null) {
                 LayoutInflater inflater = getLayoutInflater();
                 View popupView = inflater.inflate(R.layout.popup_chart, null);
@@ -110,12 +109,14 @@ public class ScratchActivity extends ActionBarActivity {
             }
             chart.repaint();
             showChartPopup();
+            findToggleButtonShowChart().setChecked(true);
 
         }
     }
 
     private void showChartPopup() {
-        popup.showAtLocation(findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
+        if(!popup.isShowing())
+            popup.showAtLocation(findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
     }
 
     private int getChartHeight() {
