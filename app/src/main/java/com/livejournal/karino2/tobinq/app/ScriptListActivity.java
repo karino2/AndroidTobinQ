@@ -76,6 +76,16 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         getSupportLoaderManager().initLoader(0, null, this);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(-1 == getDatabase().latestUpdatedAt()) {
+            showMessage("Script list empty. Try sync...");
+            startSync();
+        }
+    }
+
     Retriever retriever;
 
     private boolean isNullOrEmpty(String string) {
@@ -119,21 +129,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         }
         if(id==R.id.action_sync) {
             showMessage("Sync scripts");
-            startCheck = (new Date()).getTime();
-            retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
-                @Override
-                public void onReady(List<ScriptEntity> ents) {
-                    showMessage("sync done.");
-                    writeLastCheckedTime(startCheck);
-                    reloadCursor();
-                }
-
-                @Override
-                public void onFail(String message) {
-                    showMessage("Sync scripts fail: " + message);
-                    startCheck = -1;
-                }
-            });
+            startSync();
             return true;
         }
         if(id ==R.id.action_settings) {
@@ -141,6 +137,24 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startSync() {
+        startCheck = (new Date()).getTime();
+        retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
+            @Override
+            public void onReady(List<ScriptEntity> ents) {
+                showMessage("sync done.");
+                writeLastCheckedTime(startCheck);
+                reloadCursor();
+            }
+
+            @Override
+            public void onFail(String message) {
+                showMessage("Sync scripts fail: " + message);
+                startCheck = -1;
+            }
+        });
     }
 
     @Override
