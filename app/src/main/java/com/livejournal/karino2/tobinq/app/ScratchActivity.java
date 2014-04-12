@@ -83,21 +83,9 @@ public class ScratchActivity extends ActionBarActivity {
     Database getDatabase() { return Database.getInstance(this); }
 
 
-    class ChartWrapper implements Plotable {
-
-        XYMultipleSeriesDataset dataset;
-        XYMultipleSeriesRenderer renderer;
-
-
+    class ChartWrapper extends ChartPlotter {
 
         GraphicalView chart;
-
-
-        @Override
-        public void setDatasetRenderer(XYMultipleSeriesDataset dataset, XYMultipleSeriesRenderer renderer) {
-            this.dataset = dataset;
-            this.renderer = renderer;
-        }
 
         @Override
         public void resetChart() {
@@ -107,7 +95,7 @@ public class ScratchActivity extends ActionBarActivity {
             if(chart != null) {
                 holder.removeView(chart);
             }
-            chart = ChartFactory.getLineChartView(ScratchActivity.this, dataset, renderer);
+            chart = createChart(ScratchActivity.this);
             holder.addView(chart);
         }
 
