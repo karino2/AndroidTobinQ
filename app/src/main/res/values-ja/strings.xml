@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+<string name="app_name">統計グラフ！</string>
+<string name="action_settings">設定</string>
+<string name="action_run">実行</string>
+<string name="action_clear">消去</string>
+<string name="title_activity_scratch">スクラッチ</string>
+<string name="action_sync">同期</string>
+<string name="title_activity_setting">設定</string>
+<string name="label_clear_csv_cache">統計データのキャッシュを削除</string>
+<string name="label_clear">削除</string>
+<string name="label_delete_all_scripts">スクリプトのリスト全体を削除</string>
+<string name="action_scratch">スクラッチ</string>
+<string name="title_activity_eval">実行結果</string>
+<string name="action_copy_to_scratch">スクラッチに送る</string>
+<string name="label_delete">削除</string>
+<string name="label_toggle_chart">グラフの表示</string>
+
+</resources>

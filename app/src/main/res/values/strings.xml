@@ -12,9 +12,10 @@
     <string name="label_clear">Clear</string>
     <string name="label_delete_all_scripts">Delete whole script list!</string>
     <string name="action_scratch">Scratch</string>
-    <string name="title_activity_eval">Eval Script</string>
+    <string name="title_activity_eval">Eval Result</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_copy_to_scratch">To Scratch</string>
     <string name="label_delete">Delete</string>
+    <string name="label_toggle_chart">Toggle Chart</string>
 
 </resources>
