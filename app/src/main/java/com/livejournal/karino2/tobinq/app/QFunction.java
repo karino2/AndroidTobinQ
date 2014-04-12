@@ -129,8 +129,9 @@ public class QFunction extends QObject {
 					throw new RuntimeException("x, y length differ");
 				// _plotable.resetChart();
 
-                dataset.clear();
-                renderer.removeAllRenderers();
+                // renderer hold XYAxis related param. So recreate is better.
+                dataset = new XYMultipleSeriesDataset();
+                renderer = new XYMultipleSeriesRenderer();
 
                 renderer.addSeriesRenderer(new XYSeriesRenderer());
 
