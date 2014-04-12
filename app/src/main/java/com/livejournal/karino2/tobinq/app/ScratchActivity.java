@@ -33,6 +33,11 @@ public class ScratchActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scratch);
 
+        String script = getIntent().getStringExtra("script_content");
+        if(script != null)
+            findEditText(R.id.etScript).setText(script);
+
+
         findToggleButtonShowChart().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -87,10 +92,8 @@ public class ScratchActivity extends ActionBarActivity {
 
         GraphicalView chart;
 
-        @Override
-        public void resetChart() {
-            if(popup == null)
-                return;
+
+        private void resetChartToPopup() {
             LinearLayout holder = (LinearLayout)popup.getContentView().findViewById(R.id.layout_chart) ;
             if(chart != null) {
                 holder.removeView(chart);
@@ -105,7 +108,7 @@ public class ScratchActivity extends ActionBarActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View popupView = inflater.inflate(R.layout.popup_chart, null);
                 popup = new PopupWindow(popupView, getChartWidth(), getChartHeight(), false);
-                resetChart();
+                resetChartToPopup();
             }
             chart.repaint();
             showChartPopup();

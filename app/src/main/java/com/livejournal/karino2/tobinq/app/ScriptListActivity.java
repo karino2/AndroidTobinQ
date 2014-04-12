@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,6 +47,9 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
                         tv.setText("local");
                     else
                         tv.setText("remote");
+
+                    //4 is script
+                    ((View)view.getParent()).setTag(cursor.getString(4));
                     return true;
                 }
                 // date
@@ -60,6 +64,15 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         });
 
         getListView().setAdapter(adapter);
+        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String script = (String)view.getTag();
+                Intent intent = new Intent(ScriptListActivity.this, EvalActivity.class);
+                intent.putExtra("script_content", script);
+                startActivity(intent);
+            }
+        });
         getSupportLoaderManager().initLoader(0, null, this);
     }
 

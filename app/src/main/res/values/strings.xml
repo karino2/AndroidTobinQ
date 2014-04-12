@@ -13,5 +13,8 @@
     <string name="label_delete_all_scripts">Delete all stored scripts.</string>
     <string name="action_scratch">Scratch</string>
     <string name="title_activity_script_list">Script List</string>
+    <string name="title_activity_eval">Eval Script</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_copy_to_scratch">Scratch</string>
 
 </resources>

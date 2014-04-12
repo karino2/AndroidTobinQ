@@ -8,8 +8,19 @@ public class InterpreterFacade {
         void notifyStatus(String message);
     }
 
+    public interface FinishListener {
+        void onFinish(QObject result);
+    }
+
     NotifyListener notify;
     QInterpreter interpreter;
+    FinishListener finishListener = new FinishListener() {
+        @Override
+        public void onFinish(QObject result) {
+
+        }
+    };
+
     public InterpreterFacade(Writable console, Plotable plotable, NotifyListener notifyListener, Retriever retriever) {
         notify = notifyListener;
         interpreter = new QInterpreter(console, plotable, new CsvTableRetriever(new CsvTableRetriever.ResumeListener() {
@@ -30,9 +41,15 @@ public class InterpreterFacade {
         }, retriever));
     }
 
+    public void evalWithListener(String code, FinishListener listener) {
+        finishListener = listener;
+        eval(code);
+    }
+
     public void eval(String code) {
         try {
-            interpreter.eval(code);
+            QObject result = interpreter.eval(code);
+            finishListener.onFinish(result);
         } catch (BlockException be) {
             // block call. wait callback.
         } catch (RuntimeException re) {
@@ -43,7 +60,8 @@ public class InterpreterFacade {
 
     void onScriptResume() {
         try{
-            interpreter.resumeEval();
+            QObject result = interpreter.resumeEval();
+            finishListener.onFinish(result);
         }
         catch(BlockException be)
         {
