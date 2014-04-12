@@ -31,7 +31,7 @@
         android:id="@+id/btClearScripts"
         android:layout_below="@id/btClearCsv"
         android:layout_alignParentRight="true"
-        android:text="@string/label_clear"
+        android:text="@string/label_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
