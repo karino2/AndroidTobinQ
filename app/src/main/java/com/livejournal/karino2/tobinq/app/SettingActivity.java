@@ -38,6 +38,7 @@ public class SettingActivity extends Activity {
                 showMessage("Delete all scripts done");
                 getDatabase().recreateScriptTable();
                 ScriptListActivity.writeLastCheckedTimeStatic(-1, getSharedPreferences("script_list", MODE_PRIVATE));
+                ScriptListActivity.writeLastReceiveTimeStatic(-1, getSharedPreferences("script_list", MODE_PRIVATE));
                 Button bt = (Button)v;
                 bt.setEnabled(false);
             }

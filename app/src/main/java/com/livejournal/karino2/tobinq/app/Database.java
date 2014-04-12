@@ -136,12 +136,15 @@ public class Database {
 	}
 
     // return null if not exist.
-    public String retrieveContent(String url) {
+    public String retrieveContent(String url, long ignoreAfter) {
         Cursor cursor = retrieveContentCursor(url);
         try {
             if(cursor.getCount() == 0)
                 return null;
             cursor.moveToFirst();
+            long retrieveAt = cursor.getLong(3);
+            if(ignoreAfter != -1 && retrieveAt - ignoreAfter < 0)
+                return null;
             return cursor.getString(2);
         }finally {
             cursor.close();
@@ -149,7 +152,7 @@ public class Database {
     }
 
     private Cursor retrieveContentCursor(String url) {
-        return database.query("remote_content_table", new String[]{"_id", "url", "content"}, "url=?", new String[]{url}, null, null, null);
+        return database.query("remote_content_table", new String[]{"_id", "url", "content", "retrieveAt"}, "url=?", new String[]{url}, null, null, null);
     }
 
     public void insertContent(String url, String content)  {

@@ -74,6 +74,8 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             }
         });
         getSupportLoaderManager().initLoader(0, null, this);
+
+        Retriever.lastScriptUpdateAt = getLastReceiveTime();
     }
 
     @Override
@@ -146,6 +148,9 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             public void onReady(List<ScriptEntity> ents) {
                 showMessage("sync done.");
                 writeLastCheckedTime(startCheck);
+                if(ents.size() >= 1) {
+                    writeLastReceiveTime(startCheck);
+                }
                 reloadCursor();
             }
 
@@ -174,13 +179,29 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     private void writeLastCheckedTime(long lastChecked) {
         SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
         writeLastCheckedTimeStatic(lastChecked, prefs);
-
     }
 
     public static void writeLastCheckedTimeStatic(long lastChecked, SharedPreferences prefs) {
         prefs.edit()
                 .putLong("lastCheckedTime", lastChecked)
                 .commit();
+    }
+
+    void writeLastReceiveTime(long succeedAt) {
+        SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
+        writeLastReceiveTimeStatic(succeedAt, prefs);
+    }
+
+    public static void writeLastReceiveTimeStatic(long succeedAt, SharedPreferences prefs) {
+        Retriever.lastScriptUpdateAt = succeedAt;
+        prefs.edit()
+                .putLong("lastReceiveTime", succeedAt)
+                .commit();
+    }
+
+    long getLastReceiveTime() {
+        SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
+        return prefs.getLong("lastReceiveTime", -1);
     }
 
 

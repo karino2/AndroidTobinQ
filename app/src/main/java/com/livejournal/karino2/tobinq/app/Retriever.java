@@ -22,6 +22,8 @@ public class Retriever {
     Database database;
     DefaultHttpClient httpClient;
 
+    public static long lastScriptUpdateAt = -1;
+
     public Retriever(DefaultHttpClient http, Database db) {
         this.httpClient = http;
         this.database = db;
@@ -65,7 +67,7 @@ public class Retriever {
 
 
     String retrieveFromCache(String url) {
-        return database.retrieveContent(url);
+        return database.retrieveContent(url, lastScriptUpdateAt);
     }
 
     public void retrieveFromRemote(final String url, final OnContentReadyListener listener) {
