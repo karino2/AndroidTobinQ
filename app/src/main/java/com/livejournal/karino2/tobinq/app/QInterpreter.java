@@ -23,6 +23,7 @@ public class QInterpreter {
 		_curEnv.put("seq", QFunction.createSeq());
 		_curEnv.put("plot", QFunction.createPlot(_plotable));
 		_curEnv.put("lines", QFunction.createLines(_plotable));
+        _curEnv.put("legend", QFunction.createLegend(_plotable));
 		_curEnv.put("mean", QFunction.createMean());
 		_curEnv.put("sum", QFunction.createSum());
 		_curEnv.put("cumsum", QFunction.createCumulativeSum());

@@ -160,6 +160,9 @@ public class QFunction extends QObject {
                 renderer.setChartTitleTextSize(30);
                 renderer.setAxisTitleTextSize(20);
                 renderer.setLabelsTextSize(20);
+                renderer.setLegendTextSize(20);
+                renderer.setLegendHeight(50);
+                renderer.setMargins(new int[]{50, 50, 50, 60});
                 renderer.setXLabelsColor(Color.WHITE);
 
 
@@ -241,6 +244,30 @@ public class QFunction extends QObject {
             double y1 = getIR(y, i, intp).getDouble();
             series.add(x1, y1);
         }
+    }
+
+    // currently, x and y is just ignored.
+    public static QObject createLegend(Plotable plotable) {
+        // Share to createPlot. Be careful!
+        _plotable = plotable;
+        return new QFunction(parseFormalList("x, y=NULL, legend"), null) {
+            public boolean isPrimitive() {return true; }
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject legend = getR(funcEnv, "legend", intp);
+                if(QObject.Null.equals(legend))
+                    throw new RuntimeException("at legend(), argument legend=NULL");
+
+                for(int i = 0; i < legend.getLength(); i++) {
+                    if(i >= dataset.getSeriesCount())
+                        break;
+                    dataset.getSeriesAt(i).setTitle((String)getIR(legend, i, intp).getValue());
+                }
+
+                _plotable.showChart();
+                return QObject.Null;
+            }
+        };
     }
 
 
