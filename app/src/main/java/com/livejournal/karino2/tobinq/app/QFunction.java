@@ -1,5 +1,7 @@
 package com.livejournal.karino2.tobinq.app;
 
+import android.graphics.Color;
+
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -115,6 +117,18 @@ public class QFunction extends QObject {
 			}
 		};
 	}
+
+    static int[] DEFAULT_COLORS = new int[] { Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.CYAN,
+            Color.BLUE, Color.RED };
+    static int CURRENT_POS = 0;
+    static void RESET_DEFAULT_COLOR() {
+        CURRENT_POS = 0;
+    }
+    static int GET_DEFAULT_COLOR() {
+        CURRENT_POS = (CURRENT_POS+1)%DEFAULT_COLORS.length;
+        return DEFAULT_COLORS[CURRENT_POS];
+    }
+
 	
 	public static Plotable _plotable;
 
@@ -125,7 +139,7 @@ public class QFunction extends QObject {
     // "plot"
 	public static QObject createPlot(Plotable plotable) {
 		_plotable = plotable;
-		return new QFunction(parseFormalList("x, y, main=NULL, xlim=NULL, ylim=NULL, type=\"p\""), null) {
+		return new QFunction(parseFormalList("x, y, main=NULL, xlim=NULL, ylim=NULL, xlab=NULL, ylab=NULL, type=\"p\""), null) {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
@@ -133,15 +147,25 @@ public class QFunction extends QObject {
 				QObject y = getR(funcEnv, "y", intp);
 				QObject ylim = getR(funcEnv, "ylim", intp);
 				QObject main = getR(funcEnv, "main", intp);
+                QObject xlab = getR(funcEnv, "xlab", intp);
+                QObject ylab = getR(funcEnv, "ylab", intp);
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("x, y length differ");
 				// _plotable.resetChart();
 
                 // renderer hold XYAxis related param. So recreate is better.
+                RESET_DEFAULT_COLOR();
                 dataset = new XYMultipleSeriesDataset();
                 renderer = new XYMultipleSeriesRenderer();
+                renderer.setChartTitleTextSize(30);
+                renderer.setAxisTitleTextSize(20);
+                renderer.setLabelsTextSize(20);
+                renderer.setXLabelsColor(Color.WHITE);
 
-                renderer.addSeriesRenderer(new XYSeriesRenderer());
+
+                XYSeriesRenderer thisRenderer = new XYSeriesRenderer();
+                thisRenderer.setColor(GET_DEFAULT_COLOR());
+                renderer.addSeriesRenderer(thisRenderer);
 
 				if(ylim != QObject.Null)
 				{
@@ -154,16 +178,16 @@ public class QFunction extends QObject {
                 if(main != QObject.Null)
                     renderer.setChartTitle((String)main.getValue());
 
-                XYSeries series = new XYSeries("first");
+                if(xlab != QObject.Null)
+                    renderer.setXTitle((String)xlab.getValue());
+
+                if(ylab != QObject.Null)
+                    renderer.setYTitle((String)ylab.getValue());
+
+                XYSeries series = new XYSeries("");
+
 
 			    addPoints(x, y, series, intp);
-                /*
-			    // chart.getCurve().setLegendLabel("x, y");
-			    chart.getXAxis().setAxisLabel("x");
-			    chart.getXAxis().setTickCount(9);
-			    chart.getXAxis().setTicksPerLabel(2);
-			    chart.getYAxis().setAxisLabel("y");
-			    */
 
                 /*
 			    QObject typ = funcEnv.get("type");
@@ -196,10 +220,13 @@ public class QFunction extends QObject {
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("lines: x, y length differ");
 
-                XYSeries series = new XYSeries("lines");
+                XYSeries series = new XYSeries("");
 			    addPoints(x, y, series, intp);
                 dataset.addSeries(series);
-                renderer.addSeriesRenderer(new XYSeriesRenderer());
+
+                XYSeriesRenderer thisRenderer = new XYSeriesRenderer();
+                thisRenderer.setColor(GET_DEFAULT_COLOR());
+                renderer.addSeriesRenderer(thisRenderer);
 
 				
 			    _plotable.showChart();
