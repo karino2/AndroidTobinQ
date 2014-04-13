@@ -22,9 +22,12 @@ import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.IOException;
+
 
 public class ScratchActivity extends ActionBarActivity {
     PopupWindow popup;
+    GraphicalView chart;
 
     InterpreterFacade interpreter;
 
@@ -90,7 +93,6 @@ public class ScratchActivity extends ActionBarActivity {
 
     class ChartWrapper extends ChartPlotter {
 
-        GraphicalView chart;
 
 
         private void resetChartToPopup() {
@@ -99,6 +101,7 @@ public class ScratchActivity extends ActionBarActivity {
                 holder.removeView(chart);
             }
             chart = createChart(ScratchActivity.this);
+            updateMenu();
             holder.addView(chart);
         }
 
@@ -151,6 +154,29 @@ public class ScratchActivity extends ActionBarActivity {
         return true;
     }
 
+
+    Menu _menu;
+    private void updateMenu() {
+        if(_menu != null)
+            _menu.findItem(R.id.action_share).setEnabled(chart != null);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        _menu = menu;
+        updateMenu();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    OneTimeFileSaver fileSaver;
+    OneTimeFileSaver getFileSaver() {
+        if(fileSaver == null) {
+            fileSaver = new OneTimeFileSaver("QChart", "QChartDelivery", getContentResolver());
+        }
+        return fileSaver;
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -159,6 +185,14 @@ public class ScratchActivity extends ActionBarActivity {
         int id = item.getItemId();
         if(id ==R.id.action_settings) {
             startActivity(new Intent(this, SettingActivity.class));
+            return true;
+        }
+        if(id== R.id.action_share) {
+            try {
+                startActivity(getFileSaver().saveAndCreateSendIntent(chart.toBitmap()));
+            } catch (IOException e) {
+                showMessage("Fail to save bitmap: " + e.getMessage());
+            }
             return true;
         }
         if (id==R.id.action_run) {

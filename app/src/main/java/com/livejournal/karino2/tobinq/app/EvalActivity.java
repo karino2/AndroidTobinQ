@@ -1,7 +1,12 @@
 package com.livejournal.karino2.tobinq.app;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +18,14 @@ import android.widget.Toast;
 
 import org.achartengine.GraphicalView;
 import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class EvalActivity extends ActionBarActivity {
@@ -44,6 +57,7 @@ public class EvalActivity extends ActionBarActivity {
                 if(chart != null)
                     ll.removeView(chart);
                 chart = createChart(EvalActivity.this);
+                updateMenu();
                 ll.addView(chart);
                 // chart.repaint();
             }
@@ -101,6 +115,30 @@ public class EvalActivity extends ActionBarActivity {
         return true;
     }
 
+    Menu _menu;
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        _menu = menu;
+        updateMenu();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void updateMenu() {
+        if(_menu != null)
+            _menu.findItem(R.id.action_share).setEnabled(chart != null);
+    }
+
+    OneTimeFileSaver fileSaver;
+    OneTimeFileSaver getFileSaver() {
+        if(fileSaver == null) {
+            fileSaver = new OneTimeFileSaver("QChart", "QChartDelivery", getContentResolver());
+        }
+        return fileSaver;
+    }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -109,6 +147,17 @@ public class EvalActivity extends ActionBarActivity {
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             startActivity(new Intent(this, SettingActivity.class));
+            return true;
+        }
+        if(id == R.id.action_share) {
+            Bitmap bitmap = chart.toBitmap();
+            try {
+                Intent intent = getFileSaver().saveAndCreateSendIntent(bitmap);
+                startActivity(intent);
+            } catch (IOException e) {
+                showMessage("save fail: " + e.getMessage());
+                return true;
+            }
             return true;
         }
         if( id == R.id.action_copy_to_scratch) {

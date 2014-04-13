@@ -16,5 +16,6 @@
 <string name="action_copy_to_scratch">スクラッチに送る</string>
 <string name="label_delete">削除</string>
 <string name="label_toggle_chart">グラフの表示</string>
+    <string name="action_share">共有</string>
 
 </resources>
