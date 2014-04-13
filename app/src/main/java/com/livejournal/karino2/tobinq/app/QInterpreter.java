@@ -441,13 +441,14 @@ public class QInterpreter {
 		{
 			QFunction func = (QFunction)funcCand;
 			Environment outer = _curEnv;
-			_curEnv = new Environment(_curEnv);
+			Environment funcEnv = new Environment(_curEnv);
 			QObject ret;
-			try 
-			{
-				assignToFormalList(term.getChild(1), func.getFormalList(), _curEnv);
+		    assignToFormalList(term.getChild(1), func.getFormalList(), funcEnv);
+            try
+            {
+                _curEnv = funcEnv;
 				if(func.isPrimitive())
-					ret = func.callPrimitive(_curEnv, this);
+					ret = func.callPrimitive(funcEnv, this);
 				else
 					ret = evalExprList(func.getBody());
 			}

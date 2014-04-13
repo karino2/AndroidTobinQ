@@ -65,6 +65,15 @@ public class QInterpreterTest extends TestCase {
 		QObject actual = _intp.eval("f <- function() { 1; 2}\nf()");
 		assertQNumericEquals(expected, actual);
 	}
+
+    // promise env must be outside, otherwise, infinite lookup loop.
+    public void test_eval_function_promiseResolve()
+    {
+        int expected = 10;
+        QObject actual = _intp.eval("x<-1:10; f <- function(x) { length(x); }\nf(x)");
+        assertQNumericEquals(expected, actual);
+
+    }
 	
 	public static void assertQCharEquals(String expected, QObject actual)
 	{
@@ -383,6 +392,13 @@ public class QInterpreterTest extends TestCase {
 		QObject actual = _intp.eval("(1:3)[c(TRUE, FALSE, FALSE)]");
 		assertQNumericEquals(expected, actual);
 	}
+
+    public void test_evalExpr_length() throws RecognitionException {
+        int expected = 5;
+        QObject actual = callEvalExpr("length(1:5)");
+        assertQNumericEquals(expected, actual);
+
+    }
 	
 	public void test_evalExpr_sum_flat() throws RecognitionException
 	{
@@ -794,7 +810,7 @@ public class QInterpreterTest extends TestCase {
     }
 
     private QObject resolve(QObject obj) {
-        return _intp.resolveIfNecessary((QPromise)obj);
+        return _intp.resolveIfNecessary((QPromise) obj);
     }
 
     // @Test
