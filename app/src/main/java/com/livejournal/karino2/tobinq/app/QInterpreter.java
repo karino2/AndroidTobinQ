@@ -322,13 +322,13 @@ public class QInterpreter {
 	
 	// (XXSUBSCRIPT [[ df (XXSUBLIST (XXSUB1 "x")))
     public QObject evalSubscriptBB(Tree term) {
-		QObject lexpr = evalExpr(term.getChild(1));
+		QObject lexpr = resolveIfNecessary(evalExpr(term.getChild(1)));
 		Tree sublistTree = term.getChild(2);
 		if(sublistTree.getChildCount() > 1)
 			throw new RuntimeException("[[]] with multi dimentional, what's happend?");
 		if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
 			throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
-		QObject index = evalExpr(sublistTree.getChild(0).getChild(0));
+		QObject index = resolveIfNecessary(evalExpr(sublistTree.getChild(0).getChild(0)));
 		return lexpr.getBB(index);
 	}
 	
@@ -379,13 +379,13 @@ public class QInterpreter {
 	}
 	
 	private Assignable evalLexprForAssignSubscriptBracket(Tree term) {
-		QObject lexpr = evalExpr(term.getChild(1));
+		QObject lexpr = resolveIfNecessary(evalExpr(term.getChild(1)));
 		Tree sublistTree = term.getChild(2);
 		validateSubscriptBracket(sublistTree);
 		if(sublistTree.getChildCount() > 1)
 			throw new RuntimeException("NYI: assigment with multi dimensional subscript");
 		
-		QObject range = evalExpr(sublistTree.getChild(0).getChild(0));
+		QObject range = resolveIfNecessary(evalExpr(sublistTree.getChild(0).getChild(0)));
 		if(range.getMode() == "logical")
 			return new LogicalSubscriptAssigner(lexpr, range);
 		return new NumberSubscriptAssigner(lexpr, range);
@@ -393,12 +393,12 @@ public class QInterpreter {
 	}
 
 	private QObject evalSubscriptBracket(Tree term) {
-		QObject lexpr = evalExpr(term.getChild(1));
+		QObject lexpr = resolveIfNecessary(evalExpr(term.getChild(1)));
 		Tree sublistTree = term.getChild(2);
 		validateSubscriptBracket(sublistTree);
 		if(sublistTree.getChildCount() == 1)
 		{
-			QObject range = evalExpr(sublistTree.getChild(0).getChild(0));
+			QObject range = resolveIfNecessary(evalExpr(sublistTree.getChild(0).getChild(0)));
 			return lexpr.subscriptByOneArg(range);
 		}
 		else // sublistTree.getChildCount() == 2
@@ -411,7 +411,7 @@ public class QInterpreter {
 			if(rangeRowNode.getType() != QParser.XXSUB0 
 					&& rangeColNode.getType() == QParser.XXSUB0)
 			{
-				QObject rangeRow = evalExpr(rangeRowNode.getChild(0));
+				QObject rangeRow = resolveIfNecessary(evalExpr(rangeRowNode.getChild(0)));
 				if(rangeRow.getMode() == "logical")
 					throw new RuntimeException("NYI: multi dimensional subscript with logical array");
 				return subscriptByRowNumber(lexpr, rangeRow);

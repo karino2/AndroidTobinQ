@@ -70,6 +70,9 @@ public class QObject {
 
 
 	public QObject QClone() {
+        if(getMode().equals("promise"))
+            throw new RuntimeException("clone Promise!");
+
 		if(this == QObject.NA)
 			return this;
 		if(getLength() == 1){

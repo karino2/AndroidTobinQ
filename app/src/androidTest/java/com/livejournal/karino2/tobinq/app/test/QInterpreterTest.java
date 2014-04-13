@@ -74,6 +74,18 @@ public class QInterpreterTest extends TestCase {
         assertQNumericEquals(expected, actual);
 
     }
+
+    public void test_eval_function_promiseModeBug()
+    {
+        double expected1 = 6.5;
+        double expected2 = 18.5;
+        String code = "x<-1:24; sumMonths <- function(total) { n<-(length(total)/12);"
+        + "y<-1:n; for(i in 1:n) {b<-(12*(i-1))+1;e<-(12*(i-1))+12; y[i]<-mean(total[b:e]) }\n y}"
+        + "\nsumMonths(x)";
+        QObject actual = _intp.eval(code);
+        assertEquals(QObject.createNumeric(expected1), actual.get(0));
+        assertEquals(QObject.createNumeric(expected2), actual.get(1));
+    }
 	
 	public static void assertQCharEquals(String expected, QObject actual)
 	{
