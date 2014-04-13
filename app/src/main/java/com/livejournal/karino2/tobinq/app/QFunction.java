@@ -432,7 +432,7 @@ public class QFunction extends QObject {
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
 					throw new RuntimeException("Argument of length should be 1");
-				QObject arg = args.get(0);
+				QObject arg = getIR(args, 0, intp);
 				return QObject.createNumeric(arg.getLength());
 			}
 		};
@@ -450,7 +450,7 @@ public class QFunction extends QObject {
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
 				_intp = intp;
-				QObject url = funcEnv.get("url");
+				QObject url = getR(funcEnv, "url", intp);
 				CsvTable table = _csvRetrievable.retrieve(url.getValue().toString());
 				return QList.createDataFrameFromCsvTable(table);
 			}
