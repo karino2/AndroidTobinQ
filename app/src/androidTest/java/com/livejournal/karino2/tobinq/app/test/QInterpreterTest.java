@@ -5,6 +5,7 @@ import com.livejournal.karino2.tobinq.app.QInterpreter;
 import com.livejournal.karino2.tobinq.app.QList;
 import com.livejournal.karino2.tobinq.app.QObject;
 import com.livejournal.karino2.tobinq.app.QParser;
+import com.livejournal.karino2.tobinq.app.QPromise;
 import com.livejournal.karino2.tobinq.app.Writable;
 
 import junit.framework.TestCase;
@@ -714,7 +715,7 @@ public class QInterpreterTest extends TestCase {
 		QObject ret = target.get(ARGNAME);
 		assertEquals(3, ret.getLength());
 		
-		assertVector123(ret);
+		assertVector123WithResolve(ret);
 	}
 	
 	// @Test
@@ -724,7 +725,7 @@ public class QInterpreterTest extends TestCase {
 		QObject ret = target.get(ARGNAME);
 		assertEquals(1, ret.getLength());
 		
-		assertVector123(ret.get(0));
+		assertVector123(resolve(ret.get(0)));
 	}
 
 	// code should include funcname, like "c(1, 2, 3)"
@@ -753,10 +754,18 @@ public class QInterpreterTest extends TestCase {
 		
 		assertEquals("list", actual.getMode());
 		assertEquals(1, actual.getLength());
-		assertQNumericEquals(1, actual.get(0));
+		assertQNumericEquals(1, resolve(actual.get(0)));
 	}
-	
-	private void assertVector123(QObject ret) {
+
+    private void assertVector123WithResolve(QObject ret) {
+        assertEquals(3, ret.getLength());
+        assertQNumericEquals(1, resolve(ret.get(0)));
+        assertQNumericEquals(2, resolve(ret.get(1)));
+        assertQNumericEquals(3, resolve(ret.get(2)));
+    }
+
+
+    private void assertVector123(QObject ret) {
 		assertEquals(3, ret.getLength());
 		assertQNumericEquals(1, ret.get(0));
 		assertQNumericEquals(2, ret.get(1));
@@ -776,10 +785,19 @@ public class QInterpreterTest extends TestCase {
 		
 		assertNotNull(args);
 		assertEquals("list", args.getMode());
-		assertEquals(1.0, args.get(0).getValue());
+        assertFalse(((QPromise) args.get(0)).isResolved());
+		assertEquals(1.0, resolveAndGetValue(args.get(0)));
 	}
 
-	// @Test
+    Object resolveAndGetValue(QObject obj) {
+        return resolve(obj).getValue();
+    }
+
+    private QObject resolve(QObject obj) {
+        return _intp.resolveIfNecessary((QPromise)obj);
+    }
+
+    // @Test
 	public void test_assignToFormalList_begEnd() throws RecognitionException
 	{
 		Environment target = callAssignToFormalList("beg, end", "seq(1, 10)");
@@ -789,8 +807,8 @@ public class QInterpreterTest extends TestCase {
 		
 		assertNotNull(beg);
 		assertNotNull(end);
-		assertQNumericEquals(1, beg);
-		assertQNumericEquals(10, end);
+		assertQNumericEquals(1, resolve(beg));
+		assertQNumericEquals(10, resolve(end));
 	}
 	
 	// @Test
@@ -801,7 +819,7 @@ public class QInterpreterTest extends TestCase {
 		
 		QObject num = target.get("num");
 		
-		assertQNumericEquals(100, num);
+		assertQNumericEquals(100, resolve(num));
 	}
 
 	// code is like "c(1, 2, 3)"
@@ -837,7 +855,7 @@ public class QInterpreterTest extends TestCase {
 		return result;
 	}
 		
-	static QInterpreter createInterpreter()
+	public static QInterpreter createInterpreter()
 	{
 		ConsoleForTest console = new ConsoleForTest();
 		return new QInterpreter(console);

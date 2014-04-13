@@ -1,5 +1,7 @@
 package com.livejournal.karino2.tobinq.app;
 
+import org.antlr.runtime.tree.Tree;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -252,8 +254,8 @@ public class QList extends QObject {
 		return df;
 	}
 	
-	protected static QObject rowNames(QObject args) {
-		QObject o2 = args.get(0);
+	protected static QObject rowNames(QObject args, QInterpreter intp) {
+		QObject o2 = intp.resolveIfNecessary(args.get(0));
 		int rowNum = o2.getLength();
 		return defaultRowNames(rowNum);
 	}
@@ -267,26 +269,41 @@ public class QList extends QObject {
 		QObject rowNames = rowBuilder.result();
 		return rowNames;
 	}
-	
-	// args must be list of vector.
-	public static QList createDataFrameFromVector(QObject args)
+
+    public static QObject resolve(QObject obj, QInterpreter intp) {
+        return intp.resolveIfNecessary(obj);
+    }
+
+
+    // args must be list of vector.
+	public static QList createDataFrameFromVector(QObject args, QInterpreter intp)
 	{
 		validateArg(args);
 		
 		QList ret = createDataFrame();
 		
-		QObject rowNames = rowNames(args);
+		QObject rowNames = rowNames(args, intp);
 		ret.setRowNamesAttr(rowNames);		
 		
 		QObjectBuilder nameBldr = new QObjectBuilder();
 		for(int i = 0; i < args.getLength(); i++)
 		{
-			QObject o = args.get(i);
+            QObject original = args.get(i);
+			QObject o = resolve(original, intp);
 			QList df = QList.copyVectorAsDataFrame(o);
-	
+
 			QObject name = null;
-			if(QObject.Null.equals(o.getAttribute("names")))
-				name = QObject.createCharacter("V" + (i+1));
+			if(QObject.Null.equals(o.getAttribute("names"))) {
+                if(original instanceof QPromise) {
+                    QPromise promise = (QPromise) original;
+                    Tree sexp = promise.getExpression();
+                    if(sexp.getType() == QParser.SYMBOL) {
+                        name = QObject.createCharacter(sexp.getText());
+                    }
+                }
+                if(name == null)
+                    name = QObject.createCharacter("V" + (i + 1));
+            }
 			else
 				name = o.getAttribute("names");
 	

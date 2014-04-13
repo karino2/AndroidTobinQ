@@ -54,6 +54,9 @@ public class QFunction extends QObject {
 		return this;
 	}
 
+    public static QObject resolve(QObject obj, QInterpreter intp) {
+       return intp.resolveIfNecessary(obj);
+    }
 
 	// "c"
 	public static QFunction createConcatinate()
@@ -67,14 +70,14 @@ public class QFunction extends QObject {
 				for(int i = 0; i < args.getLength(); i++)
 				{
 					// should validate args here.
-					QObject obj = args.get(i);
+					QObject obj = getIR(args, i, intp);
 					if(obj.getLength() == 1)
 						bldr.add(obj);
 					else
 					{
 						for(int j = 0; j < obj.getLength(); j++)
 						{
-							bldr.add(obj.get(j));
+							bldr.add(getIR(obj, j, intp));
 						}
 					}
 				}
@@ -83,6 +86,11 @@ public class QFunction extends QObject {
 			}
 		};
 	}
+
+    // getWithResolved, but use too often so I add short name.
+    static QObject getR(Environment funcEnv, String valName, QInterpreter intp) {
+        return resolve(funcEnv.get(valName), intp);
+    }
 	
 	// "seq"
 	public static QFunction createSeq()
@@ -91,8 +99,8 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject begO = funcEnv.get("beg");
-				QObject endO = funcEnv.get("end");
+				QObject begO = getR(funcEnv, "beg", intp);
+				QObject endO = getR(funcEnv, "end", intp);
 				if(begO == null || endO == null)
 					throw new RuntimeException("seq argument seems wrong");
 				double beg = begO.getDouble();
@@ -121,10 +129,10 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject x = funcEnv.get("x");
-				QObject y = funcEnv.get("y");
-				QObject ylim = funcEnv.get("ylim");
-				QObject main = funcEnv.get("main");
+				QObject x = getR(funcEnv, "x", intp);
+				QObject y = getR(funcEnv, "y", intp);
+				QObject ylim = getR(funcEnv, "ylim", intp);
+				QObject main = getR(funcEnv, "main", intp);
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("x, y length differ");
 				// _plotable.resetChart();
@@ -148,7 +156,7 @@ public class QFunction extends QObject {
 
                 XYSeries series = new XYSeries("first");
 
-			    addPoints(x, y, series);
+			    addPoints(x, y, series, intp);
                 /*
 			    // chart.getCurve().setLegendLabel("x, y");
 			    chart.getXAxis().setAxisLabel("x");
@@ -181,15 +189,15 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject x = funcEnv.get("x");
-				QObject y = funcEnv.get("y");
+				QObject x = getR(funcEnv, "x", intp);
+				QObject y = getR(funcEnv, "y", intp);
 				if(QObject.Null.equals(y))
 					throw new RuntimeException("lines: y=NULL, NYI");
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("lines: x, y length differ");
 
                 XYSeries series = new XYSeries("lines");
-			    addPoints(x, y, series);
+			    addPoints(x, y, series, intp);
                 dataset.addSeries(series);
                 renderer.addSeriesRenderer(new XYSeriesRenderer());
 
@@ -199,23 +207,23 @@ public class QFunction extends QObject {
 			}			
 		};
 	}
-    private static void addPoints(QObject x, QObject y, XYSeries series) {
+    private static void addPoints(QObject x, QObject y, XYSeries series, QInterpreter intp) {
         for (int i = 0; i < x.getLength(); i++)
         {
-            double x1 = x.get(i).getDouble();
-            double y1 = y.get(i).getDouble();
+            double x1 = getIR(x, i, intp).getDouble();
+            double y1 = getIR(y, i, intp).getDouble();
             series.add(x1, y1);
         }
     }
 
 
-    public static double sumObj(QObject obj)
+    public static double sumObj(QObject obj, QInterpreter intp)
 	{
 		int len = obj.getLength();
 		double sum = 0;
 		for(int i = 0; i < len; i++)
 		{
-			sum += obj.get(i).getDouble();
+			sum += getIR(obj, i, intp).getDouble();
 		}
 		return sum;
 	}
@@ -229,14 +237,14 @@ public class QFunction extends QObject {
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
 					throw new RuntimeException("Argument of var should be 1");
-				QObject arg = args.get(0);
+				QObject arg = getIR(args, 0, intp);
 				int len = arg.getLength();
-				double mean = sumObj(arg)/len;
+				double mean = sumObj(arg, intp)/len;
 				
 				double var = 0;
 				for(int i = 0; i < len; i++)
 				{
-					double x = arg.get(i).getDouble();
+					double x = getIR(arg, i, intp).getDouble();
 					var += (x - mean)*(x-mean);
 				}
 				var = var/(len-1);
@@ -261,14 +269,14 @@ public class QFunction extends QObject {
 		}
 	}
 	
-	public static ForestIterater<QObjectForestAdapter> createForestIterater(QObject rootObj) {
+	public static ForestIterater<QObjectForestAdapter> createForestIterater(QObject rootObj, final QInterpreter intp) {
 		QObjectForestAdapter rootAda = new QObjectForestAdapter(null, rootObj, 0);
 		ForestNode<QObjectForestAdapter> root = new ForestNode<QObjectForestAdapter>(new Traversable<QObjectForestAdapter>(){
 
 			public QObjectForestAdapter getChild(QObjectForestAdapter elem,
 					int i) {
 				// this is not child for some case. but I guess it's ok for this case.
-				QObject child = elem._self.get(i);
+				QObject child = intp.resolveIfNecessary(elem._self.get(i));
 				return new QObjectForestAdapter(elem, child, i);
 			}
 
@@ -303,7 +311,7 @@ public class QFunction extends QObject {
 			{
 				QObject args = funcEnv.get(ARGNAME);
 				double sum = 0;
-				ForestIterater<QObjectForestAdapter> iter = createForestIterater(args);
+				ForestIterater<QObjectForestAdapter> iter = createForestIterater(args, intp);
 				while(iter.hasNext())
 				{
 					ForestNode<QObjectForestAdapter> node = iter.next();
@@ -321,6 +329,11 @@ public class QFunction extends QObject {
 		};
 	}
 
+    // resolve obj.get(index). but this function call too many times. so add short name.
+    static QObject getIR(QObject obj, int index, QInterpreter intp) {
+        return resolve(obj.get(index), intp);
+    }
+
 	// cumsum
 	public static QFunction createCumulativeSum()
 	{
@@ -332,12 +345,12 @@ public class QFunction extends QObject {
 				if(args.getLength() != 1)
 					throw new RuntimeException("Argument of cumsum should be 1");
 				QObjectBuilder bldr = new QObjectBuilder();
-				QObject arg = args.get(0);
+				QObject arg = getIR(args, 0, intp);
 				int len = arg.getLength();
 				double cum = 0;
 				for(int i = 0; i < len; i++)
 				{
-					QObject obj = arg.get(i);
+					QObject obj = getIR(arg, i, intp);
 					cum += obj.getDouble();
 					bldr.add(QObject.createNumeric(cum));
 				}
@@ -356,9 +369,9 @@ public class QFunction extends QObject {
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
 					throw new RuntimeException("Argument of mean should be 1");
-				QObject arg = args.get(0);
+				QObject arg = getIR(args, 0, intp);
 				int len = arg.getLength();
-				double mean = sumObj(arg)/len;
+				double mean = sumObj(arg, intp)/len;
 				return QObject.createNumeric(mean);
 				
 			}
@@ -372,14 +385,14 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject args = funcEnv.get("x");
+				QObject args = getR(funcEnv, "x", intp);
 				int len = args.getLength();
 				if(len == 1)
 					return QObject.createNumeric(Math.sqrt(args.getDouble()));
 				QObjectBuilder bldr = new QObjectBuilder();
 				for(int i = 0; i < len; i++)
 				{
-					QObject x = QObject.createNumeric(Math.sqrt(args.get(i).getDouble()));
+					QObject x = QObject.createNumeric(Math.sqrt(getIR(args, i, intp).getDouble()));
 					bldr.add(x);
 				}
 				return bldr.result();
@@ -394,7 +407,7 @@ public class QFunction extends QObject {
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
 				QObject arg = funcEnv.get(ARGNAME);
-				return QList.createDataFrameFromVector(arg);
+				return QList.createDataFrameFromVector(arg, intp);
 			}
 		};
 	}
@@ -468,7 +481,7 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject arg = funcEnv.get("obj");
+				QObject arg = getR(funcEnv, "obj", intp);
 				if(QObject.Null.equals(arg))
 					return QObject.TRUE;
 				return QObject.FALSE;
@@ -483,7 +496,7 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject arg = funcEnv.get("obj");
+				QObject arg = getR(funcEnv, "obj", intp);
 				return asNumeric(arg);				
 			}
 		};
@@ -527,13 +540,14 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject arg = funcEnv.get("arg");
-				QObject choices = funcEnv.get("choices");
+                QPromise promise = (QPromise)funcEnv.get("arg");
+				QObject arg = resolve(promise, intp);
+				QObject choices = getR(funcEnv, "choices", intp);
 				if(arg.getLength() > 1)
 					throw new RuntimeException("first argument of match.arg is not scalar.");
 				if(choices == null)
 				{
-					Tree orgVal = funcEnv.getSexp("arg");
+					Tree orgVal = promise.getExpression();
 					if(orgVal.getType() != QParser.SYMBOL)
 						throw new RuntimeException("match.arg, arg's caller sexp is not symbol. what situation? :" + orgVal.toStringTree());
 					choices = funcEnv.getDefaultValue(orgVal.getText());
@@ -541,7 +555,7 @@ public class QFunction extends QObject {
 				String argStr = (String)arg.getValue();
 				for(int i = 0; i < choices.getLength(); i++)
 				{
-					String target = (String)choices.get(i).getValue();
+					String target = (String)getIR(choices, i, intp).getValue();
 					if(target.startsWith(argStr))
 						return choices.get(i);
 				}
@@ -557,10 +571,17 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				Tree sexp = funcEnv.getSexp("expr");
+                QPromise promise = (QPromise)funcEnv.get("expr");
+                QObject resolved = intp.resolveOne(promise);
+                while(resolved instanceof QPromise) {
+                    promise = (QPromise)resolved;
+                    resolved = intp.resolveOne(promise);
+                }
+
+                Tree sexp = promise.getExpression();
 				if(sexp.getType() == QParser.SYMBOL)
 				{
-					sexp = handleSymbol(funcEnv, sexp);
+					sexp = handleSymbol(funcEnv, sexp, intp);
 				}
 				else
 				{
@@ -573,7 +594,7 @@ public class QFunction extends QObject {
 						Tree t = node.getElement();
 						if(t.getType() == QParser.SYMBOL)
 						{
-							Tree newSexp = handleSymbol(funcEnv, t);
+							Tree newSexp = handleSymbol(funcEnv, t, intp);
 							if(newSexp != t)
 							{
 								t.getParent().replaceChildren(t.getChildIndex(), t.getChildIndex(), newSexp);
@@ -585,11 +606,12 @@ public class QFunction extends QObject {
 
 				return QObject.createCall(funcEnv, sexp);
 			}
-			private Tree handleSymbol(Environment funcEnv, Tree sexp) {
-				Tree newSexp = funcEnv.getSexp(sexp.getText());
-				if(newSexp != null)
-					sexp = newSexp;
-				return sexp;
+			private Tree handleSymbol(Environment funcEnv, Tree sexp, QInterpreter intp) {
+                QObject obj = funcEnv.get(sexp.getText());
+                if(obj instanceof QPromise) {
+                    return ((QPromise)obj).getSexp();
+                }
+                return sexp;
 			}
 		};
 	}
@@ -601,7 +623,7 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject arg = funcEnv.get("obj");
+				QObject arg = getR(funcEnv, "obj", intp);
 				if(arg.getMode() != "call")
 					throw new RuntimeException("not supported deparse with non-expression arg");
 				

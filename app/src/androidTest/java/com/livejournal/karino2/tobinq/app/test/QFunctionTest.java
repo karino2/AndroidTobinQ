@@ -113,7 +113,7 @@ public class QFunctionTest extends TestCase {
 		r.set(1, r2);
 		r.set(2, r3);
 
-		ForestIterater<QObjectForestAdapter> iter = QFunction.createForestIterater(r);
+		ForestIterater<QObjectForestAdapter> iter = QFunction.createForestIterater(r, QInterpreterTest.createInterpreter());
 		assertEquals(true, iter.hasNext());
 		
 		ForestNode<QObjectForestAdapter> node = nextWithTrailing(iter);
@@ -148,7 +148,7 @@ public class QFunctionTest extends TestCase {
 		
 		// c(1, c(2, 4), 3)
 
-		ForestIterater<QObjectForestAdapter> iter = QFunction.createForestIterater(r);
+		ForestIterater<QObjectForestAdapter> iter = QFunction.createForestIterater(r, QInterpreterTest.createInterpreter());
 		assertEquals(true, iter.hasNext());
 		
 		ForestNode<QObjectForestAdapter> node = nextWithTrailing(iter);

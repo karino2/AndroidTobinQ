@@ -12,7 +12,6 @@ public class QObject {
 	public static final String NUMERIC_TYPE = "numeric";
 	public static final String CALL_TYPE = "call"; // s expression.
 	
-	
 	public static final QObject NA = new QObject("logical");
 	public static final QObject Null = new QObject("NULL");
 	public static QObject TRUE = new QObject("logical", 1);
@@ -67,7 +66,9 @@ public class QObject {
 	{
 		return new QObject(CALL_TYPE, new Object[] {env, sexp});
 	}
-	
+
+
+
 	public QObject QClone() {
 		if(this == QObject.NA)
 			return this;
@@ -349,10 +350,10 @@ public class QObject {
 	}
 	
 	public Tree getSexp() {
-		if(getMode() != "call")
+		if(!getMode().equals(CALL_TYPE))
 			return null;
 		Object[] arr = (Object[])_val;
-		return (Tree)arr[1];		
+		return (Tree)arr[1];
 	}
 
 	boolean isDataFrame() {

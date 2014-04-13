@@ -176,6 +176,35 @@ public class QInterpreter {
 		}
 		throw new RuntimeException("assign: unsupported lexpr type(" + term.getType() + ")");
 	}
+
+    private QObject evalPromiseForResolve(QPromise promise) {
+        Environment originalEnv = _curEnv;
+        try {
+            _curEnv = promise.getEnvironment();
+            QObject result = evalExpr(promise.getExpression());
+            promise.setResolvedValue(result);
+            return result;
+        }finally {
+            _curEnv = originalEnv;
+        }
+    }
+
+    public QObject resolveOne(QPromise promise) {
+        if(promise.isResolved())
+            return promise.getResolvedValue();
+        return evalPromiseForResolve(promise);
+    }
+
+    public QObject resolveIfNecessary(QObject obj) {
+        while(obj instanceof QPromise) {
+            QPromise promise = (QPromise)obj;
+            if(promise.isResolved())
+                obj =  promise.getResolvedValue();
+            else
+                obj = evalPromiseForResolve(promise);
+        }
+        return obj;
+    }
 	
 	public QObject evalExpr(Tree term)
 	{
@@ -488,7 +517,8 @@ public class QInterpreter {
 			if(isAssigned(sym.getText(), assigned))
 				continue;
 			Tree val = formArg.getChild(1);
-			funcEnv.put(sym.getText(), evalExpr(val));
+            QPromise promise = new QPromise(_curEnv, val);
+            funcEnv.put(sym.getText(), promise);
 		}
 	}
 
@@ -501,7 +531,8 @@ public class QInterpreter {
 				continue;
 			Tree formArg = getNextFormArgSym(formalList, assigned);
 			Tree val = node.getChild(0);
-			funcEnv.put(formArg.getText(), evalExpr(val), val);			
+            QPromise promise = new QPromise(_curEnv, val);
+            funcEnv.put(formArg.getText(), promise);
 			assigned.put(formArg.getText(), true);
 		}
 	}
@@ -535,8 +566,7 @@ public class QInterpreter {
 				continue;
 			Tree sym = node.getChild(0);
 			Tree val = node.getChild(1);
-			QObject arg = evalExpr(val).QClone();
-			arg.setAttribute("names", QObject.createCharacter(sym.getText()));
+            QObject arg = new QPromise(_curEnv, val);
 			funcEnv.put(sym.getText(), arg);
 			
 			assigned.put(sym.getText(), true);
@@ -548,10 +578,7 @@ public class QInterpreter {
 		int argNum = 0;
 		for(int i = 0; i < subList.getChildCount(); i++)
 		{
-			Tree subObj = subList.getChild(i).getChild(0);
-			QObject arg = evalExpr(subList.getChild(i).getChild(0));
-			if(subObj.getType() == QParser.SYMBOL)
-				arg.setAttribute("names", QObject.createCharacter(subObj.getText()));
+            QObject arg = new QPromise(_curEnv, subList.getChild(i).getChild(0));
 			args.set(argNum++, arg);
 		}
 		funcEnv.put(ARGNAME, args);
