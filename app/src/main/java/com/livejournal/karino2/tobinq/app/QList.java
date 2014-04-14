@@ -62,7 +62,7 @@ public class QList extends QObject {
 	private QObject getNamesAttr() {
 		return getAttribute("names");
 	}
-	private void setNamesAttr(QObject namesObj)
+	public void setNamesAttr(QObject namesObj)
 	{
 		setAttribute("names", namesObj);		
 	}
@@ -70,7 +70,7 @@ public class QList extends QObject {
 		QObject rowNames = getAttribute("row.names");
 		return rowNames;
 	}
-	private void setRowNamesAttr(QObject rowNames) {
+	public void setRowNamesAttr(QObject rowNames) {
 		setAttribute("row.names", rowNames);
 	}
 
@@ -197,54 +197,11 @@ public class QList extends QObject {
 	
 	
 	public static QList createDataFrameFromCsvTable(CsvTable table) {
-		QList ret = createDataFrame();
-		QObject rowNames = defaultRowNames(table.getRowNum());
-		ret.setRowNamesAttr(rowNames);
-		
-		ArrayList<QList> cols = new ArrayList<QList>();
-		QObjectBuilder nameBldr = new QObjectBuilder();
-		
-		setupColsNames(table, rowNames, cols, nameBldr);
-		ret.setNamesAttr(nameBldr.result());
-		
-		copyDatas(table, cols);
-		
-		for(int k = 0; k < table.getColNum(); k++)
-		{
-			ret.set(k, cols.get(k));
-		}
-		return ret;
+        CsvTableConverter converter = new CsvTableConverter(table);
+        return converter.doConvert();
 	}
 	
 	
-	private static void copyDatas(CsvTable table, ArrayList<QList> cols) {
-		for(int row = 0; row < table.getRowNum()-1; row++)
-		{
-			for(int col = 0; col < table.getColNum(); col++)
-			{
-				if(table.isNA(row+1, col))
-					cols.get(col).rawSetByRowCol(row, 0, QObject.NA);
-				else
-					cols.get(col).rawSetByRowCol(row, 0, QObject.createNumeric(table.getCellNumeric(row+1, col)));
-			}
-		}
-	}
-	private static void setupColsNames(CsvTable table, QObject rowNames,
-			ArrayList<QList> cols, QObjectBuilder nameBldr) {
-		for(int i = 0; i < table.getColNum(); i++)
-		{
-			QList col = createDataFrame();
-			col.set(0, QObject.createNumeric(0));
-			
-			QObject name = null;
-			name = QObject.createCharacter(table.getCell(0, i));
-	
-			nameBldr.add(name);
-			col.setNamesAttr(name);
-			col.setRowNamesAttr(rowNames);
-			cols.add(col);
-		}
-	}
 	protected static QList copyVectorAsDataFrame(QObject o) {
 		QList df = createDataFrame();
 		QObjectBuilder bldr = new QObjectBuilder();

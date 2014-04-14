@@ -1,5 +1,7 @@
 package com.livejournal.karino2.tobinq.app.test;
 
+import com.livejournal.karino2.tobinq.app.CsvTable;
+import com.livejournal.karino2.tobinq.app.CsvTableConverter;
 import com.livejournal.karino2.tobinq.app.QFunction;
 import com.livejournal.karino2.tobinq.app.QList;
 import com.livejournal.karino2.tobinq.app.QObject;
@@ -7,6 +9,7 @@ import com.livejournal.karino2.tobinq.app.QObject;
 import junit.framework.TestCase;
 
 import static com.livejournal.karino2.tobinq.app.QObject.createCharacter;
+import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.assertQCharEquals;
 import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.assertQNumericEquals;
 import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.createNumeric;
 import static junit.framework.Assert.assertEquals;
@@ -397,7 +400,64 @@ public class QTypesTest extends TestCase {
 
         }
 	}
-	
-	
-	
+
+    /*
+        CsvTable is not QObject, but I add test here.
+     */
+
+    public void test_CsvTable_basic() {
+        CsvTable table = new CsvTable(new String[][]{{"int1", "int2"},
+                {"1", "2"}});
+        assertEquals("int1", table.getCell(0, 0));
+        assertEquals("int2", table.getCell(0, 1));
+        assertEquals("1", table.getCell(1, 0));
+        assertEquals("2", table.getCell(1, 1));
+
+    }
+
+    public void test_CsvTableConverter_intTable() {
+        CsvTable table = new CsvTable(new String[][]{{"int1", "int2"},
+                {"5", "6"}});
+        CsvTableConverter converter = new CsvTableConverter(table);
+        QObject result = converter.doConvert();
+        assertQNumericEquals(5, result.getBB(createNumeric(1)));
+        assertQNumericEquals(6, result.getBB(createNumeric(2)));
+    }
+
+    public void test_CsvTableConverter_guessColumn_int() {
+        CsvTable table = new CsvTable(new String[][]{{"int1", "int2"},
+                {"5", "6"}});
+        CsvTableConverter converter = new CsvTableConverter(table);
+        converter.guessColumnTypes();
+        assertEquals(CsvTableConverter.DataType.NUMERIC, converter.getColumnType(0));
+        assertEquals(CsvTableConverter.DataType.NUMERIC, converter.getColumnType(1));
+    }
+
+    public void test_CsvTableConverter_guessColumn_double() {
+        CsvTable table = new CsvTable(new String[][]{{"double1", "double2"},
+                {"1.0", "6.0"}});
+        CsvTableConverter converter = new CsvTableConverter(table);
+        converter.guessColumnTypes();
+        assertEquals(CsvTableConverter.DataType.NUMERIC, converter.getColumnType(0));
+        assertEquals(CsvTableConverter.DataType.NUMERIC, converter.getColumnType(1));
+    }
+
+    public void test_CsvTableConverter_guessColumn_stringInt() {
+        CsvTable table = new CsvTable(new String[][]{{"int1", "string2"},
+                {"1", "Hello world"}});
+        CsvTableConverter converter = new CsvTableConverter(table);
+        converter.guessColumnTypes();
+        assertEquals(CsvTableConverter.DataType.NUMERIC, converter.getColumnType(0));
+        assertEquals(CsvTableConverter.DataType.STRING, converter.getColumnType(1));
+    }
+
+    public void test_CsvTableConverter_stringTable() {
+        CsvTable table = new CsvTable(new String[][]{{"string1", "string2"},
+                {"Hello", "World"}});
+        CsvTableConverter converter = new CsvTableConverter(table);
+        QObject result = converter.doConvert();
+        assertQCharEquals("Hello", result.getBB(createNumeric(1)));
+        assertQCharEquals("World", result.getBB(createNumeric(2)));
+    }
+
 }
