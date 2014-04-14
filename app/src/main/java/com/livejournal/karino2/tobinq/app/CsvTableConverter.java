@@ -84,26 +84,32 @@ public class CsvTableConverter {
 
     private void guessOneColumnType(int col) {
         for(int row =1; row < table.getRowNum(); row++) {
-            String cell = table.getCell(row, col);
             try {
-                Integer.parseInt(cell);
-                colTypes.add(col, DataType.NUMERIC);
-                return;
-            }catch(NumberFormatException ne) {
+                String cell = table.getCell(row, col);
+                if (table.isNA(row, col))
+                    continue;
 
-            }
-            try {
-                Double.parseDouble(cell);
-                colTypes.add(col, DataType.NUMERIC);
-                return;
-            }catch(NumberFormatException ne) {
+                try {
+                    Integer.parseInt(cell);
+                    colTypes.add(col, DataType.NUMERIC);
+                    return;
+                } catch (NumberFormatException ne) {
 
-            }
-            if(!table.isNA(row, col)) {
+                }
+                try {
+                    Double.parseDouble(cell);
+                    colTypes.add(col, DataType.NUMERIC);
+                    return;
+                } catch (NumberFormatException ne) {
+
+                }
                 colTypes.add(col, DataType.STRING);
-                return;
+            }catch(IndexOutOfBoundsException ie) {
+                continue;
             }
         }
+        // unknown. treat as string.
+        colTypes.add(col, DataType.STRING);
     }
 
     private ArrayList<QList> setupRowCols(QList ret) {
