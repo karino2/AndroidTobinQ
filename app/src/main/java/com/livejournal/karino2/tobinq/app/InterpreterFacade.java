@@ -29,7 +29,7 @@ public class InterpreterFacade {
         }
     };
 
-    public void loadStaticScripts()
+    public void loadTableOfContents()
     {
         try {
             String csvText = readTableOfContentsAsString();
@@ -77,8 +77,7 @@ public class InterpreterFacade {
                 notify.notifyStatus(message);
             }
         }, retriever));
-        // use LBB assignment but NYI. temp comment out.
-        loadStaticScripts();
+        loadTableOfContents();
     }
 
     public void evalWithListener(String code, FinishListener listener) {
