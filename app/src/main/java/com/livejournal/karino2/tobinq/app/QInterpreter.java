@@ -1,5 +1,13 @@
 package com.livejournal.karino2.tobinq.app;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.util.HashMap;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -16,7 +24,11 @@ public class QInterpreter {
 	public Writable getConsole(){ return _console; }
 	public Environment _curEnv;
 	Environment _rootEnv;
-	
+
+    public void registerFunction(String name, QFunction func) {
+        _curEnv.put(name, func);
+    }
+
 	public void registerBuiltinFunction()
 	{
 		_curEnv.put("c", QFunction.createConcatinate());
@@ -46,15 +58,9 @@ public class QInterpreter {
 	public QInterpreter(Writable console) {
 		this(console, null,  null);
 	}	
-	
-	public void loadStaticScripts()
-	{
-        // TODO: implement here if you want.
-		// _console.write(ScriptResources.INSTANCE.hpfilter().getText());
-	}
-	
-	
-	Plotable _plotable;
+
+
+    Plotable _plotable;
 	CsvTableRetrievable _csvRetrievable;
 	public QInterpreter(Writable console, Plotable plotable,  CsvTableRetrievable csvRetrievable) {
 		_curEnv = _rootEnv = new Environment(null);
@@ -586,8 +592,11 @@ public class QInterpreter {
 		int argNum = 0;
 		for(int i = 0; i < subList.getChildCount(); i++)
 		{
-            QObject arg = new QPromise(_curEnv, subList.getChild(i).getChild(0));
-			args.set(argNum++, arg);
+            Tree expression = subList.getChild(i).getChild(0);
+            if(expression != null) {
+                QObject arg = new QPromise(_curEnv, expression);
+                args.set(argNum++, arg);
+            }
 		}
 		funcEnv.put(ARGNAME, args);
 	}

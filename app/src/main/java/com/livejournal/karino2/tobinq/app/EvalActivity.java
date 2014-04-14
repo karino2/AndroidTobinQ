@@ -66,7 +66,8 @@ public class EvalActivity extends ActionBarActivity {
             public void notifyStatus(String message) {
                 showMessage(message);
             }
-        }, new Retriever(new DefaultHttpClient(), getDatabase()));
+        }, new Retriever(new DefaultHttpClient(), getDatabase()),
+                getAssets());
 
 
     }

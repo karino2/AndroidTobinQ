@@ -62,6 +62,7 @@ public class ScratchActivity extends ActionBarActivity {
             }
         });
 
+
         interpreter = new InterpreterFacade(new Writable() {
             @Override
             public void write(CharSequence cs) {
@@ -75,7 +76,8 @@ public class ScratchActivity extends ActionBarActivity {
                 showMessage(message);
             }
         }
-        , new Retriever(new DefaultHttpClient(), getDatabase()));
+        , new Retriever(new DefaultHttpClient(), getDatabase()),
+                getAssets());
 
 
     }

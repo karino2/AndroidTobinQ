@@ -20,18 +20,21 @@ public class CsvTableRetriever implements CsvTableRetrievable {
 		_listener = listener;
         this.retriever = retriever;
 	}
-	
+
+    public static CsvTable textToTableStatic(String responseText) throws IOException {
+        CSVReader reader = new CSVReader(new StringReader(responseText));
+        ArrayList<String[]> lines = new ArrayList<String[]>();
+        String [] nextLine;
+        while ((nextLine = reader.readNext()) != null) {
+            lines.add(nextLine);
+        }
+        return new CsvTable(lines.toArray(new String[][]{{}}));
+
+    }
 
     public CsvTable textToTable(String responseText) {
-        CSVReader reader = new CSVReader(new StringReader(responseText));
         try {
-            ArrayList<String[]> lines = new ArrayList<String[]>();
-            String [] nextLine;
-            while ((nextLine = reader.readNext()) != null) {
-                lines.add(nextLine);
-            }
-            return new CsvTable(lines.toArray(new String[][]{{}}));
-
+            return textToTableStatic(responseText);
         } catch (IOException e) {
             _listener.notifyStatus("IOException while csv read: " + e.getMessage());
         }

@@ -1,5 +1,13 @@
 package com.livejournal.karino2.tobinq.app;
 
+import android.content.res.AssetManager;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+
 /**
  * Created by karino on 4/12/14.
  */
@@ -21,7 +29,37 @@ public class InterpreterFacade {
         }
     };
 
-    public InterpreterFacade(Writable console, Plotable plotable, NotifyListener notifyListener, Retriever retriever) {
+    public void loadStaticScripts()
+    {
+        try {
+            String csvText = readTableOfContentsAsString();
+            CsvTable table = CsvTableRetriever.textToTableStatic(csvText);
+            interpreter.registerFunction("Qurl", QFunction.createQurl(table));
+        } catch (FileNotFoundException e) {
+            interpreter.getConsole().write("init script not found: " + e.getMessage());
+        } catch (IOException e) {
+        }
+    }
+
+    private String readTableOfContentsAsString() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(assetManager.open("TableOfContent.csv")));
+        try {
+            StringWriter writer = new StringWriter();
+            int n;
+            char[] buf = new char[2048];
+            while ((n = reader.read(buf)) != -1) {
+                writer.write(buf, 0, n);
+            }
+            return writer.toString();
+        }finally {
+            reader.close();
+        }
+    }
+
+    AssetManager assetManager;
+
+    public InterpreterFacade(Writable console, Plotable plotable, NotifyListener notifyListener, Retriever retriever, AssetManager assets) {
+        assetManager = assets;
         notify = notifyListener;
         interpreter = new QInterpreter(console, plotable, new CsvTableRetriever(new CsvTableRetriever.ResumeListener() {
             @Override
@@ -39,6 +77,8 @@ public class InterpreterFacade {
                 notify.notifyStatus(message);
             }
         }, retriever));
+        // use LBB assignment but NYI. temp comment out.
+        loadStaticScripts();
     }
 
     public void evalWithListener(String code, FinishListener listener) {

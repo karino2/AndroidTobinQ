@@ -539,7 +539,12 @@ public class QFunction extends QObject {
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
 				QObject arg = funcEnv.get(ARGNAME);
-				return arg; // arg is QList. in this case, I think I don't need QClone().
+                QList ret = QList.createList();
+                for(int i = 0; i < arg.getLength(); i++) {
+                    QObject obj = getIR(arg, i, intp);
+                    ret.set(i, obj);
+                }
+                return ret;
 			}
 		};
 	}
@@ -576,8 +581,32 @@ public class QFunction extends QObject {
 			}
 		};
 	}
-	
-	
+
+    // Caution! Very tricky! This content is basically the same as
+    // https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdEE4YnJ3dERMclRqazV0ZjJuN0k0UWc&single=true&gid=0&output=csv
+    // But I want to skip one http round trip, so I put this file in asset folder and assume
+    // facade will set this value.
+    public static CsvTable tableOfContents;
+    public static QFunction createQurl(CsvTable tableOfConts)
+    {
+        tableOfContents = tableOfConts;
+        return new QFunction(parseFormalList("name"), null) {
+            public boolean isPrimitive() {return true; }
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject name = getR(funcEnv, "name", intp);
+                String nameVal = (String)name.getValue();
+                for(int row = 1; row < tableOfContents.getRowNum(); row++) {
+                    String rowName = tableOfContents.getCell(row, 0);
+                    if(rowName.equals(nameVal))
+                        return QObject.createCharacter(tableOfContents.getCell(row, 1));
+                }
+                return QObject.Null;
+            }
+        };
+    }
+
+
 	// attributes
 	public static QFunction createAttributes()
 	{
