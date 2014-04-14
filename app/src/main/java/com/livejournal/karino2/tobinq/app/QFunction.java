@@ -151,6 +151,7 @@ public class QFunction extends QObject {
 				QObject main = getR(funcEnv, "main", intp);
                 QObject xlab = getR(funcEnv, "xlab", intp);
                 QObject ylab = getR(funcEnv, "ylab", intp);
+                QObject typ = getR(funcEnv, "type", intp);
 				if(x.getLength() != y.getLength())
 					throw new RuntimeException("x, y length differ");
 				// _plotable.resetChart();
@@ -170,7 +171,6 @@ public class QFunction extends QObject {
 
                 XYSeriesRenderer thisRenderer = new XYSeriesRenderer();
                 thisRenderer.setColor(GET_DEFAULT_COLOR());
-                thisRenderer.setPointStyle(PointStyle.SQUARE);
                 renderer.addSeriesRenderer(thisRenderer);
 
 				if(ylim != QObject.Null)
@@ -203,13 +203,10 @@ public class QFunction extends QObject {
 
 			    addPoints(x, y, series, intp);
 
-                /*
-			    QObject typ = funcEnv.get("type");
-			    if ((String)typ.getValue() == "o"  ||
-			    		(String)typ.getValue() == "l" ||
-			    		(String)typ.getValue() == "b")
-			    	curve.getSymbol().setSymbolType(GChart.SymbolType.LINE);
-			    	*/
+                if(typ.getValue().equals("o") ||
+                        typ.getValue().equals("b"))
+                    thisRenderer.setPointStyle(PointStyle.SQUARE);
+
                 dataset.addSeries(series);
                 _plotable.setDatasetRenderer(dataset, renderer);
 			    
@@ -223,12 +220,13 @@ public class QFunction extends QObject {
 	public static QObject createLines(Plotable plotable) {
 		// Share to createPlot. Be careful!
 		_plotable = plotable;
-		return new QFunction(parseFormalList("x, y=NULL"), null) {
+		return new QFunction(parseFormalList("x, y=NULL,type=\"l\""), null) {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
 				QObject x = getR(funcEnv, "x", intp);
 				QObject y = getR(funcEnv, "y", intp);
+                QObject typ = getR(funcEnv, "type", intp);
 				if(QObject.Null.equals(y))
 					throw new RuntimeException("lines: y=NULL, NYI");
 				if(x.getLength() != y.getLength())
@@ -240,10 +238,12 @@ public class QFunction extends QObject {
 
                 XYSeriesRenderer thisRenderer = new XYSeriesRenderer();
                 thisRenderer.setColor(GET_DEFAULT_COLOR());
-                thisRenderer.setPointStyle(PointStyle.SQUARE);
                 renderer.addSeriesRenderer(thisRenderer);
 
-				
+                if(typ.getValue().equals("o") ||
+                        typ.getValue().equals("b"))
+                    thisRenderer.setPointStyle(PointStyle.SQUARE);
+
 			    _plotable.showChart();
 				return QObject.Null;
 			}			
