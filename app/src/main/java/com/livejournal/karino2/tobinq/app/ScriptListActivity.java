@@ -85,6 +85,13 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         if(-1 == getDatabase().latestUpdatedAt()) {
             showMessage("Script list empty. Try sync...");
             startSync();
+            return;
+        }
+
+        long lastCheck = getLastCheckedTime();
+        if(currentTime()-lastCheck > 24*60*60*1000) {
+            startSync();
+            return;
         }
     }
 
@@ -142,7 +149,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     }
 
     private void startSync() {
-        startCheck = (new Date()).getTime();
+        startCheck = currentTime();
         retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
             @Override
             public void onReady(List<ScriptEntity> ents) {
@@ -160,6 +167,10 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
                 startCheck = -1;
             }
         });
+    }
+
+    private long currentTime() {
+        return (new Date()).getTime();
     }
 
     @Override
