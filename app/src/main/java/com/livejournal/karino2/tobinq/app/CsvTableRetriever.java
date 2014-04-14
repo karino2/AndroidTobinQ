@@ -48,6 +48,7 @@ public class CsvTableRetriever implements CsvTableRetrievable {
             return textToTable(content);
         }
 
+        _listener.notifyStatus("request start.");
         retriever.retrieveFromRemote(url, new Retriever.OnContentReadyListener() {
             @Override
             public void onReady(String responseText) {

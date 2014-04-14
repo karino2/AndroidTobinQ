@@ -67,7 +67,7 @@ public class EvalActivity extends ActionBarActivity {
                 showMessage(message);
             }
         }, new Retriever(new DefaultHttpClient(), getDatabase()),
-                getAssets());
+                this);
 
 
     }

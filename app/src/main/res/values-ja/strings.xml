@@ -17,5 +17,6 @@
 <string name="label_delete">削除</string>
 <string name="label_toggle_chart">グラフの表示</string>
     <string name="action_share">共有</string>
+    <string name="notification_title">統計グラフ！</string>
 
 </resources>

@@ -1,10 +1,13 @@
 package com.livejournal.karino2.tobinq.app;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
@@ -26,6 +29,8 @@ import java.util.List;
 public class ScriptListActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     final int SETTING_ACTIVITY_ID = 1;
+    private final int STATUS_NOTIFICAITON_ID = R.layout.activity_script_list;
+    NotificationManager notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +81,16 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         getSupportLoaderManager().initLoader(0, null, this);
 
         Retriever.lastScriptUpdateAt = getLastReceiveTime();
+
+        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        hideNotification();
 
         if(-1 == getDatabase().latestUpdatedAt()) {
             showMessage("Script list empty. Try sync...");
@@ -137,7 +147,6 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             return true;
         }
         if(id==R.id.action_sync) {
-            showMessage("Sync scripts");
             startSync();
             return true;
         }
@@ -150,23 +159,49 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
 
     private void startSync() {
         startCheck = currentTime();
+        showNotification(getString(R.string.notification_title), "Sync scripts...", "Sync scripts...");
         retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
             @Override
             public void onReady(List<ScriptEntity> ents) {
-                showMessage("sync done.");
+                hideNotification();
                 writeLastCheckedTime(startCheck);
-                if(ents.size() >= 1) {
+                if (ents.size() >= 1) {
                     writeLastReceiveTime(startCheck);
+                    showNotification(getString(R.string.notification_title), "New " + ents.size() + " chart coming.", "New " + ents.size() + " chart coming.");
                 }
                 reloadCursor();
             }
 
             @Override
             public void onFail(String message) {
-                showMessage("Sync scripts fail: " + message);
+                showNotification(getString(R.string.notification_title), "Sync scripts fail: " + message, "Sync script fail.");
                 startCheck = -1;
             }
         });
+    }
+
+    void hideNotification() {
+        showNotification(null, null, null);
+    }
+
+    private void showNotification(String title, String message, String ticker) {
+        if(title == null) {
+            notificationManager.cancel(STATUS_NOTIFICAITON_ID);
+            return;
+        }
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
+        /*
+        PendingIntent contentIntent = PendingIntent.getActivities(this, 0,
+                new Intent[]{new Intent(this, ScriptListActivity.class)}, PendingIntent.FLAG_CANCEL_CURRENT);
+                */
+
+        notificationManager.notify(STATUS_NOTIFICAITON_ID, new NotificationCompat.Builder(this)
+                .setContentTitle(title)
+                .setTicker(ticker)
+                .setContentText(message)
+                .setContentIntent(contentIntent)
+                .setSmallIcon(R.drawable.ic_stat)
+                .build());
     }
 
     private long currentTime() {

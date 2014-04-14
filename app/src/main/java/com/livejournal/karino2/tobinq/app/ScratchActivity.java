@@ -77,7 +77,7 @@ public class ScratchActivity extends ActionBarActivity {
             }
         }
         , new Retriever(new DefaultHttpClient(), getDatabase()),
-                getAssets());
+                this);
 
 
     }
