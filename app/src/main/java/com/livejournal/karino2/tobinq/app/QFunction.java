@@ -145,6 +145,7 @@ public class QFunction extends QObject {
 			{
 				QObject x = getR(funcEnv, "x", intp);
 				QObject y = getR(funcEnv, "y", intp);
+                QObject xlim = getR(funcEnv, "xlim", intp);
 				QObject ylim = getR(funcEnv, "ylim", intp);
 				QObject main = getR(funcEnv, "main", intp);
                 QObject xlab = getR(funcEnv, "xlab", intp);
@@ -174,9 +175,17 @@ public class QFunction extends QObject {
 				{
 					if(ylim.getLength() != 2)
 						throw new RuntimeException("ylim is not 2 element object");
-                    renderer.setYAxisMin(ylim.get(0).getDouble());
-                    renderer.setYAxisMax(ylim.get(1).getDouble());
+                    renderer.setYAxisMin(getIR(ylim, 0, intp).getDouble());
+                    renderer.setYAxisMax(getIR(ylim, 1, intp).getDouble());
 				}
+
+                if(xlim != QObject.Null)
+                {
+                    if(xlim.getLength() != 2)
+                        throw new RuntimeException("xlim is not 2 element object");
+                    renderer.setXAxisMin(getIR(xlim, 0, intp).getDouble());
+                    renderer.setXAxisMax(getIR(xlim, 1, intp).getDouble());
+                }
 
                 if(main != QObject.Null)
                     renderer.setChartTitle((String)main.getValue());
