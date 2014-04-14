@@ -2,6 +2,7 @@ package com.livejournal.karino2.tobinq.app;
 
 import android.graphics.Color;
 
+import org.achartengine.chart.PointStyle;
 import org.achartengine.model.XYMultipleSeriesDataset;
 import org.achartengine.model.XYSeries;
 import org.achartengine.renderer.XYMultipleSeriesRenderer;
@@ -118,8 +119,8 @@ public class QFunction extends QObject {
 		};
 	}
 
-    static int[] DEFAULT_COLORS = new int[] { Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.CYAN,
-            Color.BLUE, Color.RED };
+    static int[] DEFAULT_COLORS = new int[] { Color.RED, Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.CYAN,
+            Color.BLUE };
     static int CURRENT_POS = 0;
     static void RESET_DEFAULT_COLOR() {
         CURRENT_POS = 0;
@@ -169,6 +170,7 @@ public class QFunction extends QObject {
 
                 XYSeriesRenderer thisRenderer = new XYSeriesRenderer();
                 thisRenderer.setColor(GET_DEFAULT_COLOR());
+                thisRenderer.setPointStyle(PointStyle.SQUARE);
                 renderer.addSeriesRenderer(thisRenderer);
 
 				if(ylim != QObject.Null)
@@ -238,6 +240,7 @@ public class QFunction extends QObject {
 
                 XYSeriesRenderer thisRenderer = new XYSeriesRenderer();
                 thisRenderer.setColor(GET_DEFAULT_COLOR());
+                thisRenderer.setPointStyle(PointStyle.SQUARE);
                 renderer.addSeriesRenderer(thisRenderer);
 
 				
