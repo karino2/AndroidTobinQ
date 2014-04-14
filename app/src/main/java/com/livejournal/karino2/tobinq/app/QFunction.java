@@ -392,6 +392,60 @@ public class QFunction extends QObject {
 		};
 	}
 
+    // max
+    public static QFunction createMax()
+    {
+        return new QFunction(null, null){
+            public boolean isPrimitive() {return true; }
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject args = funcEnv.get(ARGNAME);
+                double max = Double.NEGATIVE_INFINITY;
+                ForestIterater<QObjectForestAdapter> iter = createForestIterater(args, intp);
+                while(iter.hasNext())
+                {
+                    ForestNode<QObjectForestAdapter> node = iter.next();
+                    if(node.getEdge() != Edge.Trailing)
+                        continue;
+                    QObject obj = node.getElement()._self;
+                    if(obj.getLength() != 1 ||
+                            obj.getMode() == QList.LIST_TYPE)
+                        continue;
+                    max = Math.max(obj.getDouble(), max);
+                }
+                return QObject.createNumeric(max);
+
+            }
+        };
+    }
+
+    // min
+    public static QFunction createMin()
+    {
+        return new QFunction(null, null){
+            public boolean isPrimitive() {return true; }
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject args = funcEnv.get(ARGNAME);
+                double min = Double.POSITIVE_INFINITY;
+                ForestIterater<QObjectForestAdapter> iter = createForestIterater(args, intp);
+                while(iter.hasNext())
+                {
+                    ForestNode<QObjectForestAdapter> node = iter.next();
+                    if(node.getEdge() != Edge.Trailing)
+                        continue;
+                    QObject obj = node.getElement()._self;
+                    if(obj.getLength() != 1 ||
+                            obj.getMode() == QList.LIST_TYPE)
+                        continue;
+                    min = Math.min(obj.getDouble(), min);
+                }
+                return QObject.createNumeric(min);
+
+            }
+        };
+    }
+
     // resolve obj.get(index). but this function call too many times. so add short name.
     static QObject getIR(QObject obj, int index, QInterpreter intp) {
         return resolve(obj.get(index), intp);

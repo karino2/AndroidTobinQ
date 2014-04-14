@@ -433,6 +433,37 @@ public class QInterpreterTest extends TestCase {
 		QObject actual = callEvalExpr("sum(c(1, c(2, 3), 4))");
 		assertQNumericEquals(expected, actual);
 	}
+
+    // max and min is almost the same, so min test is just one case.
+    public void test_evalExpr_min_flat() throws RecognitionException
+    {
+        int expected = 1;
+        QObject actual = callEvalExpr("min(1, 2, 3)");
+        assertQNumericEquals(expected, actual);
+    }
+
+    public void test_evalExpr_max_flat() throws RecognitionException
+    {
+        int expected = 3;
+        QObject actual = callEvalExpr("max(1, 2, 3)");
+        assertQNumericEquals(expected, actual);
+    }
+
+    public void test_evalExpr_max_oneArg() throws RecognitionException
+    {
+        int expected = 3;
+        QObject actual = callEvalExpr("max(1:3)");
+        assertQNumericEquals(expected, actual);
+    }
+
+    // this test was wrong meaning. But test itself is valid.
+    public void test_evalExpr_max_nest() throws RecognitionException
+    {
+        int expected = 4;
+        QObject actual = callEvalExpr("max(1, c(2, 3), 4)");
+        assertQNumericEquals(expected, actual);
+    }
+
 	
 	public void test_evalExpr_asNumeric() throws RecognitionException
 	{

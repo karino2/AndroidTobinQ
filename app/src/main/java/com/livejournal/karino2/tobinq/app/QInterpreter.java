@@ -25,6 +25,8 @@ public class QInterpreter {
 		_curEnv.put("lines", QFunction.createLines(_plotable));
         _curEnv.put("legend", QFunction.createLegend(_plotable));
 		_curEnv.put("mean", QFunction.createMean());
+        _curEnv.put("max", QFunction.createMax());
+        _curEnv.put("min", QFunction.createMin());
 		_curEnv.put("sum", QFunction.createSum());
 		_curEnv.put("cumsum", QFunction.createCumulativeSum());
 		_curEnv.put("length", QFunction.createLength());
