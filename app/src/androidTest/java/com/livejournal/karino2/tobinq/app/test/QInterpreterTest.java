@@ -13,7 +13,6 @@ import junit.framework.TestCase;
 import static com.livejournal.karino2.tobinq.app.test.QParserTest.parseExpression;
 import static com.livejournal.karino2.tobinq.app.test.QParserTest.parseExpressionOrAssign;
 import static com.livejournal.karino2.tobinq.app.test.QParserTest.parseFormList;
-import static junit.framework.Assert.*;
 
 import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.RecognitionException;
@@ -345,7 +344,7 @@ public class QInterpreterTest extends TestCase {
 		QInterpreter intp = createInterpreter();
 		CommonTree arg = createIntTree("3");
 		
-		QObject actual = intp.evalExpr(arg);
+		QObject actual = intp.evalExprWithoutResolve(arg);
 		assertQNumericEquals(expected, actual);
 	}
 	
@@ -354,7 +353,7 @@ public class QInterpreterTest extends TestCase {
 		QObject expected = QObject.Null;
 
 		CommonTree arg = createTree(QParser.NULL_CONST, null);
-		QObject actual = _intp.evalExpr(arg);
+		QObject actual = _intp.evalExprWithoutResolve(arg);
 		
 		assertNumericEquals(expected, actual);
 	}
@@ -370,7 +369,7 @@ public class QInterpreterTest extends TestCase {
 		parent.addChild(createIntTree("1"));
 		parent.addChild(createIntTree("2"));
 		
-		QObject actual = _intp.evalExpr(parent);
+		QObject actual = _intp.evalExprWithoutResolve(parent);
 		
 		assertQNumericEquals(expected, actual);
 	}
@@ -385,7 +384,7 @@ public class QInterpreterTest extends TestCase {
 		_intp._curEnv.put("a", target);
 		
 		Tree tree = parseExpression("a[2]");
-		QObject actual = _intp.evalExpr(tree);
+		QObject actual = _intp.evalExprWithoutResolve(tree);
 		
 		assertNumericEquals(expected, actual);
 	}
@@ -394,7 +393,7 @@ public class QInterpreterTest extends TestCase {
 	{
 		int expected = 2;
 		CommonTree tree = parseExpression("(1:3)[c(FALSE, TRUE, FALSE)]");
-		QObject actual = _intp.evalExpr(tree);
+		QObject actual = _intp.evalExprWithoutResolve(tree);
 		assertQNumericEquals(expected, actual);
 	}
 	
@@ -625,7 +624,7 @@ public class QInterpreterTest extends TestCase {
 	
 	private QObject callEvalExpr(String code) throws RecognitionException {
 		Tree tree = parseExpression(code);
-		QObject actual = _intp.evalExpr(tree);
+		QObject actual = _intp.evalExprWithoutResolve(tree);
 		return actual;
 	}
 	
@@ -640,7 +639,7 @@ public class QInterpreterTest extends TestCase {
 		QInterpreter intp = createInterpreter();
 		Object expected = intp._curEnv.get("c");
 		
-		Object actual = intp.evalExpr(createTree(QParser.SYMBOL, "c"));
+		Object actual = intp.evalExprWithoutResolve(createTree(QParser.SYMBOL, "c"));
 		assertEquals(expected, actual);
 	}
 

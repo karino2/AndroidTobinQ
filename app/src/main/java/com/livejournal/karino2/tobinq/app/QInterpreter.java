@@ -184,7 +184,7 @@ public class QInterpreter {
         Environment originalEnv = _curEnv;
         try {
             _curEnv = promise.getEnvironment();
-            QObject result = evalExpr(promise.getExpression());
+            QObject result = evalExprWithoutResolve(promise.getExpression());
             promise.setResolvedValue(result);
             return result;
         }finally {
@@ -208,8 +208,12 @@ public class QInterpreter {
         }
         return obj;
     }
+
+    public QObject evalExpr(Tree term) {
+        return resolveIfNecessary(evalExprWithoutResolve(term));
+    }
 	
-	public QObject evalExpr(Tree term)
+	public QObject evalExprWithoutResolve(Tree term)
 	{
 		// R use numeric for most of the case (instead of int).
 		if(term.getType() == QParser.DecimalLiteral)
@@ -246,7 +250,7 @@ public class QInterpreter {
 		{
 			if(term.getChildCount() != 1)
 				throw new RuntimeException("child num of XXPAREN is not 1. Which case?");
-			return evalExpr(term.getChild(0));
+			return evalExprWithoutResolve(term.getChild(0));
 		}
 		// (XXEXPRLIST (XXBINARY <- b (XXBINARY * i 2)) (XXBINARY <- e (XXBINARY * i 13)))
 		if(term.getType() == QParser.XXEXPRLIST)
@@ -254,7 +258,7 @@ public class QInterpreter {
 			QObject ret = QObject.Null;
 			for(int i = 0; i < term.getChildCount(); i++)
 			{
-				ret = evalExpr(term.getChild(i));
+				ret = evalExprWithoutResolve(term.getChild(i));
 			}
 			return ret;
 		}
@@ -324,13 +328,13 @@ public class QInterpreter {
 	
 	// (XXSUBSCRIPT [[ df (XXSUBLIST (XXSUB1 "x")))
     public QObject evalSubscriptBB(Tree term) {
-		QObject lexpr = resolveIfNecessary(evalExpr(term.getChild(1)));
+		QObject lexpr = evalExpr(term.getChild(1));
 		Tree sublistTree = term.getChild(2);
 		if(sublistTree.getChildCount() > 1)
 			throw new RuntimeException("[[]] with multi dimentional, what's happend?");
 		if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
 			throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
-		QObject index = resolveIfNecessary(evalExpr(sublistTree.getChild(0).getChild(0)));
+		QObject index = evalExpr(sublistTree.getChild(0).getChild(0));
 		return lexpr.getBB(index);
 	}
 	
@@ -381,13 +385,13 @@ public class QInterpreter {
 	}
 	
 	private Assignable evalLexprForAssignSubscriptBracket(Tree term) {
-		QObject lexpr = resolveIfNecessary(evalExpr(term.getChild(1)));
+		QObject lexpr = evalExpr(term.getChild(1));
 		Tree sublistTree = term.getChild(2);
 		validateSubscriptBracket(sublistTree);
 		if(sublistTree.getChildCount() > 1)
 			throw new RuntimeException("NYI: assigment with multi dimensional subscript");
 		
-		QObject range = resolveIfNecessary(evalExpr(sublistTree.getChild(0).getChild(0)));
+		QObject range = evalExpr(sublistTree.getChild(0).getChild(0));
 		if(range.getMode() == "logical")
 			return new LogicalSubscriptAssigner(lexpr, range);
 		return new NumberSubscriptAssigner(lexpr, range);
@@ -395,12 +399,12 @@ public class QInterpreter {
 	}
 
 	private QObject evalSubscriptBracket(Tree term) {
-		QObject lexpr = resolveIfNecessary(evalExpr(term.getChild(1)));
+		QObject lexpr = evalExpr(term.getChild(1));
 		Tree sublistTree = term.getChild(2);
 		validateSubscriptBracket(sublistTree);
 		if(sublistTree.getChildCount() == 1)
 		{
-			QObject range = resolveIfNecessary(evalExpr(sublistTree.getChild(0).getChild(0)));
+			QObject range = evalExpr(sublistTree.getChild(0).getChild(0));
 			return lexpr.subscriptByOneArg(range);
 		}
 		else // sublistTree.getChildCount() == 2
@@ -413,7 +417,7 @@ public class QInterpreter {
 			if(rangeRowNode.getType() != QParser.XXSUB0 
 					&& rangeColNode.getType() == QParser.XXSUB0)
 			{
-				QObject rangeRow = resolveIfNecessary(evalExpr(rangeRowNode.getChild(0)));
+				QObject rangeRow = evalExpr(rangeRowNode.getChild(0));
 				if(rangeRow.getMode() == "logical")
 					throw new RuntimeException("NYI: multi dimensional subscript with logical array");
 				return subscriptByRowNumber(lexpr, rangeRow);
@@ -506,7 +510,7 @@ public class QInterpreter {
 				continue;
 			Tree sym = formArg.getChild(0);
 			Tree val = formArg.getChild(1);
-			funcEnv.putDefault(sym.getText(), evalExpr(val));
+			funcEnv.putDefault(sym.getText(), evalExprWithoutResolve(val));
 		}
 	}
 
