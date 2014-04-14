@@ -111,9 +111,8 @@ public class ScratchActivity extends ActionBarActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View popupView = inflater.inflate(R.layout.popup_chart, null);
                 popup = new PopupWindow(popupView, getChartWidth(), getChartHeight(), false);
-                resetChartToPopup();
             }
-            chart.repaint();
+            resetChartToPopup();
             showChartPopup();
             findToggleButtonShowChart().setChecked(true);
 
