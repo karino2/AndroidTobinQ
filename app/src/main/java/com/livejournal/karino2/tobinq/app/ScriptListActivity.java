@@ -167,7 +167,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
                 writeLastCheckedTime(startCheck);
                 if (ents.size() >= 1) {
                     writeLastReceiveTime(startCheck);
-                    showNotification(getString(R.string.notification_title), "New " + ents.size() + " chart coming.", "New " + ents.size() + " chart coming.");
+                    showNotification(getString(R.string.notification_title), ents.size() + " chart updated.", ents.size() + " chart updated.");
                 }
                 reloadCursor();
             }
