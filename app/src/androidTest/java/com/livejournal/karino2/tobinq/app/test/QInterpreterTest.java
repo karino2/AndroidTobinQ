@@ -553,7 +553,18 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(expected, actual);
 		
 	}
-	
+
+    // NYI: fail
+    /*
+    public void test_evalExpr_priorityDiv() throws RecognitionException
+    {
+        int expected = 2;
+        QObject actual = callEvalExpr("2/3*3");
+        assertQNumericEquals(expected, actual);
+
+    }
+    */
+
 	public void test_evalExpr_subscript_two() throws RecognitionException
 	{
 		QObject q2 = createNumeric(2);
