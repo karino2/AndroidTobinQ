@@ -1,16 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
     android:background="@android:color/black"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <EditText
-        android:editable="false"
-        android:inputType="textMultiLine"
-        android:id="@+id/etOutput"
-        android:gravity="top"
-        android:visibility="gone"
+    <LinearLayout
+        android:orientation="vertical"
+        android:id="@+id/layout_chart"
+        android:layout_weight="1"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent">
+        <EditText
+            android:editable="false"
+            android:inputType="textMultiLine"
+            android:id="@+id/etOutput"
+            android:textColor="@android:color/white"
+            android:gravity="top"
+            android:visibility="gone"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            />
+
+     </LinearLayout>
+    <ScrollView
+        android:layout_marginTop="3pt"
+        android:layout_weight="4"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+        <TextView
+             android:id="@+id/tvDescription"
+             android:textColor="@android:color/white"
+             android:text="This is test\nHello World."
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />
+    </ScrollView>
 </LinearLayout>

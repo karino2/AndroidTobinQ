@@ -75,6 +75,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
                 String script = (String)view.getTag();
                 Intent intent = new Intent(ScriptListActivity.this, EvalActivity.class);
                 intent.putExtra("script_content", script);
+                intent.putExtra("description", ((TextView)view.findViewById(R.id.tvDescription)).getText());
                 startActivity(intent);
             }
         });

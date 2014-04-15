@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.achartengine.GraphicalView;
@@ -39,8 +40,10 @@ public class EvalActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_eval);
 
-        if(script == null)
+        if(script == null) {
             script = getIntent().getStringExtra("script_content");
+            ((TextView)findViewById(R.id.tvDescription)).setText(getIntent().getStringExtra("description"));
+        }
 
 
         interpreter = new InterpreterFacade(new Writable() {
@@ -53,7 +56,7 @@ public class EvalActivity extends ActionBarActivity {
         }, new ChartPlotter() {
             @Override
             public void showChart() {
-                LinearLayout ll = (LinearLayout)findViewById(R.id.root);
+                LinearLayout ll = (LinearLayout)findViewById(R.id.layout_chart);
                 if(chart != null)
                     ll.removeView(chart);
                 chart = createChart(EvalActivity.this);
