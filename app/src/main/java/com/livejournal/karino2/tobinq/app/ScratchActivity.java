@@ -102,7 +102,6 @@ public class ScratchActivity extends ActionBarActivity {
                 holder.removeView(chart);
             }
             chart = createChart(ScratchActivity.this);
-            updateMenu();
             holder.addView(chart);
         }
 
@@ -123,6 +122,7 @@ public class ScratchActivity extends ActionBarActivity {
     private void showChartPopup() {
         if(!popup.isShowing())
             popup.showAtLocation(findViewById(R.id.root), Gravity.BOTTOM, 0, 0);
+        updateMenu();
     }
 
     private int getChartHeight() {
