@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_share"
+        android:title="@string/action_share"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_share"></item>
+
+    <item android:id="@+id/action_toggle_chart"
+        android:title="@string/action_toggle_chart"
+        android:enabled="false"
+        app:showAsAction="ifRoom"
+        android:icon="@android:drawable/ic_menu_gallery"></item>
+
+</menu>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
@@ -41,27 +42,12 @@ public class ScratchActivity extends ActionBarActivity {
             findEditText(R.id.etScript).setText(script);
 
 
-        findToggleButtonShowChart().setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (popup == null) {
-                    showMessage("no chart");
-                    return;
-                }
-                if (isChecked)
-                    showChartPopup();
-                else
-                    popup.dismiss();
-            }
-        });
-
-        ((Button)findViewById(R.id.btClear)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.button_clear).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                findEditText(R.id.etOutput).setText("");
+                clearOutputConsole();
             }
         });
-
 
         interpreter = new InterpreterFacade(new Writable() {
             @Override
@@ -82,8 +68,21 @@ public class ScratchActivity extends ActionBarActivity {
 
     }
 
-    private ToggleButton findToggleButtonShowChart() {
-        return ((ToggleButton)findViewById(R.id.tbShowChart));
+    private void clearOutputConsole() {
+        findEditText(R.id.etOutput).setText("");
+    }
+
+
+    private void toggleShowChart() {
+        if (popup == null) {
+            showMessage("no chart");
+            return;
+        }
+        if(popup.isShowing())
+            popup.dismiss();
+        else
+            showChartPopup();
+        updateMenu();
     }
 
     void showMessage(String msg) {
@@ -113,10 +112,10 @@ public class ScratchActivity extends ActionBarActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View popupView = inflater.inflate(R.layout.popup_chart, null);
                 popup = new PopupWindow(popupView, getChartWidth(), getChartHeight(), false);
+                inflateChartMenu();
             }
             resetChartToPopup();
             showChartPopup();
-            findToggleButtonShowChart().setChecked(true);
 
         }
     }
@@ -127,8 +126,7 @@ public class ScratchActivity extends ActionBarActivity {
     }
 
     private int getChartHeight() {
-        ToggleButton tb = findToggleButtonShowChart();
-        return findViewById(R.id.root).getMeasuredHeight()-tb.getBottom();
+        return findViewById(R.id.root).getMeasuredHeight();
     }
 
     private int getChartWidth() {
@@ -156,10 +154,33 @@ public class ScratchActivity extends ActionBarActivity {
     }
 
 
+    boolean chartMenuAdded = false;
+    void inflateChartMenu() {
+        if(!chartMenuAdded) {
+            chartMenuAdded = true;
+            getMenuInflater().inflate(R.menu.scratch_with_chart, _menu);
+        }
+    }
+
+
     Menu _menu;
     private void updateMenu() {
-        if(_menu != null)
-            _menu.findItem(R.id.action_share).setEnabled(chart != null);
+        if(!chartMenuAdded)
+            return;
+
+        boolean chartShown = chart != null;
+        if(_menu != null) {
+            _menu.findItem(R.id.action_share).setEnabled(chartShown);
+            _menu.findItem(R.id.action_toggle_chart).setEnabled(chartShown);
+            if(chartShown) {
+                int rid;
+                if(popup.isShowing())
+                    rid =android.R.drawable.ic_menu_close_clear_cancel;
+                else
+                    rid = android.R.drawable.ic_menu_gallery;
+                _menu.findItem(R.id.action_toggle_chart).setIcon(rid);
+            }
+        }
     }
 
     @Override
@@ -194,6 +215,10 @@ public class ScratchActivity extends ActionBarActivity {
             } catch (IOException e) {
                 showMessage("Fail to save bitmap: " + e.getMessage());
             }
+            return true;
+        }
+        if(id==R.id.action_toggle_chart) {
+            toggleShowChart();
             return true;
         }
         if (id==R.id.action_run) {

@@ -19,5 +19,6 @@
     <string name="label_toggle_chart">Toggle Chart</string>
     <string name="action_share">Share</string>
     <string name="notification_title">ChartDeli</string>
+    <string name="action_toggle_chart">Toggle View Chart</string>
 
 </resources>
