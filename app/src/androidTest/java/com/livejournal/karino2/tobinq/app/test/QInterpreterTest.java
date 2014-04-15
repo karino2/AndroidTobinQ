@@ -554,8 +554,6 @@ public class QInterpreterTest extends TestCase {
 		
 	}
 
-    // NYI: fail
-    /*
     public void test_evalExpr_priorityDiv() throws RecognitionException
     {
         int expected = 2;
@@ -563,7 +561,6 @@ public class QInterpreterTest extends TestCase {
         assertQNumericEquals(expected, actual);
 
     }
-    */
 
 	public void test_evalExpr_subscript_two() throws RecognitionException
 	{

@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Q.g 2014-04-09 07:32:42
+// $ANTLR 3.5.2 Q.g 2014-04-15 12:03:35
 
        package com.livejournal.karino2.tobinq.app;
 
@@ -582,7 +582,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign12.getTree());
 					// AST REWRITE
-					// elements: expr, expr_or_assign, EQ_ASSIGN
+					// elements: expr, EQ_ASSIGN, expr_or_assign
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -859,7 +859,7 @@ public class QParser extends Parser {
 
 					stream_expr.add(expr18.getTree());
 					// AST REWRITE
-					// elements: SYMBOL, expr
+					// elements: expr, SYMBOL
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1141,8 +1141,8 @@ public class QParser extends Parser {
 		RewriteRuleTokenStream stream_WHILE=new RewriteRuleTokenStream(adaptor,"token WHILE");
 		RewriteRuleTokenStream stream_NS_GET_INT=new RewriteRuleTokenStream(adaptor,"token NS_GET_INT");
 		RewriteRuleTokenStream stream_ELSE=new RewriteRuleTokenStream(adaptor,"token ELSE");
-		RewriteRuleTokenStream stream_FOR=new RewriteRuleTokenStream(adaptor,"token FOR");
 		RewriteRuleTokenStream stream_NS_GET=new RewriteRuleTokenStream(adaptor,"token NS_GET");
+		RewriteRuleTokenStream stream_FOR=new RewriteRuleTokenStream(adaptor,"token FOR");
 		RewriteRuleTokenStream stream_NEXT=new RewriteRuleTokenStream(adaptor,"token NEXT");
 		RewriteRuleTokenStream stream_REPEAT=new RewriteRuleTokenStream(adaptor,"token REPEAT");
 		RewriteRuleTokenStream stream_82=new RewriteRuleTokenStream(adaptor,"token 82");
@@ -1645,7 +1645,7 @@ public class QParser extends Parser {
 
 					stream_expr.add(expr39.getTree());
 					// AST REWRITE
-					// elements: expr, unary_op
+					// elements: unary_op, expr
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1701,7 +1701,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign45.getTree());
 					// AST REWRITE
-					// elements: formlist, expr_or_assign
+					// elements: expr_or_assign, formlist
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1769,7 +1769,7 @@ public class QParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: ifexp, elexp, ifcond
+					// elements: elexp, ifexp, ifcond
 					// token labels: 
 					// rule labels: retval, ifexp, elexp
 					// token list labels: 
@@ -1822,7 +1822,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign51.getTree());
 					// AST REWRITE
-					// elements: forcond, expr_or_assign
+					// elements: expr_or_assign, forcond
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1867,7 +1867,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign54.getTree());
 					// AST REWRITE
-					// elements: expr_or_assign, cond
+					// elements: cond, expr_or_assign
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1961,7 +1961,7 @@ public class QParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: fs, ss, NS_GET
+					// elements: ss, NS_GET, fs
 					// token labels: 
 					// rule labels: retval, fs, ss
 					// token list labels: 
@@ -2019,7 +2019,7 @@ public class QParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: fs, NS_GET_INT, ss
+					// elements: fs, ss, NS_GET_INT
 					// token labels: 
 					// rule labels: retval, fs, ss
 					// token list labels: 
@@ -2587,7 +2587,7 @@ public class QParser extends Parser {
 					stream_101.add(char_literal75);
 
 					// AST REWRITE
-					// elements: sublist, 99, refer
+					// elements: 99, sublist, refer
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2661,7 +2661,7 @@ public class QParser extends Parser {
 
 					stream_symbol_or_conststr.add(symbol_or_conststr78.getTree());
 					// AST REWRITE
-					// elements: 91, 79, symbol_or_conststr, refer
+					// elements: 79, refer, 91, symbol_or_conststr
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2805,7 +2805,7 @@ public class QParser extends Parser {
 
 					stream_additiveExpression.add(additiveExpression81.getTree());
 					// AST REWRITE
-					// elements: multiplicativeExpression, additiveExpression, additive_op
+					// elements: additiveExpression, multiplicativeExpression, additive_op
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2858,6 +2858,138 @@ public class QParser extends Parser {
 	// $ANTLR end "additiveExpression"
 
 
+	public static class oneMulExpression_return extends ParserRuleReturnScope {
+		Object tree;
+		@Override
+		public Object getTree() { return tree; }
+	};
+
+
+	// $ANTLR start "oneMulExpression"
+	// Q.g:190:1: oneMulExpression : (a= refer -> $a) ( multicative_op b= refer -> ^( XXBINARY multicative_op $a $b) )? ;
+	public final QParser.oneMulExpression_return oneMulExpression() throws RecognitionException {
+		QParser.oneMulExpression_return retval = new QParser.oneMulExpression_return();
+		retval.start = input.LT(1);
+
+		Object root_0 = null;
+
+		ParserRuleReturnScope a =null;
+		ParserRuleReturnScope b =null;
+		ParserRuleReturnScope multicative_op82 =null;
+
+		RewriteRuleSubtreeStream stream_multicative_op=new RewriteRuleSubtreeStream(adaptor,"rule multicative_op");
+		RewriteRuleSubtreeStream stream_refer=new RewriteRuleSubtreeStream(adaptor,"rule refer");
+
+		try {
+			// Q.g:191:4: ( (a= refer -> $a) ( multicative_op b= refer -> ^( XXBINARY multicative_op $a $b) )? )
+			// Q.g:191:6: (a= refer -> $a) ( multicative_op b= refer -> ^( XXBINARY multicative_op $a $b) )?
+			{
+			// Q.g:191:6: (a= refer -> $a)
+			// Q.g:191:7: a= refer
+			{
+			pushFollow(FOLLOW_refer_in_oneMulExpression1187);
+			a=refer();
+			state._fsp--;
+
+			stream_refer.add(a.getTree());
+			// AST REWRITE
+			// elements: a
+			// token labels: 
+			// rule labels: retval, a
+			// token list labels: 
+			// rule list labels: 
+			// wildcard labels: 
+			retval.tree = root_0;
+			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
+			RewriteRuleSubtreeStream stream_a=new RewriteRuleSubtreeStream(adaptor,"rule a",a!=null?a.getTree():null);
+
+			root_0 = (Object)adaptor.nil();
+			// 191:16: -> $a
+			{
+				adaptor.addChild(root_0, stream_a.nextTree());
+			}
+
+
+			retval.tree = root_0;
+
+			}
+
+			// Q.g:192:7: ( multicative_op b= refer -> ^( XXBINARY multicative_op $a $b) )?
+			int alt19=2;
+			int LA19_0 = input.LA(1);
+			if ( (LA19_0==SPECIAL||LA19_0==80||LA19_0==83||(LA19_0 >= 87 && LA19_0 <= 88)||LA19_0==90||LA19_0==102||LA19_0==105) ) {
+				alt19=1;
+			}
+			switch (alt19) {
+				case 1 :
+					// Q.g:193:9: multicative_op b= refer
+					{
+					pushFollow(FOLLOW_multicative_op_in_oneMulExpression1209);
+					multicative_op82=multicative_op();
+					state._fsp--;
+
+					stream_multicative_op.add(multicative_op82.getTree());
+					pushFollow(FOLLOW_refer_in_oneMulExpression1215);
+					b=refer();
+					state._fsp--;
+
+					stream_refer.add(b.getTree());
+					// AST REWRITE
+					// elements: a, b, multicative_op
+					// token labels: 
+					// rule labels: retval, b, a
+					// token list labels: 
+					// rule list labels: 
+					// wildcard labels: 
+					retval.tree = root_0;
+					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
+					RewriteRuleSubtreeStream stream_b=new RewriteRuleSubtreeStream(adaptor,"rule b",b!=null?b.getTree():null);
+					RewriteRuleSubtreeStream stream_a=new RewriteRuleSubtreeStream(adaptor,"rule a",a!=null?a.getTree():null);
+
+					root_0 = (Object)adaptor.nil();
+					// 194:12: -> ^( XXBINARY multicative_op $a $b)
+					{
+						// Q.g:194:14: ^( XXBINARY multicative_op $a $b)
+						{
+						Object root_1 = (Object)adaptor.nil();
+						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXBINARY, "XXBINARY"), root_1);
+						adaptor.addChild(root_1, stream_multicative_op.nextTree());
+						adaptor.addChild(root_1, stream_a.nextTree());
+						adaptor.addChild(root_1, stream_b.nextTree());
+						adaptor.addChild(root_0, root_1);
+						}
+
+					}
+
+
+					retval.tree = root_0;
+
+					}
+					break;
+
+			}
+
+			}
+
+			retval.stop = input.LT(-1);
+
+			retval.tree = (Object)adaptor.rulePostProcessing(root_0);
+			adaptor.setTokenBoundaries(retval.tree, retval.start, retval.stop);
+
+		}
+		catch (RecognitionException re) {
+			reportError(re);
+			recover(input,re);
+			retval.tree = (Object)adaptor.errorNode(input, retval.start, input.LT(-1), re);
+		}
+		finally {
+			// do for sure before leaving
+		}
+		return retval;
+	}
+	// $ANTLR end "oneMulExpression"
+
+
 	public static class multiplicativeExpression_return extends ParserRuleReturnScope {
 		Object tree;
 		@Override
@@ -2866,35 +2998,35 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "multiplicativeExpression"
-	// Q.g:190:1: multiplicativeExpression : ( refer -> refer ) ( multicative_op multiplicativeExpression -> ^( XXBINARY multicative_op refer multiplicativeExpression ) )? ;
+	// Q.g:198:1: multiplicativeExpression : ( oneMulExpression -> oneMulExpression ) ( multicative_op refer -> ^( XXBINARY multicative_op oneMulExpression refer ) )? ;
 	public final QParser.multiplicativeExpression_return multiplicativeExpression() throws RecognitionException {
 		QParser.multiplicativeExpression_return retval = new QParser.multiplicativeExpression_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		ParserRuleReturnScope refer82 =null;
-		ParserRuleReturnScope multicative_op83 =null;
-		ParserRuleReturnScope multiplicativeExpression84 =null;
+		ParserRuleReturnScope oneMulExpression83 =null;
+		ParserRuleReturnScope multicative_op84 =null;
+		ParserRuleReturnScope refer85 =null;
 
 		RewriteRuleSubtreeStream stream_multicative_op=new RewriteRuleSubtreeStream(adaptor,"rule multicative_op");
 		RewriteRuleSubtreeStream stream_refer=new RewriteRuleSubtreeStream(adaptor,"rule refer");
-		RewriteRuleSubtreeStream stream_multiplicativeExpression=new RewriteRuleSubtreeStream(adaptor,"rule multiplicativeExpression");
+		RewriteRuleSubtreeStream stream_oneMulExpression=new RewriteRuleSubtreeStream(adaptor,"rule oneMulExpression");
 
 		try {
-			// Q.g:191:5: ( ( refer -> refer ) ( multicative_op multiplicativeExpression -> ^( XXBINARY multicative_op refer multiplicativeExpression ) )? )
-			// Q.g:191:9: ( refer -> refer ) ( multicative_op multiplicativeExpression -> ^( XXBINARY multicative_op refer multiplicativeExpression ) )?
+			// Q.g:199:5: ( ( oneMulExpression -> oneMulExpression ) ( multicative_op refer -> ^( XXBINARY multicative_op oneMulExpression refer ) )? )
+			// Q.g:199:9: ( oneMulExpression -> oneMulExpression ) ( multicative_op refer -> ^( XXBINARY multicative_op oneMulExpression refer ) )?
 			{
-			// Q.g:191:9: ( refer -> refer )
-			// Q.g:191:10: refer
+			// Q.g:199:9: ( oneMulExpression -> oneMulExpression )
+			// Q.g:199:10: oneMulExpression
 			{
-			pushFollow(FOLLOW_refer_in_multiplicativeExpression1186);
-			refer82=refer();
+			pushFollow(FOLLOW_oneMulExpression_in_multiplicativeExpression1272);
+			oneMulExpression83=oneMulExpression();
 			state._fsp--;
 
-			stream_refer.add(refer82.getTree());
+			stream_oneMulExpression.add(oneMulExpression83.getTree());
 			// AST REWRITE
-			// elements: refer
+			// elements: oneMulExpression
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -2904,9 +3036,9 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 191:16: -> refer
+			// 199:27: -> oneMulExpression
 			{
-				adaptor.addChild(root_0, stream_refer.nextTree());
+				adaptor.addChild(root_0, stream_oneMulExpression.nextTree());
 			}
 
 
@@ -2914,28 +3046,28 @@ public class QParser extends Parser {
 
 			}
 
-			// Q.g:192:4: ( multicative_op multiplicativeExpression -> ^( XXBINARY multicative_op refer multiplicativeExpression ) )?
-			int alt19=2;
-			int LA19_0 = input.LA(1);
-			if ( (LA19_0==SPECIAL||LA19_0==80||LA19_0==83||(LA19_0 >= 87 && LA19_0 <= 88)||LA19_0==90||LA19_0==102||LA19_0==105) ) {
-				alt19=1;
+			// Q.g:200:4: ( multicative_op refer -> ^( XXBINARY multicative_op oneMulExpression refer ) )?
+			int alt20=2;
+			int LA20_0 = input.LA(1);
+			if ( (LA20_0==SPECIAL||LA20_0==80||LA20_0==83||(LA20_0 >= 87 && LA20_0 <= 88)||LA20_0==90||LA20_0==102||LA20_0==105) ) {
+				alt20=1;
 			}
-			switch (alt19) {
+			switch (alt20) {
 				case 1 :
-					// Q.g:193:3: multicative_op multiplicativeExpression
+					// Q.g:201:3: multicative_op refer
 					{
-					pushFollow(FOLLOW_multicative_op_in_multiplicativeExpression1200);
-					multicative_op83=multicative_op();
+					pushFollow(FOLLOW_multicative_op_in_multiplicativeExpression1286);
+					multicative_op84=multicative_op();
 					state._fsp--;
 
-					stream_multicative_op.add(multicative_op83.getTree());
-					pushFollow(FOLLOW_multiplicativeExpression_in_multiplicativeExpression1202);
-					multiplicativeExpression84=multiplicativeExpression();
+					stream_multicative_op.add(multicative_op84.getTree());
+					pushFollow(FOLLOW_refer_in_multiplicativeExpression1288);
+					refer85=refer();
 					state._fsp--;
 
-					stream_multiplicativeExpression.add(multiplicativeExpression84.getTree());
+					stream_refer.add(refer85.getTree());
 					// AST REWRITE
-					// elements: multiplicativeExpression, multicative_op, refer
+					// elements: multicative_op, oneMulExpression, refer
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2945,15 +3077,15 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 194:5: -> ^( XXBINARY multicative_op refer multiplicativeExpression )
+					// 202:5: -> ^( XXBINARY multicative_op oneMulExpression refer )
 					{
-						// Q.g:194:8: ^( XXBINARY multicative_op refer multiplicativeExpression )
+						// Q.g:202:8: ^( XXBINARY multicative_op oneMulExpression refer )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXBINARY, "XXBINARY"), root_1);
 						adaptor.addChild(root_1, stream_multicative_op.nextTree());
+						adaptor.addChild(root_1, stream_oneMulExpression.nextTree());
 						adaptor.addChild(root_1, stream_refer.nextTree());
-						adaptor.addChild(root_1, stream_multiplicativeExpression.nextTree());
 						adaptor.addChild(root_0, root_1);
 						}
 
@@ -2996,34 +3128,34 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "inclusiveOrExpression"
-	// Q.g:198:1: inclusiveOrExpression : ( andExpression -> andExpression ) ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )? ;
+	// Q.g:206:1: inclusiveOrExpression : ( andExpression -> andExpression ) ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )? ;
 	public final QParser.inclusiveOrExpression_return inclusiveOrExpression() throws RecognitionException {
 		QParser.inclusiveOrExpression_return retval = new QParser.inclusiveOrExpression_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token OR86=null;
-		ParserRuleReturnScope andExpression85 =null;
-		ParserRuleReturnScope inclusiveOrExpression87 =null;
+		Token OR87=null;
+		ParserRuleReturnScope andExpression86 =null;
+		ParserRuleReturnScope inclusiveOrExpression88 =null;
 
-		Object OR86_tree=null;
+		Object OR87_tree=null;
 		RewriteRuleTokenStream stream_OR=new RewriteRuleTokenStream(adaptor,"token OR");
 		RewriteRuleSubtreeStream stream_andExpression=new RewriteRuleSubtreeStream(adaptor,"rule andExpression");
 		RewriteRuleSubtreeStream stream_inclusiveOrExpression=new RewriteRuleSubtreeStream(adaptor,"rule inclusiveOrExpression");
 
 		try {
-			// Q.g:199:5: ( ( andExpression -> andExpression ) ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )? )
-			// Q.g:199:9: ( andExpression -> andExpression ) ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )?
+			// Q.g:207:5: ( ( andExpression -> andExpression ) ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )? )
+			// Q.g:207:9: ( andExpression -> andExpression ) ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )?
 			{
-			// Q.g:199:9: ( andExpression -> andExpression )
-			// Q.g:199:10: andExpression
+			// Q.g:207:9: ( andExpression -> andExpression )
+			// Q.g:207:10: andExpression
 			{
-			pushFollow(FOLLOW_andExpression_in_inclusiveOrExpression1244);
-			andExpression85=andExpression();
+			pushFollow(FOLLOW_andExpression_in_inclusiveOrExpression1330);
+			andExpression86=andExpression();
 			state._fsp--;
 
-			stream_andExpression.add(andExpression85.getTree());
+			stream_andExpression.add(andExpression86.getTree());
 			// AST REWRITE
 			// elements: andExpression
 			// token labels: 
@@ -3035,7 +3167,7 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 199:24: -> andExpression
+			// 207:24: -> andExpression
 			{
 				adaptor.addChild(root_0, stream_andExpression.nextTree());
 			}
@@ -3045,24 +3177,24 @@ public class QParser extends Parser {
 
 			}
 
-			// Q.g:200:3: ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )?
-			int alt20=2;
-			int LA20_0 = input.LA(1);
-			if ( (LA20_0==OR) ) {
-				alt20=1;
+			// Q.g:208:3: ( OR inclusiveOrExpression -> ^( XXBINARY OR andExpression inclusiveOrExpression ) )?
+			int alt21=2;
+			int LA21_0 = input.LA(1);
+			if ( (LA21_0==OR) ) {
+				alt21=1;
 			}
-			switch (alt20) {
+			switch (alt21) {
 				case 1 :
-					// Q.g:200:5: OR inclusiveOrExpression
+					// Q.g:208:5: OR inclusiveOrExpression
 					{
-					OR86=(Token)match(input,OR,FOLLOW_OR_in_inclusiveOrExpression1255);  
-					stream_OR.add(OR86);
+					OR87=(Token)match(input,OR,FOLLOW_OR_in_inclusiveOrExpression1341);  
+					stream_OR.add(OR87);
 
-					pushFollow(FOLLOW_inclusiveOrExpression_in_inclusiveOrExpression1257);
-					inclusiveOrExpression87=inclusiveOrExpression();
+					pushFollow(FOLLOW_inclusiveOrExpression_in_inclusiveOrExpression1343);
+					inclusiveOrExpression88=inclusiveOrExpression();
 					state._fsp--;
 
-					stream_inclusiveOrExpression.add(inclusiveOrExpression87.getTree());
+					stream_inclusiveOrExpression.add(inclusiveOrExpression88.getTree());
 					// AST REWRITE
 					// elements: inclusiveOrExpression, andExpression, OR
 					// token labels: 
@@ -3074,9 +3206,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 201:5: -> ^( XXBINARY OR andExpression inclusiveOrExpression )
+					// 209:5: -> ^( XXBINARY OR andExpression inclusiveOrExpression )
 					{
-						// Q.g:201:8: ^( XXBINARY OR andExpression inclusiveOrExpression )
+						// Q.g:209:8: ^( XXBINARY OR andExpression inclusiveOrExpression )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXBINARY, "XXBINARY"), root_1);
@@ -3125,34 +3257,34 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "andExpression"
-	// Q.g:205:1: andExpression : ( relationalExpression -> relationalExpression ) ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )? ;
+	// Q.g:213:1: andExpression : ( relationalExpression -> relationalExpression ) ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )? ;
 	public final QParser.andExpression_return andExpression() throws RecognitionException {
 		QParser.andExpression_return retval = new QParser.andExpression_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token AND89=null;
-		ParserRuleReturnScope relationalExpression88 =null;
-		ParserRuleReturnScope andExpression90 =null;
+		Token AND90=null;
+		ParserRuleReturnScope relationalExpression89 =null;
+		ParserRuleReturnScope andExpression91 =null;
 
-		Object AND89_tree=null;
+		Object AND90_tree=null;
 		RewriteRuleTokenStream stream_AND=new RewriteRuleTokenStream(adaptor,"token AND");
 		RewriteRuleSubtreeStream stream_andExpression=new RewriteRuleSubtreeStream(adaptor,"rule andExpression");
 		RewriteRuleSubtreeStream stream_relationalExpression=new RewriteRuleSubtreeStream(adaptor,"rule relationalExpression");
 
 		try {
-			// Q.g:206:5: ( ( relationalExpression -> relationalExpression ) ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )? )
-			// Q.g:206:9: ( relationalExpression -> relationalExpression ) ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )?
+			// Q.g:214:5: ( ( relationalExpression -> relationalExpression ) ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )? )
+			// Q.g:214:9: ( relationalExpression -> relationalExpression ) ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )?
 			{
-			// Q.g:206:9: ( relationalExpression -> relationalExpression )
-			// Q.g:206:10: relationalExpression
+			// Q.g:214:9: ( relationalExpression -> relationalExpression )
+			// Q.g:214:10: relationalExpression
 			{
-			pushFollow(FOLLOW_relationalExpression_in_andExpression1297);
-			relationalExpression88=relationalExpression();
+			pushFollow(FOLLOW_relationalExpression_in_andExpression1383);
+			relationalExpression89=relationalExpression();
 			state._fsp--;
 
-			stream_relationalExpression.add(relationalExpression88.getTree());
+			stream_relationalExpression.add(relationalExpression89.getTree());
 			// AST REWRITE
 			// elements: relationalExpression
 			// token labels: 
@@ -3164,7 +3296,7 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 206:31: -> relationalExpression
+			// 214:31: -> relationalExpression
 			{
 				adaptor.addChild(root_0, stream_relationalExpression.nextTree());
 			}
@@ -3174,26 +3306,26 @@ public class QParser extends Parser {
 
 			}
 
-			// Q.g:207:3: ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )?
-			int alt21=2;
-			int LA21_0 = input.LA(1);
-			if ( (LA21_0==AND) ) {
-				alt21=1;
+			// Q.g:215:3: ( AND andExpression -> ^( XXBINARY AND relationalExpression andExpression ) )?
+			int alt22=2;
+			int LA22_0 = input.LA(1);
+			if ( (LA22_0==AND) ) {
+				alt22=1;
 			}
-			switch (alt21) {
+			switch (alt22) {
 				case 1 :
-					// Q.g:207:5: AND andExpression
+					// Q.g:215:5: AND andExpression
 					{
-					AND89=(Token)match(input,AND,FOLLOW_AND_in_andExpression1308);  
-					stream_AND.add(AND89);
+					AND90=(Token)match(input,AND,FOLLOW_AND_in_andExpression1394);  
+					stream_AND.add(AND90);
 
-					pushFollow(FOLLOW_andExpression_in_andExpression1310);
-					andExpression90=andExpression();
+					pushFollow(FOLLOW_andExpression_in_andExpression1396);
+					andExpression91=andExpression();
 					state._fsp--;
 
-					stream_andExpression.add(andExpression90.getTree());
+					stream_andExpression.add(andExpression91.getTree());
 					// AST REWRITE
-					// elements: andExpression, AND, relationalExpression
+					// elements: AND, andExpression, relationalExpression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3203,9 +3335,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 208:5: -> ^( XXBINARY AND relationalExpression andExpression )
+					// 216:5: -> ^( XXBINARY AND relationalExpression andExpression )
 					{
-						// Q.g:208:8: ^( XXBINARY AND relationalExpression andExpression )
+						// Q.g:216:8: ^( XXBINARY AND relationalExpression andExpression )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXBINARY, "XXBINARY"), root_1);
@@ -3254,33 +3386,33 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "relationalExpression"
-	// Q.g:213:1: relationalExpression : ( additiveExpression -> additiveExpression ) ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )? ;
+	// Q.g:221:1: relationalExpression : ( additiveExpression -> additiveExpression ) ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )? ;
 	public final QParser.relationalExpression_return relationalExpression() throws RecognitionException {
 		QParser.relationalExpression_return retval = new QParser.relationalExpression_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		ParserRuleReturnScope additiveExpression91 =null;
-		ParserRuleReturnScope relationalOp92 =null;
-		ParserRuleReturnScope relationalExpression93 =null;
+		ParserRuleReturnScope additiveExpression92 =null;
+		ParserRuleReturnScope relationalOp93 =null;
+		ParserRuleReturnScope relationalExpression94 =null;
 
 		RewriteRuleSubtreeStream stream_relationalOp=new RewriteRuleSubtreeStream(adaptor,"rule relationalOp");
 		RewriteRuleSubtreeStream stream_relationalExpression=new RewriteRuleSubtreeStream(adaptor,"rule relationalExpression");
 		RewriteRuleSubtreeStream stream_additiveExpression=new RewriteRuleSubtreeStream(adaptor,"rule additiveExpression");
 
 		try {
-			// Q.g:214:5: ( ( additiveExpression -> additiveExpression ) ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )? )
-			// Q.g:214:9: ( additiveExpression -> additiveExpression ) ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )?
+			// Q.g:222:5: ( ( additiveExpression -> additiveExpression ) ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )? )
+			// Q.g:222:9: ( additiveExpression -> additiveExpression ) ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )?
 			{
-			// Q.g:214:9: ( additiveExpression -> additiveExpression )
-			// Q.g:214:10: additiveExpression
+			// Q.g:222:9: ( additiveExpression -> additiveExpression )
+			// Q.g:222:10: additiveExpression
 			{
-			pushFollow(FOLLOW_additiveExpression_in_relationalExpression1351);
-			additiveExpression91=additiveExpression();
+			pushFollow(FOLLOW_additiveExpression_in_relationalExpression1437);
+			additiveExpression92=additiveExpression();
 			state._fsp--;
 
-			stream_additiveExpression.add(additiveExpression91.getTree());
+			stream_additiveExpression.add(additiveExpression92.getTree());
 			// AST REWRITE
 			// elements: additiveExpression
 			// token labels: 
@@ -3292,7 +3424,7 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 214:29: -> additiveExpression
+			// 222:29: -> additiveExpression
 			{
 				adaptor.addChild(root_0, stream_additiveExpression.nextTree());
 			}
@@ -3302,28 +3434,28 @@ public class QParser extends Parser {
 
 			}
 
-			// Q.g:215:3: ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )?
-			int alt22=2;
-			int LA22_0 = input.LA(1);
-			if ( (LA22_0==AND2||LA22_0==EQ||(LA22_0 >= GE && LA22_0 <= GT)||LA22_0==LE||LA22_0==LT||LA22_0==NE||LA22_0==OR2) ) {
-				alt22=1;
+			// Q.g:223:3: ( relationalOp relationalExpression -> ^( XXBINARY relationalOp additiveExpression relationalExpression ) )?
+			int alt23=2;
+			int LA23_0 = input.LA(1);
+			if ( (LA23_0==AND2||LA23_0==EQ||(LA23_0 >= GE && LA23_0 <= GT)||LA23_0==LE||LA23_0==LT||LA23_0==NE||LA23_0==OR2) ) {
+				alt23=1;
 			}
-			switch (alt22) {
+			switch (alt23) {
 				case 1 :
-					// Q.g:215:5: relationalOp relationalExpression
+					// Q.g:223:5: relationalOp relationalExpression
 					{
-					pushFollow(FOLLOW_relationalOp_in_relationalExpression1362);
-					relationalOp92=relationalOp();
+					pushFollow(FOLLOW_relationalOp_in_relationalExpression1448);
+					relationalOp93=relationalOp();
 					state._fsp--;
 
-					stream_relationalOp.add(relationalOp92.getTree());
-					pushFollow(FOLLOW_relationalExpression_in_relationalExpression1364);
-					relationalExpression93=relationalExpression();
+					stream_relationalOp.add(relationalOp93.getTree());
+					pushFollow(FOLLOW_relationalExpression_in_relationalExpression1450);
+					relationalExpression94=relationalExpression();
 					state._fsp--;
 
-					stream_relationalExpression.add(relationalExpression93.getTree());
+					stream_relationalExpression.add(relationalExpression94.getTree());
 					// AST REWRITE
-					// elements: relationalOp, relationalExpression, additiveExpression
+					// elements: relationalExpression, relationalOp, additiveExpression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3333,9 +3465,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 216:5: -> ^( XXBINARY relationalOp additiveExpression relationalExpression )
+					// 224:5: -> ^( XXBINARY relationalOp additiveExpression relationalExpression )
 					{
-						// Q.g:216:8: ^( XXBINARY relationalOp additiveExpression relationalExpression )
+						// Q.g:224:8: ^( XXBINARY relationalOp additiveExpression relationalExpression )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXBINARY, "XXBINARY"), root_1);
@@ -3384,33 +3516,33 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "expr"
-	// Q.g:220:1: expr : ( inclusiveOrExpression -> inclusiveOrExpression ) ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )? ;
+	// Q.g:228:1: expr : ( inclusiveOrExpression -> inclusiveOrExpression ) ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )? ;
 	public final QParser.expr_return expr() throws RecognitionException {
 		QParser.expr_return retval = new QParser.expr_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		ParserRuleReturnScope inclusiveOrExpression94 =null;
-		ParserRuleReturnScope assign_op95 =null;
-		ParserRuleReturnScope expr96 =null;
+		ParserRuleReturnScope inclusiveOrExpression95 =null;
+		ParserRuleReturnScope assign_op96 =null;
+		ParserRuleReturnScope expr97 =null;
 
 		RewriteRuleSubtreeStream stream_inclusiveOrExpression=new RewriteRuleSubtreeStream(adaptor,"rule inclusiveOrExpression");
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 		RewriteRuleSubtreeStream stream_assign_op=new RewriteRuleSubtreeStream(adaptor,"rule assign_op");
 
 		try {
-			// Q.g:220:6: ( ( inclusiveOrExpression -> inclusiveOrExpression ) ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )? )
-			// Q.g:220:8: ( inclusiveOrExpression -> inclusiveOrExpression ) ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )?
+			// Q.g:228:6: ( ( inclusiveOrExpression -> inclusiveOrExpression ) ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )? )
+			// Q.g:228:8: ( inclusiveOrExpression -> inclusiveOrExpression ) ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )?
 			{
-			// Q.g:220:8: ( inclusiveOrExpression -> inclusiveOrExpression )
-			// Q.g:220:9: inclusiveOrExpression
+			// Q.g:228:8: ( inclusiveOrExpression -> inclusiveOrExpression )
+			// Q.g:228:9: inclusiveOrExpression
 			{
-			pushFollow(FOLLOW_inclusiveOrExpression_in_expr1401);
-			inclusiveOrExpression94=inclusiveOrExpression();
+			pushFollow(FOLLOW_inclusiveOrExpression_in_expr1487);
+			inclusiveOrExpression95=inclusiveOrExpression();
 			state._fsp--;
 
-			stream_inclusiveOrExpression.add(inclusiveOrExpression94.getTree());
+			stream_inclusiveOrExpression.add(inclusiveOrExpression95.getTree());
 			// AST REWRITE
 			// elements: inclusiveOrExpression
 			// token labels: 
@@ -3422,7 +3554,7 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 220:31: -> inclusiveOrExpression
+			// 228:31: -> inclusiveOrExpression
 			{
 				adaptor.addChild(root_0, stream_inclusiveOrExpression.nextTree());
 			}
@@ -3432,28 +3564,28 @@ public class QParser extends Parser {
 
 			}
 
-			// Q.g:221:6: ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )?
-			int alt23=2;
-			int LA23_0 = input.LA(1);
-			if ( (LA23_0==LEFT_ASSIGN||LA23_0==RIGHT_ASSIGN) ) {
-				alt23=1;
+			// Q.g:229:6: ( assign_op expr -> ^( XXBINARY assign_op inclusiveOrExpression expr ) )?
+			int alt24=2;
+			int LA24_0 = input.LA(1);
+			if ( (LA24_0==LEFT_ASSIGN||LA24_0==RIGHT_ASSIGN) ) {
+				alt24=1;
 			}
-			switch (alt23) {
+			switch (alt24) {
 				case 1 :
-					// Q.g:222:3: assign_op expr
+					// Q.g:230:3: assign_op expr
 					{
-					pushFollow(FOLLOW_assign_op_in_expr1416);
-					assign_op95=assign_op();
+					pushFollow(FOLLOW_assign_op_in_expr1502);
+					assign_op96=assign_op();
 					state._fsp--;
 
-					stream_assign_op.add(assign_op95.getTree());
-					pushFollow(FOLLOW_expr_in_expr1418);
-					expr96=expr();
+					stream_assign_op.add(assign_op96.getTree());
+					pushFollow(FOLLOW_expr_in_expr1504);
+					expr97=expr();
 					state._fsp--;
 
-					stream_expr.add(expr96.getTree());
+					stream_expr.add(expr97.getTree());
 					// AST REWRITE
-					// elements: expr, inclusiveOrExpression, assign_op
+					// elements: inclusiveOrExpression, expr, assign_op
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3463,9 +3595,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 223:5: -> ^( XXBINARY assign_op inclusiveOrExpression expr )
+					// 231:5: -> ^( XXBINARY assign_op inclusiveOrExpression expr )
 					{
-						// Q.g:223:8: ^( XXBINARY assign_op inclusiveOrExpression expr )
+						// Q.g:231:8: ^( XXBINARY assign_op inclusiveOrExpression expr )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXBINARY, "XXBINARY"), root_1);
@@ -3514,37 +3646,37 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "cond"
-	// Q.g:228:1: cond : '(' expr ')' -> ^( XXCOND expr ) ;
+	// Q.g:236:1: cond : '(' expr ')' -> ^( XXCOND expr ) ;
 	public final QParser.cond_return cond() throws RecognitionException {
 		QParser.cond_return retval = new QParser.cond_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token char_literal97=null;
-		Token char_literal99=null;
-		ParserRuleReturnScope expr98 =null;
+		Token char_literal98=null;
+		Token char_literal100=null;
+		ParserRuleReturnScope expr99 =null;
 
-		Object char_literal97_tree=null;
-		Object char_literal99_tree=null;
+		Object char_literal98_tree=null;
+		Object char_literal100_tree=null;
 		RewriteRuleTokenStream stream_82=new RewriteRuleTokenStream(adaptor,"token 82");
 		RewriteRuleTokenStream stream_81=new RewriteRuleTokenStream(adaptor,"token 81");
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// Q.g:228:6: ( '(' expr ')' -> ^( XXCOND expr ) )
-			// Q.g:228:8: '(' expr ')'
+			// Q.g:236:6: ( '(' expr ')' -> ^( XXCOND expr ) )
+			// Q.g:236:8: '(' expr ')'
 			{
-			char_literal97=(Token)match(input,81,FOLLOW_81_in_cond1453);  
-			stream_81.add(char_literal97);
+			char_literal98=(Token)match(input,81,FOLLOW_81_in_cond1539);  
+			stream_81.add(char_literal98);
 
-			pushFollow(FOLLOW_expr_in_cond1455);
-			expr98=expr();
+			pushFollow(FOLLOW_expr_in_cond1541);
+			expr99=expr();
 			state._fsp--;
 
-			stream_expr.add(expr98.getTree());
-			char_literal99=(Token)match(input,82,FOLLOW_82_in_cond1457);  
-			stream_82.add(char_literal99);
+			stream_expr.add(expr99.getTree());
+			char_literal100=(Token)match(input,82,FOLLOW_82_in_cond1543);  
+			stream_82.add(char_literal100);
 
 			// AST REWRITE
 			// elements: expr
@@ -3557,9 +3689,9 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 229:2: -> ^( XXCOND expr )
+			// 237:2: -> ^( XXCOND expr )
 			{
-				// Q.g:229:4: ^( XXCOND expr )
+				// Q.g:237:4: ^( XXCOND expr )
 				{
 				Object root_1 = (Object)adaptor.nil();
 				root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXCOND, "XXCOND"), root_1);
@@ -3601,37 +3733,37 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "ifcond"
-	// Q.g:232:1: ifcond : '(' expr ')' -> ^( XXIFCOND expr ) ;
+	// Q.g:240:1: ifcond : '(' expr ')' -> ^( XXIFCOND expr ) ;
 	public final QParser.ifcond_return ifcond() throws RecognitionException {
 		QParser.ifcond_return retval = new QParser.ifcond_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token char_literal100=null;
-		Token char_literal102=null;
-		ParserRuleReturnScope expr101 =null;
+		Token char_literal101=null;
+		Token char_literal103=null;
+		ParserRuleReturnScope expr102 =null;
 
-		Object char_literal100_tree=null;
-		Object char_literal102_tree=null;
+		Object char_literal101_tree=null;
+		Object char_literal103_tree=null;
 		RewriteRuleTokenStream stream_82=new RewriteRuleTokenStream(adaptor,"token 82");
 		RewriteRuleTokenStream stream_81=new RewriteRuleTokenStream(adaptor,"token 81");
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// Q.g:232:8: ( '(' expr ')' -> ^( XXIFCOND expr ) )
-			// Q.g:232:10: '(' expr ')'
+			// Q.g:240:8: ( '(' expr ')' -> ^( XXIFCOND expr ) )
+			// Q.g:240:10: '(' expr ')'
 			{
-			char_literal100=(Token)match(input,81,FOLLOW_81_in_ifcond1475);  
-			stream_81.add(char_literal100);
+			char_literal101=(Token)match(input,81,FOLLOW_81_in_ifcond1561);  
+			stream_81.add(char_literal101);
 
-			pushFollow(FOLLOW_expr_in_ifcond1477);
-			expr101=expr();
+			pushFollow(FOLLOW_expr_in_ifcond1563);
+			expr102=expr();
 			state._fsp--;
 
-			stream_expr.add(expr101.getTree());
-			char_literal102=(Token)match(input,82,FOLLOW_82_in_ifcond1479);  
-			stream_82.add(char_literal102);
+			stream_expr.add(expr102.getTree());
+			char_literal103=(Token)match(input,82,FOLLOW_82_in_ifcond1565);  
+			stream_82.add(char_literal103);
 
 			// AST REWRITE
 			// elements: expr
@@ -3644,9 +3776,9 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 233:2: -> ^( XXIFCOND expr )
+			// 241:2: -> ^( XXIFCOND expr )
 			{
-				// Q.g:233:5: ^( XXIFCOND expr )
+				// Q.g:241:5: ^( XXIFCOND expr )
 				{
 				Object root_1 = (Object)adaptor.nil();
 				root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXIFCOND, "XXIFCOND"), root_1);
@@ -3688,23 +3820,23 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "forcond"
-	// Q.g:236:1: forcond : '(' SYMBOL IN expr ')' -> ^( XXFORCOND SYMBOL expr ) ;
+	// Q.g:244:1: forcond : '(' SYMBOL IN expr ')' -> ^( XXFORCOND SYMBOL expr ) ;
 	public final QParser.forcond_return forcond() throws RecognitionException {
 		QParser.forcond_return retval = new QParser.forcond_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token char_literal103=null;
-		Token SYMBOL104=null;
-		Token IN105=null;
-		Token char_literal107=null;
-		ParserRuleReturnScope expr106 =null;
+		Token char_literal104=null;
+		Token SYMBOL105=null;
+		Token IN106=null;
+		Token char_literal108=null;
+		ParserRuleReturnScope expr107 =null;
 
-		Object char_literal103_tree=null;
-		Object SYMBOL104_tree=null;
-		Object IN105_tree=null;
-		Object char_literal107_tree=null;
+		Object char_literal104_tree=null;
+		Object SYMBOL105_tree=null;
+		Object IN106_tree=null;
+		Object char_literal108_tree=null;
 		RewriteRuleTokenStream stream_IN=new RewriteRuleTokenStream(adaptor,"token IN");
 		RewriteRuleTokenStream stream_SYMBOL=new RewriteRuleTokenStream(adaptor,"token SYMBOL");
 		RewriteRuleTokenStream stream_82=new RewriteRuleTokenStream(adaptor,"token 82");
@@ -3712,28 +3844,28 @@ public class QParser extends Parser {
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// Q.g:236:9: ( '(' SYMBOL IN expr ')' -> ^( XXFORCOND SYMBOL expr ) )
-			// Q.g:236:11: '(' SYMBOL IN expr ')'
+			// Q.g:244:9: ( '(' SYMBOL IN expr ')' -> ^( XXFORCOND SYMBOL expr ) )
+			// Q.g:244:11: '(' SYMBOL IN expr ')'
 			{
-			char_literal103=(Token)match(input,81,FOLLOW_81_in_forcond1498);  
-			stream_81.add(char_literal103);
+			char_literal104=(Token)match(input,81,FOLLOW_81_in_forcond1584);  
+			stream_81.add(char_literal104);
 
-			SYMBOL104=(Token)match(input,SYMBOL,FOLLOW_SYMBOL_in_forcond1500);  
-			stream_SYMBOL.add(SYMBOL104);
+			SYMBOL105=(Token)match(input,SYMBOL,FOLLOW_SYMBOL_in_forcond1586);  
+			stream_SYMBOL.add(SYMBOL105);
 
-			IN105=(Token)match(input,IN,FOLLOW_IN_in_forcond1502);  
-			stream_IN.add(IN105);
+			IN106=(Token)match(input,IN,FOLLOW_IN_in_forcond1588);  
+			stream_IN.add(IN106);
 
-			pushFollow(FOLLOW_expr_in_forcond1504);
-			expr106=expr();
+			pushFollow(FOLLOW_expr_in_forcond1590);
+			expr107=expr();
 			state._fsp--;
 
-			stream_expr.add(expr106.getTree());
-			char_literal107=(Token)match(input,82,FOLLOW_82_in_forcond1506);  
-			stream_82.add(char_literal107);
+			stream_expr.add(expr107.getTree());
+			char_literal108=(Token)match(input,82,FOLLOW_82_in_forcond1592);  
+			stream_82.add(char_literal108);
 
 			// AST REWRITE
-			// elements: SYMBOL, expr
+			// elements: expr, SYMBOL
 			// token labels: 
 			// rule labels: retval
 			// token list labels: 
@@ -3743,9 +3875,9 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 237:2: -> ^( XXFORCOND SYMBOL expr )
+			// 245:2: -> ^( XXFORCOND SYMBOL expr )
 			{
-				// Q.g:237:5: ^( XXFORCOND SYMBOL expr )
+				// Q.g:245:5: ^( XXFORCOND SYMBOL expr )
 				{
 				Object root_1 = (Object)adaptor.nil();
 				root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXFORCOND, "XXFORCOND"), root_1);
@@ -3788,63 +3920,63 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "sublist"
-	// Q.g:252:1: fragment sublist : sub ( cr ',' sub )* -> ^( XXSUBLIST ( sub )* ) ;
+	// Q.g:260:1: fragment sublist : sub ( cr ',' sub )* -> ^( XXSUBLIST ( sub )* ) ;
 	public final QParser.sublist_return sublist() throws RecognitionException {
 		QParser.sublist_return retval = new QParser.sublist_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token char_literal110=null;
-		ParserRuleReturnScope sub108 =null;
-		ParserRuleReturnScope cr109 =null;
-		ParserRuleReturnScope sub111 =null;
+		Token char_literal111=null;
+		ParserRuleReturnScope sub109 =null;
+		ParserRuleReturnScope cr110 =null;
+		ParserRuleReturnScope sub112 =null;
 
-		Object char_literal110_tree=null;
+		Object char_literal111_tree=null;
 		RewriteRuleTokenStream stream_85=new RewriteRuleTokenStream(adaptor,"token 85");
 		RewriteRuleSubtreeStream stream_cr=new RewriteRuleSubtreeStream(adaptor,"rule cr");
 		RewriteRuleSubtreeStream stream_sub=new RewriteRuleSubtreeStream(adaptor,"rule sub");
 
 		try {
-			// Q.g:252:9: ( sub ( cr ',' sub )* -> ^( XXSUBLIST ( sub )* ) )
-			// Q.g:252:11: sub ( cr ',' sub )*
+			// Q.g:260:9: ( sub ( cr ',' sub )* -> ^( XXSUBLIST ( sub )* ) )
+			// Q.g:260:11: sub ( cr ',' sub )*
 			{
-			pushFollow(FOLLOW_sub_in_sublist1533);
-			sub108=sub();
+			pushFollow(FOLLOW_sub_in_sublist1619);
+			sub109=sub();
 			state._fsp--;
 
-			stream_sub.add(sub108.getTree());
-			// Q.g:252:15: ( cr ',' sub )*
-			loop24:
+			stream_sub.add(sub109.getTree());
+			// Q.g:260:15: ( cr ',' sub )*
+			loop25:
 			while (true) {
-				int alt24=2;
-				int LA24_0 = input.LA(1);
-				if ( ((LA24_0 >= BREAK && LA24_0 <= DecimalLiteral)||(LA24_0 >= FALSE && LA24_0 <= FUNCTION)||LA24_0==FloatingPointLiteral||(LA24_0 >= HexLiteral && LA24_0 <= IF)||LA24_0==NEXT||LA24_0==NULL_CONST||(LA24_0 >= OctalLiteral && LA24_0 <= REPEAT)||(LA24_0 >= STR_CONST && LA24_0 <= TRUE)||LA24_0==WHILE||LA24_0==78||LA24_0==81||(LA24_0 >= 84 && LA24_0 <= 86)||LA24_0==90||(LA24_0 >= 92 && LA24_0 <= 98)||LA24_0==103||LA24_0==105) ) {
-					alt24=1;
+				int alt25=2;
+				int LA25_0 = input.LA(1);
+				if ( ((LA25_0 >= BREAK && LA25_0 <= DecimalLiteral)||(LA25_0 >= FALSE && LA25_0 <= FUNCTION)||LA25_0==FloatingPointLiteral||(LA25_0 >= HexLiteral && LA25_0 <= IF)||LA25_0==NEXT||LA25_0==NULL_CONST||(LA25_0 >= OctalLiteral && LA25_0 <= REPEAT)||(LA25_0 >= STR_CONST && LA25_0 <= TRUE)||LA25_0==WHILE||LA25_0==78||LA25_0==81||(LA25_0 >= 84 && LA25_0 <= 86)||LA25_0==90||(LA25_0 >= 92 && LA25_0 <= 98)||LA25_0==103||LA25_0==105) ) {
+					alt25=1;
 				}
 
-				switch (alt24) {
+				switch (alt25) {
 				case 1 :
-					// Q.g:252:16: cr ',' sub
+					// Q.g:260:16: cr ',' sub
 					{
-					pushFollow(FOLLOW_cr_in_sublist1536);
-					cr109=cr();
+					pushFollow(FOLLOW_cr_in_sublist1622);
+					cr110=cr();
 					state._fsp--;
 
-					stream_cr.add(cr109.getTree());
-					char_literal110=(Token)match(input,85,FOLLOW_85_in_sublist1538);  
-					stream_85.add(char_literal110);
+					stream_cr.add(cr110.getTree());
+					char_literal111=(Token)match(input,85,FOLLOW_85_in_sublist1624);  
+					stream_85.add(char_literal111);
 
-					pushFollow(FOLLOW_sub_in_sublist1540);
-					sub111=sub();
+					pushFollow(FOLLOW_sub_in_sublist1626);
+					sub112=sub();
 					state._fsp--;
 
-					stream_sub.add(sub111.getTree());
+					stream_sub.add(sub112.getTree());
 					}
 					break;
 
 				default :
-					break loop24;
+					break loop25;
 				}
 			}
 
@@ -3859,13 +3991,13 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 253:3: -> ^( XXSUBLIST ( sub )* )
+			// 261:3: -> ^( XXSUBLIST ( sub )* )
 			{
-				// Q.g:253:6: ^( XXSUBLIST ( sub )* )
+				// Q.g:261:6: ^( XXSUBLIST ( sub )* )
 				{
 				Object root_1 = (Object)adaptor.nil();
 				root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSUBLIST, "XXSUBLIST"), root_1);
-				// Q.g:253:18: ( sub )*
+				// Q.g:261:18: ( sub )*
 				while ( stream_sub.hasNext() ) {
 					adaptor.addChild(root_1, stream_sub.nextTree());
 				}
@@ -3908,40 +4040,40 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "sub"
-	// Q.g:257:1: fragment sub : ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) );
+	// Q.g:265:1: fragment sub : ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) );
 	public final QParser.sub_return sub() throws RecognitionException {
 		QParser.sub_return retval = new QParser.sub_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token NULL_CONST114=null;
-		Token EQ_ASSIGN115=null;
-		Token NULL_CONST117=null;
-		Token EQ_ASSIGN118=null;
-		ParserRuleReturnScope expr112 =null;
-		ParserRuleReturnScope symbol_or_conststr113 =null;
-		ParserRuleReturnScope symbol_or_conststr116 =null;
-		ParserRuleReturnScope expr119 =null;
+		Token NULL_CONST115=null;
+		Token EQ_ASSIGN116=null;
+		Token NULL_CONST118=null;
+		Token EQ_ASSIGN119=null;
+		ParserRuleReturnScope expr113 =null;
+		ParserRuleReturnScope symbol_or_conststr114 =null;
+		ParserRuleReturnScope symbol_or_conststr117 =null;
+		ParserRuleReturnScope expr120 =null;
 
-		Object NULL_CONST114_tree=null;
-		Object EQ_ASSIGN115_tree=null;
-		Object NULL_CONST117_tree=null;
-		Object EQ_ASSIGN118_tree=null;
+		Object NULL_CONST115_tree=null;
+		Object EQ_ASSIGN116_tree=null;
+		Object NULL_CONST118_tree=null;
+		Object EQ_ASSIGN119_tree=null;
 		RewriteRuleTokenStream stream_NULL_CONST=new RewriteRuleTokenStream(adaptor,"token NULL_CONST");
 		RewriteRuleTokenStream stream_EQ_ASSIGN=new RewriteRuleTokenStream(adaptor,"token EQ_ASSIGN");
 		RewriteRuleSubtreeStream stream_symbol_or_conststr=new RewriteRuleSubtreeStream(adaptor,"rule symbol_or_conststr");
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// Q.g:257:5: ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) )
-			int alt27=4;
+			// Q.g:265:5: ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) )
+			int alt28=4;
 			switch ( input.LA(1) ) {
 			case 82:
 			case 85:
 			case 101:
 				{
-				alt27=1;
+				alt28=1;
 				}
 				break;
 			case BREAK:
@@ -3972,22 +4104,22 @@ public class QParser extends Parser {
 			case 103:
 			case 105:
 				{
-				alt27=2;
+				alt28=2;
 				}
 				break;
 			case STR_CONST:
 				{
-				int LA27_3 = input.LA(2);
-				if ( ((LA27_3 >= AND && LA27_3 <= AND2)||LA27_3==EQ||(LA27_3 >= GE && LA27_3 <= GT)||(LA27_3 >= LBB && LA27_3 <= LT)||LA27_3==NE||(LA27_3 >= NS_GET && LA27_3 <= NS_GET_INT)||(LA27_3 >= OR && LA27_3 <= OR2)||(LA27_3 >= RIGHT_ASSIGN && LA27_3 <= SPECIAL)||(LA27_3 >= 79 && LA27_3 <= 88)||(LA27_3 >= 90 && LA27_3 <= 91)||LA27_3==99||(LA27_3 >= 101 && LA27_3 <= 102)||LA27_3==105) ) {
-					alt27=2;
+				int LA28_3 = input.LA(2);
+				if ( ((LA28_3 >= AND && LA28_3 <= AND2)||LA28_3==EQ||(LA28_3 >= GE && LA28_3 <= GT)||(LA28_3 >= LBB && LA28_3 <= LT)||LA28_3==NE||(LA28_3 >= NS_GET && LA28_3 <= NS_GET_INT)||(LA28_3 >= OR && LA28_3 <= OR2)||(LA28_3 >= RIGHT_ASSIGN && LA28_3 <= SPECIAL)||(LA28_3 >= 79 && LA28_3 <= 88)||(LA28_3 >= 90 && LA28_3 <= 91)||LA28_3==99||(LA28_3 >= 101 && LA28_3 <= 102)||LA28_3==105) ) {
+					alt28=2;
 				}
-				else if ( (LA27_3==EQ_ASSIGN) ) {
-					int LA27_6 = input.LA(3);
-					if ( (LA27_6==82||LA27_6==85||LA27_6==101) ) {
-						alt27=3;
+				else if ( (LA28_3==EQ_ASSIGN) ) {
+					int LA28_6 = input.LA(3);
+					if ( (LA28_6==82||LA28_6==85||LA28_6==101) ) {
+						alt28=3;
 					}
-					else if ( ((LA27_6 >= BREAK && LA27_6 <= DecimalLiteral)||(LA27_6 >= FALSE && LA27_6 <= FUNCTION)||LA27_6==FloatingPointLiteral||(LA27_6 >= HexLiteral && LA27_6 <= IF)||LA27_6==NEXT||LA27_6==NULL_CONST||(LA27_6 >= OctalLiteral && LA27_6 <= REPEAT)||(LA27_6 >= STR_CONST && LA27_6 <= TRUE)||LA27_6==WHILE||LA27_6==78||LA27_6==81||LA27_6==84||LA27_6==86||LA27_6==90||(LA27_6 >= 92 && LA27_6 <= 98)||LA27_6==103||LA27_6==105) ) {
-						alt27=4;
+					else if ( ((LA28_6 >= BREAK && LA28_6 <= DecimalLiteral)||(LA28_6 >= FALSE && LA28_6 <= FUNCTION)||LA28_6==FloatingPointLiteral||(LA28_6 >= HexLiteral && LA28_6 <= IF)||LA28_6==NEXT||LA28_6==NULL_CONST||(LA28_6 >= OctalLiteral && LA28_6 <= REPEAT)||(LA28_6 >= STR_CONST && LA28_6 <= TRUE)||LA28_6==WHILE||LA28_6==78||LA28_6==81||LA28_6==84||LA28_6==86||LA28_6==90||(LA28_6 >= 92 && LA28_6 <= 98)||LA28_6==103||LA28_6==105) ) {
+						alt28=4;
 					}
 
 					else {
@@ -3997,7 +4129,7 @@ public class QParser extends Parser {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 27, 6, input);
+								new NoViableAltException("", 28, 6, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
@@ -4011,7 +4143,7 @@ public class QParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 27, 3, input);
+							new NoViableAltException("", 28, 3, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -4022,17 +4154,17 @@ public class QParser extends Parser {
 				break;
 			case NULL_CONST:
 				{
-				int LA27_4 = input.LA(2);
-				if ( ((LA27_4 >= AND && LA27_4 <= AND2)||LA27_4==EQ||(LA27_4 >= GE && LA27_4 <= GT)||(LA27_4 >= LBB && LA27_4 <= LT)||LA27_4==NE||(LA27_4 >= OR && LA27_4 <= OR2)||(LA27_4 >= RIGHT_ASSIGN && LA27_4 <= SPECIAL)||(LA27_4 >= 79 && LA27_4 <= 88)||(LA27_4 >= 90 && LA27_4 <= 91)||LA27_4==99||(LA27_4 >= 101 && LA27_4 <= 102)||LA27_4==105) ) {
-					alt27=2;
+				int LA28_4 = input.LA(2);
+				if ( ((LA28_4 >= AND && LA28_4 <= AND2)||LA28_4==EQ||(LA28_4 >= GE && LA28_4 <= GT)||(LA28_4 >= LBB && LA28_4 <= LT)||LA28_4==NE||(LA28_4 >= OR && LA28_4 <= OR2)||(LA28_4 >= RIGHT_ASSIGN && LA28_4 <= SPECIAL)||(LA28_4 >= 79 && LA28_4 <= 88)||(LA28_4 >= 90 && LA28_4 <= 91)||LA28_4==99||(LA28_4 >= 101 && LA28_4 <= 102)||LA28_4==105) ) {
+					alt28=2;
 				}
-				else if ( (LA27_4==EQ_ASSIGN) ) {
-					int LA27_6 = input.LA(3);
-					if ( (LA27_6==82||LA27_6==85||LA27_6==101) ) {
-						alt27=3;
+				else if ( (LA28_4==EQ_ASSIGN) ) {
+					int LA28_6 = input.LA(3);
+					if ( (LA28_6==82||LA28_6==85||LA28_6==101) ) {
+						alt28=3;
 					}
-					else if ( ((LA27_6 >= BREAK && LA27_6 <= DecimalLiteral)||(LA27_6 >= FALSE && LA27_6 <= FUNCTION)||LA27_6==FloatingPointLiteral||(LA27_6 >= HexLiteral && LA27_6 <= IF)||LA27_6==NEXT||LA27_6==NULL_CONST||(LA27_6 >= OctalLiteral && LA27_6 <= REPEAT)||(LA27_6 >= STR_CONST && LA27_6 <= TRUE)||LA27_6==WHILE||LA27_6==78||LA27_6==81||LA27_6==84||LA27_6==86||LA27_6==90||(LA27_6 >= 92 && LA27_6 <= 98)||LA27_6==103||LA27_6==105) ) {
-						alt27=4;
+					else if ( ((LA28_6 >= BREAK && LA28_6 <= DecimalLiteral)||(LA28_6 >= FALSE && LA28_6 <= FUNCTION)||LA28_6==FloatingPointLiteral||(LA28_6 >= HexLiteral && LA28_6 <= IF)||LA28_6==NEXT||LA28_6==NULL_CONST||(LA28_6 >= OctalLiteral && LA28_6 <= REPEAT)||(LA28_6 >= STR_CONST && LA28_6 <= TRUE)||LA28_6==WHILE||LA28_6==78||LA28_6==81||LA28_6==84||LA28_6==86||LA28_6==90||(LA28_6 >= 92 && LA28_6 <= 98)||LA28_6==103||LA28_6==105) ) {
+						alt28=4;
 					}
 
 					else {
@@ -4042,7 +4174,7 @@ public class QParser extends Parser {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 27, 6, input);
+								new NoViableAltException("", 28, 6, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
@@ -4056,7 +4188,7 @@ public class QParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 27, 4, input);
+							new NoViableAltException("", 28, 4, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -4067,17 +4199,17 @@ public class QParser extends Parser {
 				break;
 			case SYMBOL:
 				{
-				int LA27_5 = input.LA(2);
-				if ( ((LA27_5 >= AND && LA27_5 <= AND2)||LA27_5==EQ||(LA27_5 >= GE && LA27_5 <= GT)||(LA27_5 >= LBB && LA27_5 <= LT)||LA27_5==NE||(LA27_5 >= NS_GET && LA27_5 <= NS_GET_INT)||(LA27_5 >= OR && LA27_5 <= OR2)||(LA27_5 >= RIGHT_ASSIGN && LA27_5 <= SPECIAL)||(LA27_5 >= 79 && LA27_5 <= 88)||(LA27_5 >= 90 && LA27_5 <= 91)||LA27_5==99||(LA27_5 >= 101 && LA27_5 <= 102)||LA27_5==105) ) {
-					alt27=2;
+				int LA28_5 = input.LA(2);
+				if ( ((LA28_5 >= AND && LA28_5 <= AND2)||LA28_5==EQ||(LA28_5 >= GE && LA28_5 <= GT)||(LA28_5 >= LBB && LA28_5 <= LT)||LA28_5==NE||(LA28_5 >= NS_GET && LA28_5 <= NS_GET_INT)||(LA28_5 >= OR && LA28_5 <= OR2)||(LA28_5 >= RIGHT_ASSIGN && LA28_5 <= SPECIAL)||(LA28_5 >= 79 && LA28_5 <= 88)||(LA28_5 >= 90 && LA28_5 <= 91)||LA28_5==99||(LA28_5 >= 101 && LA28_5 <= 102)||LA28_5==105) ) {
+					alt28=2;
 				}
-				else if ( (LA27_5==EQ_ASSIGN) ) {
-					int LA27_6 = input.LA(3);
-					if ( (LA27_6==82||LA27_6==85||LA27_6==101) ) {
-						alt27=3;
+				else if ( (LA28_5==EQ_ASSIGN) ) {
+					int LA28_6 = input.LA(3);
+					if ( (LA28_6==82||LA28_6==85||LA28_6==101) ) {
+						alt28=3;
 					}
-					else if ( ((LA27_6 >= BREAK && LA27_6 <= DecimalLiteral)||(LA27_6 >= FALSE && LA27_6 <= FUNCTION)||LA27_6==FloatingPointLiteral||(LA27_6 >= HexLiteral && LA27_6 <= IF)||LA27_6==NEXT||LA27_6==NULL_CONST||(LA27_6 >= OctalLiteral && LA27_6 <= REPEAT)||(LA27_6 >= STR_CONST && LA27_6 <= TRUE)||LA27_6==WHILE||LA27_6==78||LA27_6==81||LA27_6==84||LA27_6==86||LA27_6==90||(LA27_6 >= 92 && LA27_6 <= 98)||LA27_6==103||LA27_6==105) ) {
-						alt27=4;
+					else if ( ((LA28_6 >= BREAK && LA28_6 <= DecimalLiteral)||(LA28_6 >= FALSE && LA28_6 <= FUNCTION)||LA28_6==FloatingPointLiteral||(LA28_6 >= HexLiteral && LA28_6 <= IF)||LA28_6==NEXT||LA28_6==NULL_CONST||(LA28_6 >= OctalLiteral && LA28_6 <= REPEAT)||(LA28_6 >= STR_CONST && LA28_6 <= TRUE)||LA28_6==WHILE||LA28_6==78||LA28_6==81||LA28_6==84||LA28_6==86||LA28_6==90||(LA28_6 >= 92 && LA28_6 <= 98)||LA28_6==103||LA28_6==105) ) {
+						alt28=4;
 					}
 
 					else {
@@ -4087,7 +4219,7 @@ public class QParser extends Parser {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 27, 6, input);
+								new NoViableAltException("", 28, 6, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
@@ -4101,7 +4233,7 @@ public class QParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 27, 5, input);
+							new NoViableAltException("", 28, 5, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -4112,12 +4244,12 @@ public class QParser extends Parser {
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 27, 0, input);
+					new NoViableAltException("", 28, 0, input);
 				throw nvae;
 			}
-			switch (alt27) {
+			switch (alt28) {
 				case 1 :
-					// Q.g:257:7: 
+					// Q.g:265:7: 
 					{
 					// AST REWRITE
 					// elements: 
@@ -4130,9 +4262,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 257:7: -> ^( XXSUB0 )
+					// 265:7: -> ^( XXSUB0 )
 					{
-						// Q.g:257:10: ^( XXSUB0 )
+						// Q.g:265:10: ^( XXSUB0 )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSUB0, "XXSUB0"), root_1);
@@ -4147,13 +4279,13 @@ public class QParser extends Parser {
 					}
 					break;
 				case 2 :
-					// Q.g:258:4: expr
+					// Q.g:266:4: expr
 					{
-					pushFollow(FOLLOW_expr_in_sub1574);
-					expr112=expr();
+					pushFollow(FOLLOW_expr_in_sub1660);
+					expr113=expr();
 					state._fsp--;
 
-					stream_expr.add(expr112.getTree());
+					stream_expr.add(expr113.getTree());
 					// AST REWRITE
 					// elements: expr
 					// token labels: 
@@ -4165,9 +4297,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 258:9: -> ^( XXSUB1 expr )
+					// 266:9: -> ^( XXSUB1 expr )
 					{
-						// Q.g:258:12: ^( XXSUB1 expr )
+						// Q.g:266:12: ^( XXSUB1 expr )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSUB1, "XXSUB1"), root_1);
@@ -4183,92 +4315,9 @@ public class QParser extends Parser {
 					}
 					break;
 				case 3 :
-					// Q.g:259:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN
+					// Q.g:267:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN
 					{
-					// Q.g:259:4: ( symbol_or_conststr | NULL_CONST )
-					int alt25=2;
-					int LA25_0 = input.LA(1);
-					if ( ((LA25_0 >= STR_CONST && LA25_0 <= SYMBOL)) ) {
-						alt25=1;
-					}
-					else if ( (LA25_0==NULL_CONST) ) {
-						alt25=2;
-					}
-
-					else {
-						NoViableAltException nvae =
-							new NoViableAltException("", 25, 0, input);
-						throw nvae;
-					}
-
-					switch (alt25) {
-						case 1 :
-							// Q.g:259:5: symbol_or_conststr
-							{
-							pushFollow(FOLLOW_symbol_or_conststr_in_sub1588);
-							symbol_or_conststr113=symbol_or_conststr();
-							state._fsp--;
-
-							stream_symbol_or_conststr.add(symbol_or_conststr113.getTree());
-							}
-							break;
-						case 2 :
-							// Q.g:259:26: NULL_CONST
-							{
-							NULL_CONST114=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1592);  
-							stream_NULL_CONST.add(NULL_CONST114);
-
-							}
-							break;
-
-					}
-
-					EQ_ASSIGN115=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1595);  
-					stream_EQ_ASSIGN.add(EQ_ASSIGN115);
-
-					// AST REWRITE
-					// elements: NULL_CONST, symbol_or_conststr
-					// token labels: 
-					// rule labels: retval
-					// token list labels: 
-					// rule list labels: 
-					// wildcard labels: 
-					retval.tree = root_0;
-					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
-
-					root_0 = (Object)adaptor.nil();
-					// 259:48: -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
-					{
-						// Q.g:259:51: ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
-						{
-						Object root_1 = (Object)adaptor.nil();
-						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB0, "XXSYMSUB0"), root_1);
-						// Q.g:259:63: ( symbol_or_conststr )?
-						if ( stream_symbol_or_conststr.hasNext() ) {
-							adaptor.addChild(root_1, stream_symbol_or_conststr.nextTree());
-						}
-						stream_symbol_or_conststr.reset();
-
-						// Q.g:259:83: ( NULL_CONST )?
-						if ( stream_NULL_CONST.hasNext() ) {
-							adaptor.addChild(root_1, stream_NULL_CONST.nextNode());
-						}
-						stream_NULL_CONST.reset();
-
-						adaptor.addChild(root_0, root_1);
-						}
-
-					}
-
-
-					retval.tree = root_0;
-
-					}
-					break;
-				case 4 :
-					// Q.g:260:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr
-					{
-					// Q.g:260:4: ( symbol_or_conststr | NULL_CONST )
+					// Q.g:267:4: ( symbol_or_conststr | NULL_CONST )
 					int alt26=2;
 					int LA26_0 = input.LA(1);
 					if ( ((LA26_0 >= STR_CONST && LA26_0 <= SYMBOL)) ) {
@@ -4286,36 +4335,31 @@ public class QParser extends Parser {
 
 					switch (alt26) {
 						case 1 :
-							// Q.g:260:5: symbol_or_conststr
+							// Q.g:267:5: symbol_or_conststr
 							{
-							pushFollow(FOLLOW_symbol_or_conststr_in_sub1613);
-							symbol_or_conststr116=symbol_or_conststr();
+							pushFollow(FOLLOW_symbol_or_conststr_in_sub1674);
+							symbol_or_conststr114=symbol_or_conststr();
 							state._fsp--;
 
-							stream_symbol_or_conststr.add(symbol_or_conststr116.getTree());
+							stream_symbol_or_conststr.add(symbol_or_conststr114.getTree());
 							}
 							break;
 						case 2 :
-							// Q.g:260:26: NULL_CONST
+							// Q.g:267:26: NULL_CONST
 							{
-							NULL_CONST117=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1617);  
-							stream_NULL_CONST.add(NULL_CONST117);
+							NULL_CONST115=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1678);  
+							stream_NULL_CONST.add(NULL_CONST115);
 
 							}
 							break;
 
 					}
 
-					EQ_ASSIGN118=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1620);  
-					stream_EQ_ASSIGN.add(EQ_ASSIGN118);
+					EQ_ASSIGN116=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1681);  
+					stream_EQ_ASSIGN.add(EQ_ASSIGN116);
 
-					pushFollow(FOLLOW_expr_in_sub1622);
-					expr119=expr();
-					state._fsp--;
-
-					stream_expr.add(expr119.getTree());
 					// AST REWRITE
-					// elements: symbol_or_conststr, expr, NULL_CONST
+					// elements: symbol_or_conststr, NULL_CONST
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -4325,19 +4369,107 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 260:53: -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
+					// 267:48: -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
 					{
-						// Q.g:260:55: ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
+						// Q.g:267:51: ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
 						{
 						Object root_1 = (Object)adaptor.nil();
-						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB1, "XXSYMSUB1"), root_1);
-						// Q.g:260:67: ( symbol_or_conststr )?
+						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB0, "XXSYMSUB0"), root_1);
+						// Q.g:267:63: ( symbol_or_conststr )?
 						if ( stream_symbol_or_conststr.hasNext() ) {
 							adaptor.addChild(root_1, stream_symbol_or_conststr.nextTree());
 						}
 						stream_symbol_or_conststr.reset();
 
-						// Q.g:260:87: ( NULL_CONST )?
+						// Q.g:267:83: ( NULL_CONST )?
+						if ( stream_NULL_CONST.hasNext() ) {
+							adaptor.addChild(root_1, stream_NULL_CONST.nextNode());
+						}
+						stream_NULL_CONST.reset();
+
+						adaptor.addChild(root_0, root_1);
+						}
+
+					}
+
+
+					retval.tree = root_0;
+
+					}
+					break;
+				case 4 :
+					// Q.g:268:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr
+					{
+					// Q.g:268:4: ( symbol_or_conststr | NULL_CONST )
+					int alt27=2;
+					int LA27_0 = input.LA(1);
+					if ( ((LA27_0 >= STR_CONST && LA27_0 <= SYMBOL)) ) {
+						alt27=1;
+					}
+					else if ( (LA27_0==NULL_CONST) ) {
+						alt27=2;
+					}
+
+					else {
+						NoViableAltException nvae =
+							new NoViableAltException("", 27, 0, input);
+						throw nvae;
+					}
+
+					switch (alt27) {
+						case 1 :
+							// Q.g:268:5: symbol_or_conststr
+							{
+							pushFollow(FOLLOW_symbol_or_conststr_in_sub1699);
+							symbol_or_conststr117=symbol_or_conststr();
+							state._fsp--;
+
+							stream_symbol_or_conststr.add(symbol_or_conststr117.getTree());
+							}
+							break;
+						case 2 :
+							// Q.g:268:26: NULL_CONST
+							{
+							NULL_CONST118=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1703);  
+							stream_NULL_CONST.add(NULL_CONST118);
+
+							}
+							break;
+
+					}
+
+					EQ_ASSIGN119=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1706);  
+					stream_EQ_ASSIGN.add(EQ_ASSIGN119);
+
+					pushFollow(FOLLOW_expr_in_sub1708);
+					expr120=expr();
+					state._fsp--;
+
+					stream_expr.add(expr120.getTree());
+					// AST REWRITE
+					// elements: NULL_CONST, expr, symbol_or_conststr
+					// token labels: 
+					// rule labels: retval
+					// token list labels: 
+					// rule list labels: 
+					// wildcard labels: 
+					retval.tree = root_0;
+					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
+
+					root_0 = (Object)adaptor.nil();
+					// 268:53: -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
+					{
+						// Q.g:268:55: ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
+						{
+						Object root_1 = (Object)adaptor.nil();
+						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB1, "XXSYMSUB1"), root_1);
+						// Q.g:268:67: ( symbol_or_conststr )?
+						if ( stream_symbol_or_conststr.hasNext() ) {
+							adaptor.addChild(root_1, stream_symbol_or_conststr.nextTree());
+						}
+						stream_symbol_or_conststr.reset();
+
+						// Q.g:268:87: ( NULL_CONST )?
 						if ( stream_NULL_CONST.hasNext() ) {
 							adaptor.addChild(root_1, stream_NULL_CONST.nextNode());
 						}
@@ -4383,7 +4515,7 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "cr"
-	// Q.g:272:1: cr :;
+	// Q.g:280:1: cr :;
 	public final QParser.cr_return cr() throws RecognitionException {
 		QParser.cr_return retval = new QParser.cr_return();
 		retval.start = input.LT(1);
@@ -4391,8 +4523,8 @@ public class QParser extends Parser {
 		Object root_0 = null;
 
 		try {
-			// Q.g:272:4: ()
-			// Q.g:273:2: 
+			// Q.g:280:4: ()
+			// Q.g:281:2: 
 			{
 			root_0 = (Object)adaptor.nil();
 
@@ -4421,28 +4553,28 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "integerLiteral"
-	// Q.g:305:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
+	// Q.g:313:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
 	public final QParser.integerLiteral_return integerLiteral() throws RecognitionException {
 		QParser.integerLiteral_return retval = new QParser.integerLiteral_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token set120=null;
+		Token set121=null;
 
-		Object set120_tree=null;
+		Object set121_tree=null;
 
 		try {
-			// Q.g:305:16: ( HexLiteral | OctalLiteral | DecimalLiteral )
+			// Q.g:313:16: ( HexLiteral | OctalLiteral | DecimalLiteral )
 			// Q.g:
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			set120=input.LT(1);
+			set121=input.LT(1);
 			if ( input.LA(1)==DecimalLiteral||input.LA(1)==HexLiteral||input.LA(1)==OctalLiteral ) {
 				input.consume();
-				adaptor.addChild(root_0, (Object)adaptor.create(set120));
+				adaptor.addChild(root_0, (Object)adaptor.create(set121));
 				state.errorRecovery=false;
 			}
 			else {
@@ -4478,234 +4610,234 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "num_const"
-	// Q.g:311:1: num_const : ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' );
+	// Q.g:319:1: num_const : ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' );
 	public final QParser.num_const_return num_const() throws RecognitionException {
 		QParser.num_const_return retval = new QParser.num_const_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token FloatingPointLiteral122=null;
-		Token string_literal123=null;
-		Token TRUE124=null;
-		Token FALSE125=null;
-		Token string_literal126=null;
+		Token FloatingPointLiteral123=null;
+		Token string_literal124=null;
+		Token TRUE125=null;
+		Token FALSE126=null;
 		Token string_literal127=null;
 		Token string_literal128=null;
 		Token string_literal129=null;
 		Token string_literal130=null;
 		Token string_literal131=null;
-		ParserRuleReturnScope integerLiteral121 =null;
+		Token string_literal132=null;
+		ParserRuleReturnScope integerLiteral122 =null;
 
-		Object FloatingPointLiteral122_tree=null;
-		Object string_literal123_tree=null;
-		Object TRUE124_tree=null;
-		Object FALSE125_tree=null;
-		Object string_literal126_tree=null;
+		Object FloatingPointLiteral123_tree=null;
+		Object string_literal124_tree=null;
+		Object TRUE125_tree=null;
+		Object FALSE126_tree=null;
 		Object string_literal127_tree=null;
 		Object string_literal128_tree=null;
 		Object string_literal129_tree=null;
 		Object string_literal130_tree=null;
 		Object string_literal131_tree=null;
+		Object string_literal132_tree=null;
 
 		try {
-			// Q.g:312:2: ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' )
-			int alt28=11;
+			// Q.g:320:2: ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' )
+			int alt29=11;
 			switch ( input.LA(1) ) {
 			case DecimalLiteral:
 			case HexLiteral:
 			case OctalLiteral:
 				{
-				alt28=1;
+				alt29=1;
 				}
 				break;
 			case FloatingPointLiteral:
 				{
-				alt28=2;
+				alt29=2;
 				}
 				break;
 			case 93:
 				{
-				alt28=3;
+				alt29=3;
 				}
 				break;
 			case TRUE:
 				{
-				alt28=4;
+				alt29=4;
 				}
 				break;
 			case FALSE:
 				{
-				alt28=5;
+				alt29=5;
 				}
 				break;
 			case 92:
 				{
-				alt28=6;
+				alt29=6;
 				}
 				break;
 			case 98:
 				{
-				alt28=7;
+				alt29=7;
 				}
 				break;
 			case 96:
 				{
-				alt28=8;
+				alt29=8;
 				}
 				break;
 			case 97:
 				{
-				alt28=9;
+				alt29=9;
 				}
 				break;
 			case 94:
 				{
-				alt28=10;
+				alt29=10;
 				}
 				break;
 			case 95:
 				{
-				alt28=11;
+				alt29=11;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 28, 0, input);
+					new NoViableAltException("", 29, 0, input);
 				throw nvae;
 			}
-			switch (alt28) {
+			switch (alt29) {
 				case 1 :
-					// Q.g:312:4: integerLiteral
+					// Q.g:320:4: integerLiteral
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					pushFollow(FOLLOW_integerLiteral_in_num_const1943);
-					integerLiteral121=integerLiteral();
+					pushFollow(FOLLOW_integerLiteral_in_num_const2029);
+					integerLiteral122=integerLiteral();
 					state._fsp--;
 
-					adaptor.addChild(root_0, integerLiteral121.getTree());
+					adaptor.addChild(root_0, integerLiteral122.getTree());
 
 					}
 					break;
 				case 2 :
-					// Q.g:313:4: FloatingPointLiteral
+					// Q.g:321:4: FloatingPointLiteral
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					FloatingPointLiteral122=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_num_const1948); 
-					FloatingPointLiteral122_tree = (Object)adaptor.create(FloatingPointLiteral122);
-					adaptor.addChild(root_0, FloatingPointLiteral122_tree);
+					FloatingPointLiteral123=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_num_const2034); 
+					FloatingPointLiteral123_tree = (Object)adaptor.create(FloatingPointLiteral123);
+					adaptor.addChild(root_0, FloatingPointLiteral123_tree);
 
 					}
 					break;
 				case 3 :
-					// Q.g:314:4: 'NA'
+					// Q.g:322:4: 'NA'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal123=(Token)match(input,93,FOLLOW_93_in_num_const1953); 
-					string_literal123_tree = (Object)adaptor.create(string_literal123);
-					adaptor.addChild(root_0, string_literal123_tree);
+					string_literal124=(Token)match(input,93,FOLLOW_93_in_num_const2039); 
+					string_literal124_tree = (Object)adaptor.create(string_literal124);
+					adaptor.addChild(root_0, string_literal124_tree);
 
 					}
 					break;
 				case 4 :
-					// Q.g:315:4: TRUE
+					// Q.g:323:4: TRUE
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					TRUE124=(Token)match(input,TRUE,FOLLOW_TRUE_in_num_const1958); 
-					TRUE124_tree = (Object)adaptor.create(TRUE124);
-					adaptor.addChild(root_0, TRUE124_tree);
+					TRUE125=(Token)match(input,TRUE,FOLLOW_TRUE_in_num_const2044); 
+					TRUE125_tree = (Object)adaptor.create(TRUE125);
+					adaptor.addChild(root_0, TRUE125_tree);
 
 					}
 					break;
 				case 5 :
-					// Q.g:316:4: FALSE
+					// Q.g:324:4: FALSE
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					FALSE125=(Token)match(input,FALSE,FOLLOW_FALSE_in_num_const1963); 
-					FALSE125_tree = (Object)adaptor.create(FALSE125);
-					adaptor.addChild(root_0, FALSE125_tree);
+					FALSE126=(Token)match(input,FALSE,FOLLOW_FALSE_in_num_const2049); 
+					FALSE126_tree = (Object)adaptor.create(FALSE126);
+					adaptor.addChild(root_0, FALSE126_tree);
 
 					}
 					break;
 				case 6 :
-					// Q.g:317:4: 'Inf'
+					// Q.g:325:4: 'Inf'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal126=(Token)match(input,92,FOLLOW_92_in_num_const1968); 
-					string_literal126_tree = (Object)adaptor.create(string_literal126);
-					adaptor.addChild(root_0, string_literal126_tree);
-
-					}
-					break;
-				case 7 :
-					// Q.g:318:4: 'NaN'
-					{
-					root_0 = (Object)adaptor.nil();
-
-
-					string_literal127=(Token)match(input,98,FOLLOW_98_in_num_const1973); 
+					string_literal127=(Token)match(input,92,FOLLOW_92_in_num_const2054); 
 					string_literal127_tree = (Object)adaptor.create(string_literal127);
 					adaptor.addChild(root_0, string_literal127_tree);
 
 					}
 					break;
-				case 8 :
-					// Q.g:319:4: 'NA_integer_'
+				case 7 :
+					// Q.g:326:4: 'NaN'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal128=(Token)match(input,96,FOLLOW_96_in_num_const1978); 
+					string_literal128=(Token)match(input,98,FOLLOW_98_in_num_const2059); 
 					string_literal128_tree = (Object)adaptor.create(string_literal128);
 					adaptor.addChild(root_0, string_literal128_tree);
 
 					}
 					break;
-				case 9 :
-					// Q.g:320:4: 'NA_real_'
+				case 8 :
+					// Q.g:327:4: 'NA_integer_'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal129=(Token)match(input,97,FOLLOW_97_in_num_const1983); 
+					string_literal129=(Token)match(input,96,FOLLOW_96_in_num_const2064); 
 					string_literal129_tree = (Object)adaptor.create(string_literal129);
 					adaptor.addChild(root_0, string_literal129_tree);
 
 					}
 					break;
-				case 10 :
-					// Q.g:321:4: 'NA_character_'
+				case 9 :
+					// Q.g:328:4: 'NA_real_'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal130=(Token)match(input,94,FOLLOW_94_in_num_const1988); 
+					string_literal130=(Token)match(input,97,FOLLOW_97_in_num_const2069); 
 					string_literal130_tree = (Object)adaptor.create(string_literal130);
 					adaptor.addChild(root_0, string_literal130_tree);
 
 					}
 					break;
-				case 11 :
-					// Q.g:322:4: 'NA_complex_'
+				case 10 :
+					// Q.g:329:4: 'NA_character_'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal131=(Token)match(input,95,FOLLOW_95_in_num_const1993); 
+					string_literal131=(Token)match(input,94,FOLLOW_94_in_num_const2074); 
 					string_literal131_tree = (Object)adaptor.create(string_literal131);
 					adaptor.addChild(root_0, string_literal131_tree);
+
+					}
+					break;
+				case 11 :
+					// Q.g:330:4: 'NA_complex_'
+					{
+					root_0 = (Object)adaptor.nil();
+
+
+					string_literal132=(Token)match(input,95,FOLLOW_95_in_num_const2079); 
+					string_literal132_tree = (Object)adaptor.create(string_literal132);
+					adaptor.addChild(root_0, string_literal132_tree);
 
 					}
 					break;
@@ -4874,53 +5006,56 @@ public class QParser extends Parser {
 	public static final BitSet FOLLOW_multiplicativeExpression_in_additiveExpression1132 = new BitSet(new long[]{0x0000000000000002L,0x0000000000500000L});
 	public static final BitSet FOLLOW_additive_op_in_additiveExpression1143 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
 	public static final BitSet FOLLOW_additiveExpression_in_additiveExpression1145 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_refer_in_multiplicativeExpression1186 = new BitSet(new long[]{0x0000040000000002L,0x0000024005890000L});
-	public static final BitSet FOLLOW_multicative_op_in_multiplicativeExpression1200 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_multiplicativeExpression_in_multiplicativeExpression1202 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_andExpression_in_inclusiveOrExpression1244 = new BitSet(new long[]{0x0000001000000002L});
-	public static final BitSet FOLLOW_OR_in_inclusiveOrExpression1255 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_inclusiveOrExpression_in_inclusiveOrExpression1257 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_relationalExpression_in_andExpression1297 = new BitSet(new long[]{0x0000000000000012L});
-	public static final BitSet FOLLOW_AND_in_andExpression1308 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_andExpression_in_andExpression1310 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_additiveExpression_in_relationalExpression1351 = new BitSet(new long[]{0x00000020A80C0222L});
-	public static final BitSet FOLLOW_relationalOp_in_relationalExpression1362 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_relationalExpression_in_relationalExpression1364 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_inclusiveOrExpression_in_expr1401 = new BitSet(new long[]{0x0000020010000002L});
-	public static final BitSet FOLLOW_assign_op_in_expr1416 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_expr_in_expr1418 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_81_in_cond1453 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_expr_in_cond1455 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-	public static final BitSet FOLLOW_82_in_cond1457 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_81_in_ifcond1475 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_expr_in_ifcond1477 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-	public static final BitSet FOLLOW_82_in_ifcond1479 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_81_in_forcond1498 = new BitSet(new long[]{0x0000100000000000L});
-	public static final BitSet FOLLOW_SYMBOL_in_forcond1500 = new BitSet(new long[]{0x0000000000800000L});
-	public static final BitSet FOLLOW_IN_in_forcond1502 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_expr_in_forcond1504 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
-	public static final BitSet FOLLOW_82_in_forcond1506 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_sub_in_sublist1533 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_cr_in_sublist1536 = new BitSet(new long[]{0x0000000000000000L,0x0000000000200000L});
-	public static final BitSet FOLLOW_85_in_sublist1538 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4724000L});
-	public static final BitSet FOLLOW_sub_in_sublist1540 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_expr_in_sub1574 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1588 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_NULL_CONST_in_sub1592 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1595 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1613 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_NULL_CONST_in_sub1617 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1620 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_expr_in_sub1622 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_integerLiteral_in_num_const1943 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FloatingPointLiteral_in_num_const1948 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_93_in_num_const1953 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_TRUE_in_num_const1958 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FALSE_in_num_const1963 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_92_in_num_const1968 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_98_in_num_const1973 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_96_in_num_const1978 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_97_in_num_const1983 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_94_in_num_const1988 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_95_in_num_const1993 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_refer_in_oneMulExpression1187 = new BitSet(new long[]{0x0000040000000002L,0x0000024005890000L});
+	public static final BitSet FOLLOW_multicative_op_in_oneMulExpression1209 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_refer_in_oneMulExpression1215 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_oneMulExpression_in_multiplicativeExpression1272 = new BitSet(new long[]{0x0000040000000002L,0x0000024005890000L});
+	public static final BitSet FOLLOW_multicative_op_in_multiplicativeExpression1286 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_refer_in_multiplicativeExpression1288 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_andExpression_in_inclusiveOrExpression1330 = new BitSet(new long[]{0x0000001000000002L});
+	public static final BitSet FOLLOW_OR_in_inclusiveOrExpression1341 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_inclusiveOrExpression_in_inclusiveOrExpression1343 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_relationalExpression_in_andExpression1383 = new BitSet(new long[]{0x0000000000000012L});
+	public static final BitSet FOLLOW_AND_in_andExpression1394 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_andExpression_in_andExpression1396 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_additiveExpression_in_relationalExpression1437 = new BitSet(new long[]{0x00000020A80C0222L});
+	public static final BitSet FOLLOW_relationalOp_in_relationalExpression1448 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_relationalExpression_in_relationalExpression1450 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_inclusiveOrExpression_in_expr1487 = new BitSet(new long[]{0x0000020010000002L});
+	public static final BitSet FOLLOW_assign_op_in_expr1502 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_expr_in_expr1504 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_81_in_cond1539 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_expr_in_cond1541 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+	public static final BitSet FOLLOW_82_in_cond1543 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_81_in_ifcond1561 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_expr_in_ifcond1563 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+	public static final BitSet FOLLOW_82_in_ifcond1565 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_81_in_forcond1584 = new BitSet(new long[]{0x0000100000000000L});
+	public static final BitSet FOLLOW_SYMBOL_in_forcond1586 = new BitSet(new long[]{0x0000000000800000L});
+	public static final BitSet FOLLOW_IN_in_forcond1588 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_expr_in_forcond1590 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
+	public static final BitSet FOLLOW_82_in_forcond1592 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_sub_in_sublist1619 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_cr_in_sublist1622 = new BitSet(new long[]{0x0000000000000000L,0x0000000000200000L});
+	public static final BitSet FOLLOW_85_in_sublist1624 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4724000L});
+	public static final BitSet FOLLOW_sub_in_sublist1626 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_expr_in_sub1660 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1674 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_NULL_CONST_in_sub1678 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1681 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1699 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_NULL_CONST_in_sub1703 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1706 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_expr_in_sub1708 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_integerLiteral_in_num_const2029 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FloatingPointLiteral_in_num_const2034 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_93_in_num_const2039 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_TRUE_in_num_const2044 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FALSE_in_num_const2049 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_92_in_num_const2054 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_98_in_num_const2059 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_96_in_num_const2064 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_97_in_num_const2069 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_94_in_num_const2074 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_95_in_num_const2079 = new BitSet(new long[]{0x0000000000000002L});
 }

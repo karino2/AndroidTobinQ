@@ -187,11 +187,19 @@ additiveExpression
 	 )?
     ;
 
+oneMulExpression
+   : (a = refer->$a)
+      (
+        multicative_op b = refer
+           ->^(XXBINARY multicative_op $a $b)
+       )?
+       ;
+
 multiplicativeExpression
-    :   (refer -> refer)
+    :   (oneMulExpression -> oneMulExpression)
 	  (
-		multicative_op multiplicativeExpression
-		  -> ^(XXBINARY multicative_op refer multiplicativeExpression)
+		multicative_op refer
+		  -> ^(XXBINARY multicative_op oneMulExpression refer)
 	  )?
     ;
 

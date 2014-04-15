@@ -132,8 +132,13 @@ public class QParserTest extends TestCase {
 		CommonTree actual_tree = parseLExpression("for(i in 1:10){ b <- i*2; e <- i*13;}");
 		assertEquals("(XXFOR (XXFORCOND i (XXBINARY : 1 10)) (XXEXPRLIST (XXBINARY <- b (XXBINARY * i 2)) (XXBINARY <- e (XXBINARY * i 13))))", actual_tree.toStringTree());
 	}
-	
-	
+
+    public void test_multicative_priority() throws RecognitionException
+    {
+        CommonTree actual = parseExpression("2/3*3");
+        assertEquals("(XXBINARY * (XXBINARY / 2 3) 3)", actual.toStringTree());
+    }
+
 	public void test_expr_paren() throws RecognitionException
 	{
 		CommonTree actual_tree = parseExpression("(1+2)/3");
