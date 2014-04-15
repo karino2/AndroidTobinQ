@@ -8,42 +8,39 @@
         android:layout_weight="1.0"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_toggle_chart"></TextView>
-            <ToggleButton
-                android:id="@+id/tbShowChart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-        </LinearLayout>
         <EditText
             android:id="@+id/etScript"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:minHeight="100pt"
+            android:textSize="6pt"
+            android:text="This is test\n how's going!"
             android:inputType="textMultiLine"
             android:gravity="top"
             />
 
-        </LinearLayout>
 
 
     </ScrollView>
-    <Button
-        android:id="@+id/btClear"
-        android:text="@string/action_clear"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btClear"
+            android:text="@string/action_clear"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content" />
+        <TextView android:layout_width="wrap_content"
+            android:layout_marginLeft="15pt"
+            android:layout_height="wrap_content"
+            android:text="@string/label_toggle_chart"></TextView>
+        <ToggleButton
+            android:id="@+id/tbShowChart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
     <EditText
         android:editable="false"
         android:inputType="textMultiLine"
