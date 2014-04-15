@@ -4,6 +4,7 @@
     tools:context="com.livejournal.karino2.tobinq.app.ScriptListActivity" >
     <item android:id="@+id/action_sync"
         android:title="@string/action_sync"
+        android:icon="@drawable/ic_menu_refresh"
         app:showAsAction="ifRoom" />
 
     <item android:id="@+id/action_scratch"
