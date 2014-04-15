@@ -528,7 +528,24 @@ public class QInterpreterTest extends TestCase {
 		assertEquals(2, actual.get(1).getInt());
 		assertEquals(3, actual.get(2).getInt());
 	}
-	
+
+    public void test_evalExpr_rep() throws RecognitionException {
+        QObject actual = callEvalExpr("rep(2, 3)");
+        assertEquals(3, actual.getLength());
+        assertEquals(2, actual.get(0).getInt());
+        assertEquals(2, actual.get(1).getInt());
+        assertEquals(2, actual.get(2).getInt());
+    }
+
+    public void test_evalExpr_rep_vector() throws RecognitionException {
+        QObject actual = callEvalExpr("rep(1:2, 2)");
+        assertEquals(4, actual.getLength());
+        assertEquals(1, actual.get(0).getInt());
+        assertEquals(2, actual.get(1).getInt());
+        assertEquals(1, actual.get(2).getInt());
+        assertEquals(2, actual.get(3).getInt());
+    }
+
 	public void test_evalExpr_priority() throws RecognitionException
 	{
 		int expected = 7;

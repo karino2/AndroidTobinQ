@@ -119,6 +119,30 @@ public class QFunction extends QObject {
 		};
 	}
 
+    // only support x, times. and x should be num or num vector now.
+    // "rep"
+    public static QFunction createRep()
+    {
+        // x, times = 1, length.out = NA, each = 1
+        return new QFunction(parseFormalList("x, times = 1, each = 1"), null) {
+            public boolean isPrimitive() {return true; }
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject x = getR(funcEnv, "x", intp);
+                QObject times = getR(funcEnv, "times", intp);
+
+                QObject ret = new QObject("numeric");
+                for(int i = 0; i < times.getInt(); i++) {
+                    for(int l = 0; l < x.getLength(); l++) {
+                        ret.set(i*x.getLength()+l, getIR(x, l, intp));
+                    }
+                }
+                return ret;
+            }
+        };
+    }
+
+
     static int[] DEFAULT_COLORS = new int[] { Color.RED, Color.YELLOW, Color.GREEN, Color.MAGENTA, Color.CYAN,
             Color.BLUE };
     static int CURRENT_POS = 0;

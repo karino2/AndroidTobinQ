@@ -33,6 +33,7 @@ public class QInterpreter {
 	{
 		_curEnv.put("c", QFunction.createConcatinate());
 		_curEnv.put("seq", QFunction.createSeq());
+        _curEnv.put("rep", QFunction.createRep());
 		_curEnv.put("plot", QFunction.createPlot(_plotable));
 		_curEnv.put("lines", QFunction.createLines(_plotable));
         _curEnv.put("legend", QFunction.createLegend(_plotable));
