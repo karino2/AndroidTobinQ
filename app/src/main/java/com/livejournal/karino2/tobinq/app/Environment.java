@@ -46,7 +46,8 @@ public class Environment {
 		return null;
 	}
 
-	
+
+    public void remove(String key) {_curEnv.remove(key); }
 	public void put(String key, QObject obj)
 	{
 		_curEnv.put(key, new Pair(obj));

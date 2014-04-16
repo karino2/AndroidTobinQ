@@ -23,6 +23,13 @@ public class QParserTest extends TestCase {
  	    CommonTree actual_tree = (CommonTree)actual.getTree();
 		return actual_tree;
 	}
+
+    // used to create func call argument inside XXXapply
+    public void test_sublist_only() throws RecognitionException {
+        Tree actual = (Tree)createParser("hoge").sublist().getTree();
+        String deb = actual.toStringTree();
+        assertEquals("(XXSUBLIST (XXSUB1 hoge))", deb);
+    }
 	
 	public void test_prog_twoAssign() throws RecognitionException
 	{
@@ -145,7 +152,7 @@ public class QParserTest extends TestCase {
 		// (XXBINARY / (XXPAREN (XXBINARY + 1 2)) 3)
 		assertEquals(QParser.XXPAREN, actual_tree.getChild(1).getType());
 	}
-	
+
 	public void test_expr_dotsymbol() throws RecognitionException
 	{
 		CommonTree actual = parseExpression("gdp.year");

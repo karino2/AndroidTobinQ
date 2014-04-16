@@ -15,6 +15,8 @@ import org.antlr.runtime.tree.Tree;
 
 import com.livejournal.karino2.tobinq.app.ForestNode.*;
 
+import java.util.Random;
+
 
 public class QFunction extends QObject {
 	Tree _body;
@@ -23,10 +25,7 @@ public class QFunction extends QObject {
 	public final String ARGNAME = "__arg__";
 	public static Tree parseFormalList(String code)
 	{
-		CharStream codes = new ANTLRStringStream(code);
-		QLexer lex = new QLexer(codes);
-		CommonTokenStream tokens = new CommonTokenStream(lex);
-		QParser parser = new QParser(tokens);
+        QParser parser = createParser(code);
 		try {
 			return (Tree)parser.formlist().getTree();
 		} catch (RecognitionException e) {
@@ -36,8 +35,15 @@ public class QFunction extends QObject {
 		}
 		return null;
 	}
-	
-	public QFunction(Tree formalList, Tree body)
+
+    private static QParser createParser(String code) {
+        CharStream codes = new ANTLRStringStream(code);
+        QLexer lex = new QLexer(codes);
+        CommonTokenStream tokens = new CommonTokenStream(lex);
+        return new QParser(tokens);
+    }
+
+    public QFunction(Tree formalList, Tree body)
 	{
 		super("function");
 		_formalList = formalList;
@@ -391,6 +397,51 @@ public class QFunction extends QObject {
 		}, ForestNode.Edge.Leading, rootAda);
 		return new ForestIterater<QObjectForestAdapter>(root);
 	}
+
+    // sapply
+    public static QFunction createSapply()
+    {
+        return new QFunction(parseFormalList("X, FUN"), null){
+            public boolean isPrimitive() {return true; }
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject seq = getR(funcEnv, "X", intp);
+                QObject funCand = (QObject)getR(funcEnv, "FUN", intp);
+
+                if(!funCand.getMode().equals("function"))
+                    throw new RuntimeException("Argument of sapply, FUN is not function");
+
+                QFunction fun = (QFunction)funCand;
+
+                Environment callEnv = funcEnv._parent;
+
+                // might conflict...
+                String randArgName = "..tmp_hiden_arg_XXX" + Math.abs((new Random()).nextInt());
+
+                QObject ret = new QObject(seq.getMode());
+                Environment preservedEnv = intp._curEnv;
+                try {
+                    intp._curEnv = callEnv;
+                    for(int i = 0; i < seq.getLength(); i++) {
+                        QObject arg = getIR(seq, i, intp);
+                        callEnv.put(randArgName, arg);
+                        Tree argTree = (Tree)createParser(randArgName).sublist().getTree();
+                        String debTree = argTree.toStringTree();
+                        intp.println(debTree);
+                        QObject obj = intp.callFuncWithArgTree(fun, argTree);
+                        ret.set(i, obj);
+                    }
+                    callEnv.remove(randArgName);
+                } catch (RecognitionException e) {
+                    throw new RuntimeException("Never reached here. sapply: " + e.getMessage());
+                } finally {
+                    intp._curEnv = preservedEnv;
+                }
+
+                return ret;
+            }
+        };
+    }
 
 	// sum
 	public static QFunction createSum()

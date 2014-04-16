@@ -658,6 +658,13 @@ public class QInterpreterTest extends TestCase {
         assertEquals("list", actual.getMode());
     }
 
+    public void test_eval_sapply() {
+        QObject actual = _intp.eval("sapply(1:3, function(x) x+1)");
+        assertEquals(3, actual.getLength());
+        assertQNumericEquals(2, actual.get(0));
+        assertQNumericEquals(3, actual.get(1));
+        assertQNumericEquals(4, actual.get(2));
+    }
 
 	
 	private QObject callEvalExpr(String code) throws RecognitionException {

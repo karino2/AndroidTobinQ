@@ -41,6 +41,7 @@ public class QInterpreter {
         _curEnv.put("max", QFunction.createMax());
         _curEnv.put("min", QFunction.createMin());
 		_curEnv.put("sum", QFunction.createSum());
+        _curEnv.put("sapply", QFunction.createSapply());
 		_curEnv.put("cumsum", QFunction.createCumulativeSum());
 		_curEnv.put("length", QFunction.createLength());
 		_curEnv.put("var", QFunction.createVar());
@@ -456,30 +457,45 @@ public class QInterpreter {
 		if(funcCand.getMode() == "function")
 		{
 			QFunction func = (QFunction)funcCand;
-			Environment outer = _curEnv;
-			Environment funcEnv = new Environment(_curEnv);
-			QObject ret;
-		    assignToFormalList(term.getChild(1), func.getFormalList(), funcEnv);
-            try
-            {
-                _curEnv = funcEnv;
-				if(func.isPrimitive())
-					ret = func.callPrimitive(funcEnv, this);
-				else
-					ret = evalExprList(func.getBody());
-			}
-			finally
-			{
-				_curEnv = outer;
-			}
-			return ret;
+            return callFuncWithArgTree(func, term.getChild(1));
 		}
 		// error handling, can I use exception in JS env?
 		_console.write("right value of func call is not function. After investigate exception, I'll handle.");
 		return QObject.Null;
 	}
-		
-	// (XXEXPRLIST 1 2)
+
+    public QObject callFuncWithArgTree(QFunction func, Tree argTree) {
+        Environment funcEnv = new Environment(_curEnv);
+        assignToFormalList(argTree, func.getFormalList(), funcEnv);
+        return callFunctionWithFuncEnv(func, funcEnv);
+    }
+
+    private QObject callFunctionWithFuncEnv(QFunction func, Environment funcEnv) {
+        Environment outer = _curEnv;
+        QObject ret;
+        try
+        {
+            _curEnv = funcEnv;
+            if(func.isPrimitive())
+                ret = func.callPrimitive(funcEnv, this);
+            else
+                ret = evalFuncBodyExpr(func.getBody());
+        }
+        finally
+        {
+            _curEnv = outer;
+        }
+        return ret;
+    }
+
+    private QObject evalFuncBodyExpr(Tree body) {
+        // no parenthes, ex. function(x) x+1
+        if(body.getType() != QParser.XXEXPRLIST)
+            return  evalExpr(body);
+        return evalExprList(body);
+    }
+
+    // (XXEXPRLIST 1 2)
 	private QObject evalExprList(Tree body) {
 		QObject ret = QObject.Null;
 		for(int i = 0; i < body.getChildCount(); i++)

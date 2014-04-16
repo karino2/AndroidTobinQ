@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Q.g 2014-04-15 12:03:35
+// $ANTLR 3.5.2 Q.g 2014-04-17 06:49:22
 
        package com.livejournal.karino2.tobinq.app;
 
@@ -582,7 +582,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign12.getTree());
 					// AST REWRITE
-					// elements: expr, EQ_ASSIGN, expr_or_assign
+					// elements: expr_or_assign, expr, EQ_ASSIGN
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1645,7 +1645,7 @@ public class QParser extends Parser {
 
 					stream_expr.add(expr39.getTree());
 					// AST REWRITE
-					// elements: unary_op, expr
+					// elements: expr, unary_op
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1701,7 +1701,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign45.getTree());
 					// AST REWRITE
-					// elements: expr_or_assign, formlist
+					// elements: formlist, expr_or_assign
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1769,7 +1769,7 @@ public class QParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: elexp, ifexp, ifcond
+					// elements: elexp, ifcond, ifexp
 					// token labels: 
 					// rule labels: retval, ifexp, elexp
 					// token list labels: 
@@ -1822,7 +1822,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign51.getTree());
 					// AST REWRITE
-					// elements: expr_or_assign, forcond
+					// elements: forcond, expr_or_assign
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1867,7 +1867,7 @@ public class QParser extends Parser {
 
 					stream_expr_or_assign.add(expr_or_assign54.getTree());
 					// AST REWRITE
-					// elements: cond, expr_or_assign
+					// elements: expr_or_assign, cond
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -1961,7 +1961,7 @@ public class QParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: ss, NS_GET, fs
+					// elements: NS_GET, fs, ss
 					// token labels: 
 					// rule labels: retval, fs, ss
 					// token list labels: 
@@ -2019,7 +2019,7 @@ public class QParser extends Parser {
 					}
 
 					// AST REWRITE
-					// elements: fs, ss, NS_GET_INT
+					// elements: ss, fs, NS_GET_INT
 					// token labels: 
 					// rule labels: retval, fs, ss
 					// token list labels: 
@@ -2497,7 +2497,7 @@ public class QParser extends Parser {
 					stream_82.add(char_literal68);
 
 					// AST REWRITE
-					// elements: sublist, refer
+					// elements: refer, sublist
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2543,7 +2543,7 @@ public class QParser extends Parser {
 					stream_101.add(char_literal72);
 
 					// AST REWRITE
-					// elements: refer, LBB, sublist
+					// elements: sublist, refer, LBB
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2587,7 +2587,7 @@ public class QParser extends Parser {
 					stream_101.add(char_literal75);
 
 					// AST REWRITE
-					// elements: 99, sublist, refer
+					// elements: 99, refer, sublist
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2661,7 +2661,7 @@ public class QParser extends Parser {
 
 					stream_symbol_or_conststr.add(symbol_or_conststr78.getTree());
 					// AST REWRITE
-					// elements: 79, refer, 91, symbol_or_conststr
+					// elements: 79, 91, symbol_or_conststr, refer
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -2935,7 +2935,7 @@ public class QParser extends Parser {
 
 					stream_refer.add(b.getTree());
 					// AST REWRITE
-					// elements: a, b, multicative_op
+					// elements: b, multicative_op, a
 					// token labels: 
 					// rule labels: retval, b, a
 					// token list labels: 
@@ -3067,7 +3067,7 @@ public class QParser extends Parser {
 
 					stream_refer.add(refer85.getTree());
 					// AST REWRITE
-					// elements: multicative_op, oneMulExpression, refer
+					// elements: oneMulExpression, multicative_op, refer
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3196,7 +3196,7 @@ public class QParser extends Parser {
 
 					stream_inclusiveOrExpression.add(inclusiveOrExpression88.getTree());
 					// AST REWRITE
-					// elements: inclusiveOrExpression, andExpression, OR
+					// elements: OR, inclusiveOrExpression, andExpression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3325,7 +3325,7 @@ public class QParser extends Parser {
 
 					stream_andExpression.add(andExpression91.getTree());
 					// AST REWRITE
-					// elements: AND, andExpression, relationalExpression
+					// elements: relationalExpression, AND, andExpression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3455,7 +3455,7 @@ public class QParser extends Parser {
 
 					stream_relationalExpression.add(relationalExpression94.getTree());
 					// AST REWRITE
-					// elements: relationalExpression, relationalOp, additiveExpression
+					// elements: relationalOp, additiveExpression, relationalExpression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3585,7 +3585,7 @@ public class QParser extends Parser {
 
 					stream_expr.add(expr97.getTree());
 					// AST REWRITE
-					// elements: inclusiveOrExpression, expr, assign_op
+					// elements: expr, assign_op, inclusiveOrExpression
 					// token labels: 
 					// rule labels: retval
 					// token list labels: 
@@ -3920,7 +3920,7 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "sublist"
-	// Q.g:260:1: fragment sublist : sub ( cr ',' sub )* -> ^( XXSUBLIST ( sub )* ) ;
+	// Q.g:261:1: fragment sublist : sub ( cr ',' sub )* ( EOF )? -> ^( XXSUBLIST ( sub )* ) ;
 	public final QParser.sublist_return sublist() throws RecognitionException {
 		QParser.sublist_return retval = new QParser.sublist_return();
 		retval.start = input.LT(1);
@@ -3928,25 +3928,28 @@ public class QParser extends Parser {
 		Object root_0 = null;
 
 		Token char_literal111=null;
+		Token EOF113=null;
 		ParserRuleReturnScope sub109 =null;
 		ParserRuleReturnScope cr110 =null;
 		ParserRuleReturnScope sub112 =null;
 
 		Object char_literal111_tree=null;
+		Object EOF113_tree=null;
+		RewriteRuleTokenStream stream_EOF=new RewriteRuleTokenStream(adaptor,"token EOF");
 		RewriteRuleTokenStream stream_85=new RewriteRuleTokenStream(adaptor,"token 85");
 		RewriteRuleSubtreeStream stream_cr=new RewriteRuleSubtreeStream(adaptor,"rule cr");
 		RewriteRuleSubtreeStream stream_sub=new RewriteRuleSubtreeStream(adaptor,"rule sub");
 
 		try {
-			// Q.g:260:9: ( sub ( cr ',' sub )* -> ^( XXSUBLIST ( sub )* ) )
-			// Q.g:260:11: sub ( cr ',' sub )*
+			// Q.g:261:9: ( sub ( cr ',' sub )* ( EOF )? -> ^( XXSUBLIST ( sub )* ) )
+			// Q.g:261:11: sub ( cr ',' sub )* ( EOF )?
 			{
-			pushFollow(FOLLOW_sub_in_sublist1619);
+			pushFollow(FOLLOW_sub_in_sublist1620);
 			sub109=sub();
 			state._fsp--;
 
 			stream_sub.add(sub109.getTree());
-			// Q.g:260:15: ( cr ',' sub )*
+			// Q.g:261:15: ( cr ',' sub )*
 			loop25:
 			while (true) {
 				int alt25=2;
@@ -3957,17 +3960,17 @@ public class QParser extends Parser {
 
 				switch (alt25) {
 				case 1 :
-					// Q.g:260:16: cr ',' sub
+					// Q.g:261:16: cr ',' sub
 					{
-					pushFollow(FOLLOW_cr_in_sublist1622);
+					pushFollow(FOLLOW_cr_in_sublist1623);
 					cr110=cr();
 					state._fsp--;
 
 					stream_cr.add(cr110.getTree());
-					char_literal111=(Token)match(input,85,FOLLOW_85_in_sublist1624);  
+					char_literal111=(Token)match(input,85,FOLLOW_85_in_sublist1625);  
 					stream_85.add(char_literal111);
 
-					pushFollow(FOLLOW_sub_in_sublist1626);
+					pushFollow(FOLLOW_sub_in_sublist1627);
 					sub112=sub();
 					state._fsp--;
 
@@ -3978,6 +3981,24 @@ public class QParser extends Parser {
 				default :
 					break loop25;
 				}
+			}
+
+			// Q.g:261:29: ( EOF )?
+			int alt26=2;
+			int LA26_0 = input.LA(1);
+			if ( (LA26_0==EOF) ) {
+				alt26=1;
+			}
+			switch (alt26) {
+				case 1 :
+					// Q.g:261:29: EOF
+					{
+					EOF113=(Token)match(input,EOF,FOLLOW_EOF_in_sublist1631);  
+					stream_EOF.add(EOF113);
+
+					}
+					break;
+
 			}
 
 			// AST REWRITE
@@ -3991,13 +4012,13 @@ public class QParser extends Parser {
 			RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 			root_0 = (Object)adaptor.nil();
-			// 261:3: -> ^( XXSUBLIST ( sub )* )
+			// 262:3: -> ^( XXSUBLIST ( sub )* )
 			{
-				// Q.g:261:6: ^( XXSUBLIST ( sub )* )
+				// Q.g:262:6: ^( XXSUBLIST ( sub )* )
 				{
 				Object root_1 = (Object)adaptor.nil();
 				root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSUBLIST, "XXSUBLIST"), root_1);
-				// Q.g:261:18: ( sub )*
+				// Q.g:262:18: ( sub )*
 				while ( stream_sub.hasNext() ) {
 					adaptor.addChild(root_1, stream_sub.nextTree());
 				}
@@ -4040,40 +4061,41 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "sub"
-	// Q.g:265:1: fragment sub : ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) );
+	// Q.g:266:1: fragment sub : ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) );
 	public final QParser.sub_return sub() throws RecognitionException {
 		QParser.sub_return retval = new QParser.sub_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token NULL_CONST115=null;
-		Token EQ_ASSIGN116=null;
-		Token NULL_CONST118=null;
-		Token EQ_ASSIGN119=null;
-		ParserRuleReturnScope expr113 =null;
-		ParserRuleReturnScope symbol_or_conststr114 =null;
-		ParserRuleReturnScope symbol_or_conststr117 =null;
-		ParserRuleReturnScope expr120 =null;
+		Token NULL_CONST116=null;
+		Token EQ_ASSIGN117=null;
+		Token NULL_CONST119=null;
+		Token EQ_ASSIGN120=null;
+		ParserRuleReturnScope expr114 =null;
+		ParserRuleReturnScope symbol_or_conststr115 =null;
+		ParserRuleReturnScope symbol_or_conststr118 =null;
+		ParserRuleReturnScope expr121 =null;
 
-		Object NULL_CONST115_tree=null;
-		Object EQ_ASSIGN116_tree=null;
-		Object NULL_CONST118_tree=null;
-		Object EQ_ASSIGN119_tree=null;
+		Object NULL_CONST116_tree=null;
+		Object EQ_ASSIGN117_tree=null;
+		Object NULL_CONST119_tree=null;
+		Object EQ_ASSIGN120_tree=null;
 		RewriteRuleTokenStream stream_NULL_CONST=new RewriteRuleTokenStream(adaptor,"token NULL_CONST");
 		RewriteRuleTokenStream stream_EQ_ASSIGN=new RewriteRuleTokenStream(adaptor,"token EQ_ASSIGN");
 		RewriteRuleSubtreeStream stream_symbol_or_conststr=new RewriteRuleSubtreeStream(adaptor,"rule symbol_or_conststr");
 		RewriteRuleSubtreeStream stream_expr=new RewriteRuleSubtreeStream(adaptor,"rule expr");
 
 		try {
-			// Q.g:265:5: ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) )
-			int alt28=4;
+			// Q.g:266:5: ( -> ^( XXSUB0 ) | expr -> ^( XXSUB1 expr ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? ) | ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr ) )
+			int alt29=4;
 			switch ( input.LA(1) ) {
+			case EOF:
 			case 82:
 			case 85:
 			case 101:
 				{
-				alt28=1;
+				alt29=1;
 				}
 				break;
 			case BREAK:
@@ -4104,22 +4126,22 @@ public class QParser extends Parser {
 			case 103:
 			case 105:
 				{
-				alt28=2;
+				alt29=2;
 				}
 				break;
 			case STR_CONST:
 				{
-				int LA28_3 = input.LA(2);
-				if ( ((LA28_3 >= AND && LA28_3 <= AND2)||LA28_3==EQ||(LA28_3 >= GE && LA28_3 <= GT)||(LA28_3 >= LBB && LA28_3 <= LT)||LA28_3==NE||(LA28_3 >= NS_GET && LA28_3 <= NS_GET_INT)||(LA28_3 >= OR && LA28_3 <= OR2)||(LA28_3 >= RIGHT_ASSIGN && LA28_3 <= SPECIAL)||(LA28_3 >= 79 && LA28_3 <= 88)||(LA28_3 >= 90 && LA28_3 <= 91)||LA28_3==99||(LA28_3 >= 101 && LA28_3 <= 102)||LA28_3==105) ) {
-					alt28=2;
+				int LA29_3 = input.LA(2);
+				if ( (LA29_3==EOF||(LA29_3 >= AND && LA29_3 <= AND2)||LA29_3==EQ||(LA29_3 >= GE && LA29_3 <= GT)||(LA29_3 >= LBB && LA29_3 <= LT)||LA29_3==NE||(LA29_3 >= NS_GET && LA29_3 <= NS_GET_INT)||(LA29_3 >= OR && LA29_3 <= OR2)||(LA29_3 >= RIGHT_ASSIGN && LA29_3 <= SPECIAL)||(LA29_3 >= 79 && LA29_3 <= 88)||(LA29_3 >= 90 && LA29_3 <= 91)||LA29_3==99||(LA29_3 >= 101 && LA29_3 <= 102)||LA29_3==105) ) {
+					alt29=2;
 				}
-				else if ( (LA28_3==EQ_ASSIGN) ) {
-					int LA28_6 = input.LA(3);
-					if ( (LA28_6==82||LA28_6==85||LA28_6==101) ) {
-						alt28=3;
+				else if ( (LA29_3==EQ_ASSIGN) ) {
+					int LA29_6 = input.LA(3);
+					if ( (LA29_6==EOF||LA29_6==82||LA29_6==85||LA29_6==101) ) {
+						alt29=3;
 					}
-					else if ( ((LA28_6 >= BREAK && LA28_6 <= DecimalLiteral)||(LA28_6 >= FALSE && LA28_6 <= FUNCTION)||LA28_6==FloatingPointLiteral||(LA28_6 >= HexLiteral && LA28_6 <= IF)||LA28_6==NEXT||LA28_6==NULL_CONST||(LA28_6 >= OctalLiteral && LA28_6 <= REPEAT)||(LA28_6 >= STR_CONST && LA28_6 <= TRUE)||LA28_6==WHILE||LA28_6==78||LA28_6==81||LA28_6==84||LA28_6==86||LA28_6==90||(LA28_6 >= 92 && LA28_6 <= 98)||LA28_6==103||LA28_6==105) ) {
-						alt28=4;
+					else if ( ((LA29_6 >= BREAK && LA29_6 <= DecimalLiteral)||(LA29_6 >= FALSE && LA29_6 <= FUNCTION)||LA29_6==FloatingPointLiteral||(LA29_6 >= HexLiteral && LA29_6 <= IF)||LA29_6==NEXT||LA29_6==NULL_CONST||(LA29_6 >= OctalLiteral && LA29_6 <= REPEAT)||(LA29_6 >= STR_CONST && LA29_6 <= TRUE)||LA29_6==WHILE||LA29_6==78||LA29_6==81||LA29_6==84||LA29_6==86||LA29_6==90||(LA29_6 >= 92 && LA29_6 <= 98)||LA29_6==103||LA29_6==105) ) {
+						alt29=4;
 					}
 
 					else {
@@ -4129,7 +4151,7 @@ public class QParser extends Parser {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 28, 6, input);
+								new NoViableAltException("", 29, 6, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
@@ -4143,7 +4165,7 @@ public class QParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 28, 3, input);
+							new NoViableAltException("", 29, 3, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -4154,17 +4176,17 @@ public class QParser extends Parser {
 				break;
 			case NULL_CONST:
 				{
-				int LA28_4 = input.LA(2);
-				if ( ((LA28_4 >= AND && LA28_4 <= AND2)||LA28_4==EQ||(LA28_4 >= GE && LA28_4 <= GT)||(LA28_4 >= LBB && LA28_4 <= LT)||LA28_4==NE||(LA28_4 >= OR && LA28_4 <= OR2)||(LA28_4 >= RIGHT_ASSIGN && LA28_4 <= SPECIAL)||(LA28_4 >= 79 && LA28_4 <= 88)||(LA28_4 >= 90 && LA28_4 <= 91)||LA28_4==99||(LA28_4 >= 101 && LA28_4 <= 102)||LA28_4==105) ) {
-					alt28=2;
+				int LA29_4 = input.LA(2);
+				if ( (LA29_4==EOF||(LA29_4 >= AND && LA29_4 <= AND2)||LA29_4==EQ||(LA29_4 >= GE && LA29_4 <= GT)||(LA29_4 >= LBB && LA29_4 <= LT)||LA29_4==NE||(LA29_4 >= OR && LA29_4 <= OR2)||(LA29_4 >= RIGHT_ASSIGN && LA29_4 <= SPECIAL)||(LA29_4 >= 79 && LA29_4 <= 88)||(LA29_4 >= 90 && LA29_4 <= 91)||LA29_4==99||(LA29_4 >= 101 && LA29_4 <= 102)||LA29_4==105) ) {
+					alt29=2;
 				}
-				else if ( (LA28_4==EQ_ASSIGN) ) {
-					int LA28_6 = input.LA(3);
-					if ( (LA28_6==82||LA28_6==85||LA28_6==101) ) {
-						alt28=3;
+				else if ( (LA29_4==EQ_ASSIGN) ) {
+					int LA29_6 = input.LA(3);
+					if ( (LA29_6==EOF||LA29_6==82||LA29_6==85||LA29_6==101) ) {
+						alt29=3;
 					}
-					else if ( ((LA28_6 >= BREAK && LA28_6 <= DecimalLiteral)||(LA28_6 >= FALSE && LA28_6 <= FUNCTION)||LA28_6==FloatingPointLiteral||(LA28_6 >= HexLiteral && LA28_6 <= IF)||LA28_6==NEXT||LA28_6==NULL_CONST||(LA28_6 >= OctalLiteral && LA28_6 <= REPEAT)||(LA28_6 >= STR_CONST && LA28_6 <= TRUE)||LA28_6==WHILE||LA28_6==78||LA28_6==81||LA28_6==84||LA28_6==86||LA28_6==90||(LA28_6 >= 92 && LA28_6 <= 98)||LA28_6==103||LA28_6==105) ) {
-						alt28=4;
+					else if ( ((LA29_6 >= BREAK && LA29_6 <= DecimalLiteral)||(LA29_6 >= FALSE && LA29_6 <= FUNCTION)||LA29_6==FloatingPointLiteral||(LA29_6 >= HexLiteral && LA29_6 <= IF)||LA29_6==NEXT||LA29_6==NULL_CONST||(LA29_6 >= OctalLiteral && LA29_6 <= REPEAT)||(LA29_6 >= STR_CONST && LA29_6 <= TRUE)||LA29_6==WHILE||LA29_6==78||LA29_6==81||LA29_6==84||LA29_6==86||LA29_6==90||(LA29_6 >= 92 && LA29_6 <= 98)||LA29_6==103||LA29_6==105) ) {
+						alt29=4;
 					}
 
 					else {
@@ -4174,7 +4196,7 @@ public class QParser extends Parser {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 28, 6, input);
+								new NoViableAltException("", 29, 6, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
@@ -4188,7 +4210,7 @@ public class QParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 28, 4, input);
+							new NoViableAltException("", 29, 4, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -4199,17 +4221,17 @@ public class QParser extends Parser {
 				break;
 			case SYMBOL:
 				{
-				int LA28_5 = input.LA(2);
-				if ( ((LA28_5 >= AND && LA28_5 <= AND2)||LA28_5==EQ||(LA28_5 >= GE && LA28_5 <= GT)||(LA28_5 >= LBB && LA28_5 <= LT)||LA28_5==NE||(LA28_5 >= NS_GET && LA28_5 <= NS_GET_INT)||(LA28_5 >= OR && LA28_5 <= OR2)||(LA28_5 >= RIGHT_ASSIGN && LA28_5 <= SPECIAL)||(LA28_5 >= 79 && LA28_5 <= 88)||(LA28_5 >= 90 && LA28_5 <= 91)||LA28_5==99||(LA28_5 >= 101 && LA28_5 <= 102)||LA28_5==105) ) {
-					alt28=2;
+				int LA29_5 = input.LA(2);
+				if ( (LA29_5==EOF||(LA29_5 >= AND && LA29_5 <= AND2)||LA29_5==EQ||(LA29_5 >= GE && LA29_5 <= GT)||(LA29_5 >= LBB && LA29_5 <= LT)||LA29_5==NE||(LA29_5 >= NS_GET && LA29_5 <= NS_GET_INT)||(LA29_5 >= OR && LA29_5 <= OR2)||(LA29_5 >= RIGHT_ASSIGN && LA29_5 <= SPECIAL)||(LA29_5 >= 79 && LA29_5 <= 88)||(LA29_5 >= 90 && LA29_5 <= 91)||LA29_5==99||(LA29_5 >= 101 && LA29_5 <= 102)||LA29_5==105) ) {
+					alt29=2;
 				}
-				else if ( (LA28_5==EQ_ASSIGN) ) {
-					int LA28_6 = input.LA(3);
-					if ( (LA28_6==82||LA28_6==85||LA28_6==101) ) {
-						alt28=3;
+				else if ( (LA29_5==EQ_ASSIGN) ) {
+					int LA29_6 = input.LA(3);
+					if ( (LA29_6==EOF||LA29_6==82||LA29_6==85||LA29_6==101) ) {
+						alt29=3;
 					}
-					else if ( ((LA28_6 >= BREAK && LA28_6 <= DecimalLiteral)||(LA28_6 >= FALSE && LA28_6 <= FUNCTION)||LA28_6==FloatingPointLiteral||(LA28_6 >= HexLiteral && LA28_6 <= IF)||LA28_6==NEXT||LA28_6==NULL_CONST||(LA28_6 >= OctalLiteral && LA28_6 <= REPEAT)||(LA28_6 >= STR_CONST && LA28_6 <= TRUE)||LA28_6==WHILE||LA28_6==78||LA28_6==81||LA28_6==84||LA28_6==86||LA28_6==90||(LA28_6 >= 92 && LA28_6 <= 98)||LA28_6==103||LA28_6==105) ) {
-						alt28=4;
+					else if ( ((LA29_6 >= BREAK && LA29_6 <= DecimalLiteral)||(LA29_6 >= FALSE && LA29_6 <= FUNCTION)||LA29_6==FloatingPointLiteral||(LA29_6 >= HexLiteral && LA29_6 <= IF)||LA29_6==NEXT||LA29_6==NULL_CONST||(LA29_6 >= OctalLiteral && LA29_6 <= REPEAT)||(LA29_6 >= STR_CONST && LA29_6 <= TRUE)||LA29_6==WHILE||LA29_6==78||LA29_6==81||LA29_6==84||LA29_6==86||LA29_6==90||(LA29_6 >= 92 && LA29_6 <= 98)||LA29_6==103||LA29_6==105) ) {
+						alt29=4;
 					}
 
 					else {
@@ -4219,7 +4241,7 @@ public class QParser extends Parser {
 								input.consume();
 							}
 							NoViableAltException nvae =
-								new NoViableAltException("", 28, 6, input);
+								new NoViableAltException("", 29, 6, input);
 							throw nvae;
 						} finally {
 							input.rewind(nvaeMark);
@@ -4233,7 +4255,7 @@ public class QParser extends Parser {
 					try {
 						input.consume();
 						NoViableAltException nvae =
-							new NoViableAltException("", 28, 5, input);
+							new NoViableAltException("", 29, 5, input);
 						throw nvae;
 					} finally {
 						input.rewind(nvaeMark);
@@ -4244,12 +4266,12 @@ public class QParser extends Parser {
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 28, 0, input);
+					new NoViableAltException("", 29, 0, input);
 				throw nvae;
 			}
-			switch (alt28) {
+			switch (alt29) {
 				case 1 :
-					// Q.g:265:7: 
+					// Q.g:266:7: 
 					{
 					// AST REWRITE
 					// elements: 
@@ -4262,9 +4284,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 265:7: -> ^( XXSUB0 )
+					// 266:7: -> ^( XXSUB0 )
 					{
-						// Q.g:265:10: ^( XXSUB0 )
+						// Q.g:266:10: ^( XXSUB0 )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSUB0, "XXSUB0"), root_1);
@@ -4279,13 +4301,13 @@ public class QParser extends Parser {
 					}
 					break;
 				case 2 :
-					// Q.g:266:4: expr
+					// Q.g:267:4: expr
 					{
-					pushFollow(FOLLOW_expr_in_sub1660);
-					expr113=expr();
+					pushFollow(FOLLOW_expr_in_sub1664);
+					expr114=expr();
 					state._fsp--;
 
-					stream_expr.add(expr113.getTree());
+					stream_expr.add(expr114.getTree());
 					// AST REWRITE
 					// elements: expr
 					// token labels: 
@@ -4297,9 +4319,9 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 266:9: -> ^( XXSUB1 expr )
+					// 267:9: -> ^( XXSUB1 expr )
 					{
-						// Q.g:266:12: ^( XXSUB1 expr )
+						// Q.g:267:12: ^( XXSUB1 expr )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSUB1, "XXSUB1"), root_1);
@@ -4315,90 +4337,7 @@ public class QParser extends Parser {
 					}
 					break;
 				case 3 :
-					// Q.g:267:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN
-					{
-					// Q.g:267:4: ( symbol_or_conststr | NULL_CONST )
-					int alt26=2;
-					int LA26_0 = input.LA(1);
-					if ( ((LA26_0 >= STR_CONST && LA26_0 <= SYMBOL)) ) {
-						alt26=1;
-					}
-					else if ( (LA26_0==NULL_CONST) ) {
-						alt26=2;
-					}
-
-					else {
-						NoViableAltException nvae =
-							new NoViableAltException("", 26, 0, input);
-						throw nvae;
-					}
-
-					switch (alt26) {
-						case 1 :
-							// Q.g:267:5: symbol_or_conststr
-							{
-							pushFollow(FOLLOW_symbol_or_conststr_in_sub1674);
-							symbol_or_conststr114=symbol_or_conststr();
-							state._fsp--;
-
-							stream_symbol_or_conststr.add(symbol_or_conststr114.getTree());
-							}
-							break;
-						case 2 :
-							// Q.g:267:26: NULL_CONST
-							{
-							NULL_CONST115=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1678);  
-							stream_NULL_CONST.add(NULL_CONST115);
-
-							}
-							break;
-
-					}
-
-					EQ_ASSIGN116=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1681);  
-					stream_EQ_ASSIGN.add(EQ_ASSIGN116);
-
-					// AST REWRITE
-					// elements: symbol_or_conststr, NULL_CONST
-					// token labels: 
-					// rule labels: retval
-					// token list labels: 
-					// rule list labels: 
-					// wildcard labels: 
-					retval.tree = root_0;
-					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
-
-					root_0 = (Object)adaptor.nil();
-					// 267:48: -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
-					{
-						// Q.g:267:51: ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
-						{
-						Object root_1 = (Object)adaptor.nil();
-						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB0, "XXSYMSUB0"), root_1);
-						// Q.g:267:63: ( symbol_or_conststr )?
-						if ( stream_symbol_or_conststr.hasNext() ) {
-							adaptor.addChild(root_1, stream_symbol_or_conststr.nextTree());
-						}
-						stream_symbol_or_conststr.reset();
-
-						// Q.g:267:83: ( NULL_CONST )?
-						if ( stream_NULL_CONST.hasNext() ) {
-							adaptor.addChild(root_1, stream_NULL_CONST.nextNode());
-						}
-						stream_NULL_CONST.reset();
-
-						adaptor.addChild(root_0, root_1);
-						}
-
-					}
-
-
-					retval.tree = root_0;
-
-					}
-					break;
-				case 4 :
-					// Q.g:268:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr
+					// Q.g:268:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN
 					{
 					// Q.g:268:4: ( symbol_or_conststr | NULL_CONST )
 					int alt27=2;
@@ -4420,32 +4359,115 @@ public class QParser extends Parser {
 						case 1 :
 							// Q.g:268:5: symbol_or_conststr
 							{
-							pushFollow(FOLLOW_symbol_or_conststr_in_sub1699);
-							symbol_or_conststr117=symbol_or_conststr();
+							pushFollow(FOLLOW_symbol_or_conststr_in_sub1678);
+							symbol_or_conststr115=symbol_or_conststr();
 							state._fsp--;
 
-							stream_symbol_or_conststr.add(symbol_or_conststr117.getTree());
+							stream_symbol_or_conststr.add(symbol_or_conststr115.getTree());
 							}
 							break;
 						case 2 :
 							// Q.g:268:26: NULL_CONST
 							{
-							NULL_CONST118=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1703);  
-							stream_NULL_CONST.add(NULL_CONST118);
+							NULL_CONST116=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1682);  
+							stream_NULL_CONST.add(NULL_CONST116);
 
 							}
 							break;
 
 					}
 
-					EQ_ASSIGN119=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1706);  
-					stream_EQ_ASSIGN.add(EQ_ASSIGN119);
+					EQ_ASSIGN117=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1685);  
+					stream_EQ_ASSIGN.add(EQ_ASSIGN117);
 
-					pushFollow(FOLLOW_expr_in_sub1708);
-					expr120=expr();
+					// AST REWRITE
+					// elements: symbol_or_conststr, NULL_CONST
+					// token labels: 
+					// rule labels: retval
+					// token list labels: 
+					// rule list labels: 
+					// wildcard labels: 
+					retval.tree = root_0;
+					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
+
+					root_0 = (Object)adaptor.nil();
+					// 268:48: -> ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
+					{
+						// Q.g:268:51: ^( XXSYMSUB0 ( symbol_or_conststr )? ( NULL_CONST )? )
+						{
+						Object root_1 = (Object)adaptor.nil();
+						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB0, "XXSYMSUB0"), root_1);
+						// Q.g:268:63: ( symbol_or_conststr )?
+						if ( stream_symbol_or_conststr.hasNext() ) {
+							adaptor.addChild(root_1, stream_symbol_or_conststr.nextTree());
+						}
+						stream_symbol_or_conststr.reset();
+
+						// Q.g:268:83: ( NULL_CONST )?
+						if ( stream_NULL_CONST.hasNext() ) {
+							adaptor.addChild(root_1, stream_NULL_CONST.nextNode());
+						}
+						stream_NULL_CONST.reset();
+
+						adaptor.addChild(root_0, root_1);
+						}
+
+					}
+
+
+					retval.tree = root_0;
+
+					}
+					break;
+				case 4 :
+					// Q.g:269:4: ( symbol_or_conststr | NULL_CONST ) EQ_ASSIGN expr
+					{
+					// Q.g:269:4: ( symbol_or_conststr | NULL_CONST )
+					int alt28=2;
+					int LA28_0 = input.LA(1);
+					if ( ((LA28_0 >= STR_CONST && LA28_0 <= SYMBOL)) ) {
+						alt28=1;
+					}
+					else if ( (LA28_0==NULL_CONST) ) {
+						alt28=2;
+					}
+
+					else {
+						NoViableAltException nvae =
+							new NoViableAltException("", 28, 0, input);
+						throw nvae;
+					}
+
+					switch (alt28) {
+						case 1 :
+							// Q.g:269:5: symbol_or_conststr
+							{
+							pushFollow(FOLLOW_symbol_or_conststr_in_sub1703);
+							symbol_or_conststr118=symbol_or_conststr();
+							state._fsp--;
+
+							stream_symbol_or_conststr.add(symbol_or_conststr118.getTree());
+							}
+							break;
+						case 2 :
+							// Q.g:269:26: NULL_CONST
+							{
+							NULL_CONST119=(Token)match(input,NULL_CONST,FOLLOW_NULL_CONST_in_sub1707);  
+							stream_NULL_CONST.add(NULL_CONST119);
+
+							}
+							break;
+
+					}
+
+					EQ_ASSIGN120=(Token)match(input,EQ_ASSIGN,FOLLOW_EQ_ASSIGN_in_sub1710);  
+					stream_EQ_ASSIGN.add(EQ_ASSIGN120);
+
+					pushFollow(FOLLOW_expr_in_sub1712);
+					expr121=expr();
 					state._fsp--;
 
-					stream_expr.add(expr120.getTree());
+					stream_expr.add(expr121.getTree());
 					// AST REWRITE
 					// elements: NULL_CONST, expr, symbol_or_conststr
 					// token labels: 
@@ -4457,19 +4479,19 @@ public class QParser extends Parser {
 					RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.getTree():null);
 
 					root_0 = (Object)adaptor.nil();
-					// 268:53: -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
+					// 269:53: -> ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
 					{
-						// Q.g:268:55: ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
+						// Q.g:269:55: ^( XXSYMSUB1 ( symbol_or_conststr )? ( NULL_CONST )? expr )
 						{
 						Object root_1 = (Object)adaptor.nil();
 						root_1 = (Object)adaptor.becomeRoot((Object)adaptor.create(XXSYMSUB1, "XXSYMSUB1"), root_1);
-						// Q.g:268:67: ( symbol_or_conststr )?
+						// Q.g:269:67: ( symbol_or_conststr )?
 						if ( stream_symbol_or_conststr.hasNext() ) {
 							adaptor.addChild(root_1, stream_symbol_or_conststr.nextTree());
 						}
 						stream_symbol_or_conststr.reset();
 
-						// Q.g:268:87: ( NULL_CONST )?
+						// Q.g:269:87: ( NULL_CONST )?
 						if ( stream_NULL_CONST.hasNext() ) {
 							adaptor.addChild(root_1, stream_NULL_CONST.nextNode());
 						}
@@ -4515,7 +4537,7 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "cr"
-	// Q.g:280:1: cr :;
+	// Q.g:281:1: cr :;
 	public final QParser.cr_return cr() throws RecognitionException {
 		QParser.cr_return retval = new QParser.cr_return();
 		retval.start = input.LT(1);
@@ -4523,8 +4545,8 @@ public class QParser extends Parser {
 		Object root_0 = null;
 
 		try {
-			// Q.g:280:4: ()
-			// Q.g:281:2: 
+			// Q.g:281:4: ()
+			// Q.g:282:2: 
 			{
 			root_0 = (Object)adaptor.nil();
 
@@ -4553,28 +4575,28 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "integerLiteral"
-	// Q.g:313:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
+	// Q.g:314:1: integerLiteral : ( HexLiteral | OctalLiteral | DecimalLiteral );
 	public final QParser.integerLiteral_return integerLiteral() throws RecognitionException {
 		QParser.integerLiteral_return retval = new QParser.integerLiteral_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token set121=null;
+		Token set122=null;
 
-		Object set121_tree=null;
+		Object set122_tree=null;
 
 		try {
-			// Q.g:313:16: ( HexLiteral | OctalLiteral | DecimalLiteral )
+			// Q.g:314:16: ( HexLiteral | OctalLiteral | DecimalLiteral )
 			// Q.g:
 			{
 			root_0 = (Object)adaptor.nil();
 
 
-			set121=input.LT(1);
+			set122=input.LT(1);
 			if ( input.LA(1)==DecimalLiteral||input.LA(1)==HexLiteral||input.LA(1)==OctalLiteral ) {
 				input.consume();
-				adaptor.addChild(root_0, (Object)adaptor.create(set121));
+				adaptor.addChild(root_0, (Object)adaptor.create(set122));
 				state.errorRecovery=false;
 			}
 			else {
@@ -4610,234 +4632,234 @@ public class QParser extends Parser {
 
 
 	// $ANTLR start "num_const"
-	// Q.g:319:1: num_const : ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' );
+	// Q.g:320:1: num_const : ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' );
 	public final QParser.num_const_return num_const() throws RecognitionException {
 		QParser.num_const_return retval = new QParser.num_const_return();
 		retval.start = input.LT(1);
 
 		Object root_0 = null;
 
-		Token FloatingPointLiteral123=null;
-		Token string_literal124=null;
-		Token TRUE125=null;
-		Token FALSE126=null;
-		Token string_literal127=null;
+		Token FloatingPointLiteral124=null;
+		Token string_literal125=null;
+		Token TRUE126=null;
+		Token FALSE127=null;
 		Token string_literal128=null;
 		Token string_literal129=null;
 		Token string_literal130=null;
 		Token string_literal131=null;
 		Token string_literal132=null;
-		ParserRuleReturnScope integerLiteral122 =null;
+		Token string_literal133=null;
+		ParserRuleReturnScope integerLiteral123 =null;
 
-		Object FloatingPointLiteral123_tree=null;
-		Object string_literal124_tree=null;
-		Object TRUE125_tree=null;
-		Object FALSE126_tree=null;
-		Object string_literal127_tree=null;
+		Object FloatingPointLiteral124_tree=null;
+		Object string_literal125_tree=null;
+		Object TRUE126_tree=null;
+		Object FALSE127_tree=null;
 		Object string_literal128_tree=null;
 		Object string_literal129_tree=null;
 		Object string_literal130_tree=null;
 		Object string_literal131_tree=null;
 		Object string_literal132_tree=null;
+		Object string_literal133_tree=null;
 
 		try {
-			// Q.g:320:2: ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' )
-			int alt29=11;
+			// Q.g:321:2: ( integerLiteral | FloatingPointLiteral | 'NA' | TRUE | FALSE | 'Inf' | 'NaN' | 'NA_integer_' | 'NA_real_' | 'NA_character_' | 'NA_complex_' )
+			int alt30=11;
 			switch ( input.LA(1) ) {
 			case DecimalLiteral:
 			case HexLiteral:
 			case OctalLiteral:
 				{
-				alt29=1;
+				alt30=1;
 				}
 				break;
 			case FloatingPointLiteral:
 				{
-				alt29=2;
+				alt30=2;
 				}
 				break;
 			case 93:
 				{
-				alt29=3;
+				alt30=3;
 				}
 				break;
 			case TRUE:
 				{
-				alt29=4;
+				alt30=4;
 				}
 				break;
 			case FALSE:
 				{
-				alt29=5;
+				alt30=5;
 				}
 				break;
 			case 92:
 				{
-				alt29=6;
+				alt30=6;
 				}
 				break;
 			case 98:
 				{
-				alt29=7;
+				alt30=7;
 				}
 				break;
 			case 96:
 				{
-				alt29=8;
+				alt30=8;
 				}
 				break;
 			case 97:
 				{
-				alt29=9;
+				alt30=9;
 				}
 				break;
 			case 94:
 				{
-				alt29=10;
+				alt30=10;
 				}
 				break;
 			case 95:
 				{
-				alt29=11;
+				alt30=11;
 				}
 				break;
 			default:
 				NoViableAltException nvae =
-					new NoViableAltException("", 29, 0, input);
+					new NoViableAltException("", 30, 0, input);
 				throw nvae;
 			}
-			switch (alt29) {
+			switch (alt30) {
 				case 1 :
-					// Q.g:320:4: integerLiteral
+					// Q.g:321:4: integerLiteral
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					pushFollow(FOLLOW_integerLiteral_in_num_const2029);
-					integerLiteral122=integerLiteral();
+					pushFollow(FOLLOW_integerLiteral_in_num_const2033);
+					integerLiteral123=integerLiteral();
 					state._fsp--;
 
-					adaptor.addChild(root_0, integerLiteral122.getTree());
+					adaptor.addChild(root_0, integerLiteral123.getTree());
 
 					}
 					break;
 				case 2 :
-					// Q.g:321:4: FloatingPointLiteral
+					// Q.g:322:4: FloatingPointLiteral
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					FloatingPointLiteral123=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_num_const2034); 
-					FloatingPointLiteral123_tree = (Object)adaptor.create(FloatingPointLiteral123);
-					adaptor.addChild(root_0, FloatingPointLiteral123_tree);
+					FloatingPointLiteral124=(Token)match(input,FloatingPointLiteral,FOLLOW_FloatingPointLiteral_in_num_const2038); 
+					FloatingPointLiteral124_tree = (Object)adaptor.create(FloatingPointLiteral124);
+					adaptor.addChild(root_0, FloatingPointLiteral124_tree);
 
 					}
 					break;
 				case 3 :
-					// Q.g:322:4: 'NA'
+					// Q.g:323:4: 'NA'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal124=(Token)match(input,93,FOLLOW_93_in_num_const2039); 
-					string_literal124_tree = (Object)adaptor.create(string_literal124);
-					adaptor.addChild(root_0, string_literal124_tree);
+					string_literal125=(Token)match(input,93,FOLLOW_93_in_num_const2043); 
+					string_literal125_tree = (Object)adaptor.create(string_literal125);
+					adaptor.addChild(root_0, string_literal125_tree);
 
 					}
 					break;
 				case 4 :
-					// Q.g:323:4: TRUE
+					// Q.g:324:4: TRUE
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					TRUE125=(Token)match(input,TRUE,FOLLOW_TRUE_in_num_const2044); 
-					TRUE125_tree = (Object)adaptor.create(TRUE125);
-					adaptor.addChild(root_0, TRUE125_tree);
+					TRUE126=(Token)match(input,TRUE,FOLLOW_TRUE_in_num_const2048); 
+					TRUE126_tree = (Object)adaptor.create(TRUE126);
+					adaptor.addChild(root_0, TRUE126_tree);
 
 					}
 					break;
 				case 5 :
-					// Q.g:324:4: FALSE
+					// Q.g:325:4: FALSE
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					FALSE126=(Token)match(input,FALSE,FOLLOW_FALSE_in_num_const2049); 
-					FALSE126_tree = (Object)adaptor.create(FALSE126);
-					adaptor.addChild(root_0, FALSE126_tree);
+					FALSE127=(Token)match(input,FALSE,FOLLOW_FALSE_in_num_const2053); 
+					FALSE127_tree = (Object)adaptor.create(FALSE127);
+					adaptor.addChild(root_0, FALSE127_tree);
 
 					}
 					break;
 				case 6 :
-					// Q.g:325:4: 'Inf'
+					// Q.g:326:4: 'Inf'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal127=(Token)match(input,92,FOLLOW_92_in_num_const2054); 
-					string_literal127_tree = (Object)adaptor.create(string_literal127);
-					adaptor.addChild(root_0, string_literal127_tree);
-
-					}
-					break;
-				case 7 :
-					// Q.g:326:4: 'NaN'
-					{
-					root_0 = (Object)adaptor.nil();
-
-
-					string_literal128=(Token)match(input,98,FOLLOW_98_in_num_const2059); 
+					string_literal128=(Token)match(input,92,FOLLOW_92_in_num_const2058); 
 					string_literal128_tree = (Object)adaptor.create(string_literal128);
 					adaptor.addChild(root_0, string_literal128_tree);
 
 					}
 					break;
-				case 8 :
-					// Q.g:327:4: 'NA_integer_'
+				case 7 :
+					// Q.g:327:4: 'NaN'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal129=(Token)match(input,96,FOLLOW_96_in_num_const2064); 
+					string_literal129=(Token)match(input,98,FOLLOW_98_in_num_const2063); 
 					string_literal129_tree = (Object)adaptor.create(string_literal129);
 					adaptor.addChild(root_0, string_literal129_tree);
 
 					}
 					break;
-				case 9 :
-					// Q.g:328:4: 'NA_real_'
+				case 8 :
+					// Q.g:328:4: 'NA_integer_'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal130=(Token)match(input,97,FOLLOW_97_in_num_const2069); 
+					string_literal130=(Token)match(input,96,FOLLOW_96_in_num_const2068); 
 					string_literal130_tree = (Object)adaptor.create(string_literal130);
 					adaptor.addChild(root_0, string_literal130_tree);
 
 					}
 					break;
-				case 10 :
-					// Q.g:329:4: 'NA_character_'
+				case 9 :
+					// Q.g:329:4: 'NA_real_'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal131=(Token)match(input,94,FOLLOW_94_in_num_const2074); 
+					string_literal131=(Token)match(input,97,FOLLOW_97_in_num_const2073); 
 					string_literal131_tree = (Object)adaptor.create(string_literal131);
 					adaptor.addChild(root_0, string_literal131_tree);
 
 					}
 					break;
-				case 11 :
-					// Q.g:330:4: 'NA_complex_'
+				case 10 :
+					// Q.g:330:4: 'NA_character_'
 					{
 					root_0 = (Object)adaptor.nil();
 
 
-					string_literal132=(Token)match(input,95,FOLLOW_95_in_num_const2079); 
+					string_literal132=(Token)match(input,94,FOLLOW_94_in_num_const2078); 
 					string_literal132_tree = (Object)adaptor.create(string_literal132);
 					adaptor.addChild(root_0, string_literal132_tree);
+
+					}
+					break;
+				case 11 :
+					// Q.g:331:4: 'NA_complex_'
+					{
+					root_0 = (Object)adaptor.nil();
+
+
+					string_literal133=(Token)match(input,95,FOLLOW_95_in_num_const2083); 
+					string_literal133_tree = (Object)adaptor.create(string_literal133);
+					adaptor.addChild(root_0, string_literal133_tree);
 
 					}
 					break;
@@ -5035,27 +5057,28 @@ public class QParser extends Parser {
 	public static final BitSet FOLLOW_IN_in_forcond1588 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
 	public static final BitSet FOLLOW_expr_in_forcond1590 = new BitSet(new long[]{0x0000000000000000L,0x0000000000040000L});
 	public static final BitSet FOLLOW_82_in_forcond1592 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_sub_in_sublist1619 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_cr_in_sublist1622 = new BitSet(new long[]{0x0000000000000000L,0x0000000000200000L});
-	public static final BitSet FOLLOW_85_in_sublist1624 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4724000L});
-	public static final BitSet FOLLOW_sub_in_sublist1626 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
-	public static final BitSet FOLLOW_expr_in_sub1660 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1674 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_NULL_CONST_in_sub1678 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1681 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1699 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_NULL_CONST_in_sub1703 = new BitSet(new long[]{0x0000000000000400L});
-	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1706 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
-	public static final BitSet FOLLOW_expr_in_sub1708 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_integerLiteral_in_num_const2029 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FloatingPointLiteral_in_num_const2034 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_93_in_num_const2039 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_TRUE_in_num_const2044 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_FALSE_in_num_const2049 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_92_in_num_const2054 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_98_in_num_const2059 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_96_in_num_const2064 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_97_in_num_const2069 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_94_in_num_const2074 = new BitSet(new long[]{0x0000000000000002L});
-	public static final BitSet FOLLOW_95_in_num_const2079 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_sub_in_sublist1620 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_cr_in_sublist1623 = new BitSet(new long[]{0x0000000000000000L,0x0000000000200000L});
+	public static final BitSet FOLLOW_85_in_sublist1625 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4724000L});
+	public static final BitSet FOLLOW_sub_in_sublist1627 = new BitSet(new long[]{0x0000000000000002L,0x0000000000200000L});
+	public static final BitSet FOLLOW_EOF_in_sublist1631 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_expr_in_sub1664 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1678 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_NULL_CONST_in_sub1682 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1685 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_symbol_or_conststr_in_sub1703 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_NULL_CONST_in_sub1707 = new BitSet(new long[]{0x0000000000000400L});
+	public static final BitSet FOLLOW_EQ_ASSIGN_in_sub1710 = new BitSet(new long[]{0x0000B9890062E0C0L,0x00000287F4524000L});
+	public static final BitSet FOLLOW_expr_in_sub1712 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_integerLiteral_in_num_const2033 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FloatingPointLiteral_in_num_const2038 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_93_in_num_const2043 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_TRUE_in_num_const2048 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_FALSE_in_num_const2053 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_92_in_num_const2058 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_98_in_num_const2063 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_96_in_num_const2068 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_97_in_num_const2073 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_94_in_num_const2078 = new BitSet(new long[]{0x0000000000000002L});
+	public static final BitSet FOLLOW_95_in_num_const2083 = new BitSet(new long[]{0x0000000000000002L});
 }

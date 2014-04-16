@@ -256,8 +256,9 @@ exprlist:
 	;
 */
 
+// sublist used inside sapply, etc. So I add EOF
 fragment
-sublist	:	sub (cr ',' sub)*
+sublist	:	sub (cr ',' sub)* EOF?
 		-> ^(XXSUBLIST sub*)
 	;
 
