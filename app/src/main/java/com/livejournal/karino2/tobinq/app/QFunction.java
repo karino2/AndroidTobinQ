@@ -426,8 +426,6 @@ public class QFunction extends QObject {
                         QObject arg = getIR(seq, i, intp);
                         callEnv.put(randArgName, arg);
                         Tree argTree = (Tree)createParser(randArgName).sublist().getTree();
-                        String debTree = argTree.toStringTree();
-                        intp.println(debTree);
                         QObject obj = intp.callFuncWithArgTree(fun, argTree);
                         ret.set(i, obj);
                     }
