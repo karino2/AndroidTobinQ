@@ -68,6 +68,16 @@ public class ScratchActivity extends ActionBarActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        if(popup != null && popup.isShowing()) {
+            hideChartPopup();
+            updateMenu();
+            return;
+        }
+        super.onBackPressed();
+    }
+
     private void clearOutputConsole() {
         findEditText(R.id.etOutput).setText("");
     }
@@ -79,10 +89,14 @@ public class ScratchActivity extends ActionBarActivity {
             return;
         }
         if(popup.isShowing())
-            popup.dismiss();
+            hideChartPopup();
         else
             showChartPopup();
         updateMenu();
+    }
+
+    private void hideChartPopup() {
+        popup.dismiss();
     }
 
     void showMessage(String msg) {
