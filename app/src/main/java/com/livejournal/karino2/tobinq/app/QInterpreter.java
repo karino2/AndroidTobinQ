@@ -450,7 +450,9 @@ public class QInterpreter {
 	
 	// (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2)))
     public QObject evalCallFunction(Tree term) {
-		QObject funcCand = (QObject)_curEnv.get(term.getChild(0).getText());
+		QObject funcCand = _curEnv.get(term.getChild(0).getText());
+        if(funcCand == null)
+            throw new RuntimeException("Error: object '"+ term.getChild(0).getText() +"' not found");
 		if(funcCand.getMode() == "function")
 		{
 			QFunction func = (QFunction)funcCand;
