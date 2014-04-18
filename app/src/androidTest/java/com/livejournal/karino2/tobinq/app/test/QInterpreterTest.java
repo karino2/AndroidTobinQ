@@ -670,13 +670,12 @@ public class QInterpreterTest extends TestCase {
 		assertQCharEquals("bar", actual);
 	}
 
-    // NYI
-    /*
     public void test_eval_list_LBBassign() {
         QObject actual = _intp.eval("a <- list(); a[['hoge']]<- 3;a");
         assertQNumericEquals(3, actual.getBB(QObject.createCharacter("hoge")));
     }
-    */
+
+
     public void test_eval_list_creation() {
         QObject actual = _intp.eval("a <- list();a");
         assertEquals("list", actual.getMode());

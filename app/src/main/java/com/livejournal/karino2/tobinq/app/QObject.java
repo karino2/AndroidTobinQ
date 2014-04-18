@@ -223,7 +223,17 @@ public class QObject {
 			return (Double)getValue();
 		throw new RuntimeException("unsupported mode for getDouble: " + getMode());
 	}
-	
+
+    public void setBB(QObject arg, QObject val)
+    {
+        if(arg.isNumber())
+        {
+            set(arg.getInt()-1, val);
+            return;
+        }
+        throw new RuntimeException("index of [[]] out of bound.");
+    }
+
 	public QObject getBB(QObject arg)
 	{
 		if(arg.isNumber() && arg.getInt() == 0)
@@ -369,11 +379,15 @@ public class QObject {
 	}
 
 	boolean isDataFrame() {
-		return QList.LIST_TYPE.equals(getMode()) &&
+		return isList() &&
 			QList.DATAFRAME_CLASS.equals(getQClass());
 	}
 
-	QObject subscriptByOneArg(QObject range) {
+    boolean isList() {
+        return QList.LIST_TYPE.equals(getMode());
+    }
+
+    QObject subscriptByOneArg(QObject range) {
 		if(range.getMode() == "logical")
 			return subscriptByLogical(range);
 		return subscriptByNumber(range);

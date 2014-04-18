@@ -43,6 +43,27 @@ public class QList extends QObject {
 		int i = getIndex(colName);
 		return getBBInt(i);
 	}
+
+    // do not share here.
+    public void setBB(QObject arg, QObject val)
+    {
+        if(arg.isNumber()) {
+            set(arg.getInt() - 1, val);
+            return;
+        }
+        if(arg.getMode() != CHARACTER_TYPE)
+            throw new RuntimeException("Arg of [[]] neither number nor string: " + arg.getMode());
+        String colName = (String)arg.getValue();
+        try {
+            int i = getIndex(colName);
+            set(i, val);
+        }catch(RuntimeException e) {
+            int i = getLength();
+            set(i+1, val);
+            QObject names = getNamesAttr();
+            names.set(i+1, arg);
+        }
+    }
 	
 	private int getIndex(String colName) {
 		QObject names = getNamesAttr();

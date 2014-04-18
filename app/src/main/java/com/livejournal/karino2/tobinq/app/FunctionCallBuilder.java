@@ -64,16 +64,6 @@ public class FunctionCallBuilder {
         return builder.build();
     }
 
-    /*
-    if(arg1.getType() == QParser.XXSUBSCRIPT) {
-        // (XXSUBSCRIPT '[' lexpr sublist)
-        // or (XXSUBSCRIPT LBB lexpr sublist)
-        if(arg1.getChild(0).getType() == QParser.LBB)
-            throw new RuntimeException("NYI: LBB assignment");
-        // return evalLexprForAssignSubscriptBracket(term);
-
-    }
-    */
     // arg1 (XXSUBSCRIPT '[' lexpr sublist)
     // CommonTree actual = parseExpression("a[1:2] <- c");
     // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)))) c)
@@ -81,8 +71,12 @@ public class FunctionCallBuilder {
     // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)) (XXSUB1 3))) c)
     public static CommonTree convertSubscriptBracketAssignToFuncall(Tree op, Tree arg1, Tree arg2) {
         // (XXFUNCTION [<- (XXSUBLIST (XXSUB1 target) (XXSUB1 seq1) (XXSUB1 seq2)... (XXSUB1 right))
+        return convertSubscriptXXAssignToFuncall("[<-", arg1, arg2);
+    }
+
+    private static CommonTree convertSubscriptXXAssignToFuncall(String funcName, Tree arg1, Tree arg2) {
         FunctionCallBuilder builder = new FunctionCallBuilder();
-        builder.setFunctionName("[<-");
+        builder.setFunctionName(funcName);
         Tree target = arg1.getChild(1);
         Tree sublistRange = arg1.getChild(2);
 
@@ -94,4 +88,8 @@ public class FunctionCallBuilder {
         return builder.build();
     }
 
+    public static CommonTree convertSubscriptBBAssignToFuncall(Tree op, Tree arg1, Tree arg2) {
+        // (XXFUNCTION [[<- (XXSUBLIST (XXSUB1 target) (XXSUB1 seq1) (XXSUB1 seq2)... (XXSUB1 right))
+        return convertSubscriptXXAssignToFuncall("[[<-", arg1, arg2);
+    }
 }

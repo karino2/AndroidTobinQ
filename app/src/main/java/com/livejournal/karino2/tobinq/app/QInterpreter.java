@@ -58,6 +58,7 @@ public class QInterpreter {
         // internal
         _curEnv.put("<-", QFunction.createInternalAssign());
         _curEnv.put("[<-", QFunction.createInternalBracketAssign());
+        _curEnv.put("[[<-", QFunction.createInternalBBAssign());
 	}
 
 	public QInterpreter(Writable console) {
@@ -320,7 +321,7 @@ public class QInterpreter {
 		return lexpr.getBB(index);
 	}
 	
-	
+
 	private QObject evalSubscriptBracket(Tree term) {
 		QObject lexpr = evalExpr(term.getChild(1));
 		Tree sublistTree = term.getChild(2);
@@ -703,18 +704,14 @@ public class QInterpreter {
             if(arg1.getType() == QParser.XXSUBSCRIPT) {
                 // (XXSUBSCRIPT '[' lexpr sublist)
                 // or (XXSUBSCRIPT LBB lexpr sublist)
+                Tree converted;
                 if(arg1.getChild(0).getType() == QParser.LBB)
-                    throw new RuntimeException("NYI: LBB assignment");
-                Tree converted = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(op, arg1, arg2);
+                    converted = FunctionCallBuilder.convertSubscriptBBAssignToFuncall(op, arg1, arg2);
+                else
+                    converted = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(op, arg1, arg2);
                 return evalCallFunction(converted);
             }
             throw new RuntimeException("assign: unsupported lexpr type(" + arg1.getType() + ")");
-            /*
-
-			Assignable assignable = evalLexpr(arg1);
-			assignable.assign(evalExpr(arg2).QClone());
-			return QObject.Null;
-			*/
 		}
 		QObject term1 = evalExpr(arg1);
 		QObject term2 = evalExpr(arg2);

@@ -508,6 +508,42 @@ public class QFunction extends QObject {
         };
     }
 
+    // [[<-
+    public static QFunction createInternalBBAssign() {
+        return new QFunction(null, null) {
+            public boolean isPrimitive() {
+                return true;
+            }
+
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject args = funcEnv.get(ARGNAME);
+                QPromise promiseTarget = (QPromise)args.get(0);
+                QObject rightVal = getIR(args, args.getLength()-1, intp);
+                if(args.getLength() != 3)
+                    throw new RuntimeException("NYI: multi dimensional assignment.");
+                QObject range = getIR(args, 1, intp);
+                if(range.getLength() != 1)
+                    throw new RuntimeException("attempt to select more than one element.");
+
+                Tree expression = promiseTarget.getExpression();
+                if(expression.getType() != QParser.SYMBOL)
+                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+
+                String symName = expression.getText();
+                QObject targetCand = intp.resolveIfNecessary(promiseTarget);
+                if(targetCand.isShared())
+                    targetCand = targetCand.QClone();
+                targetCand.setBB(range, rightVal);
+
+                funcEnv._parent.put(symName, targetCand);
+                return QObject.Null;
+            }
+        };
+    }
+
+
+
+
     // sapply
     public static QFunction createSapply()
     {
