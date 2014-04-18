@@ -542,6 +542,84 @@ public class QFunction extends QObject {
     }
 
 
+    //  "(XXFUNCALL [ (XXSUBLIST (XXSUB1 a) (XXSUB1 (XXSUBLIST (XXSUB1 1))))"
+    // [
+    public static QFunction createInternalSubscriptBracket()
+    {
+        return new QFunction(null, null) {
+            public boolean isPrimitive() {
+                return true;
+            }
+
+            private void validateSubscriptBracket(Tree sublistTree) {
+                if(sublistTree.getChildCount() > 2)
+                    throw new RuntimeException("NYI: multi dimentional array more than 2");
+                if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
+                    throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
+            }
+
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject args = funcEnv.get(ARGNAME);
+                QObject lexpr = getIR(args, 0, intp);
+                QPromise sublistPromise = (QPromise)args.get(1);
+                Environment proEnv = sublistPromise.getEnvironment();
+                Tree sublist = sublistPromise.getExpression();
+                validateSubscriptBracket(sublist);
+
+                if(sublist.getChildCount() == 1)
+                {
+                    QObject range = intp.evalExprWithEnv(proEnv, sublist.getChild(0).getChild(0));
+                    return lexpr.subscriptByOneArg(range);
+                }
+                else // argNum == 2
+                {
+                    Tree rangeRowNode = sublist.getChild(0);
+                    Tree rangeColNode = sublist.getChild(1);
+
+                    // a[1,]
+                    // -> "(XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 1) XXSUB0))"
+                    if(rangeRowNode.getType() != QParser.XXSUB0
+                            && rangeColNode.getType() == QParser.XXSUB0)
+                    {
+                        QObject rangeRow = intp.evalExprWithEnv(proEnv, rangeRowNode.getChild(0));
+                        if(rangeRow.getMode() == "logical")
+                            throw new RuntimeException("NYI: multi dimensional subscript with logical array");
+                        if(!lexpr.isDataFrame())
+                            throw new RuntimeException("NYI: multi dimensional subscript for none data frame");
+                        QList df = (QList) lexpr;
+                        return df.subscriptByRow(rangeRow);
+                    }
+                    // other case, NYI.
+                    throw new RuntimeException("NYI: multi dimensional subscript");
+                }
+            }
+        };
+    }
+    //  "(XXFUNCALL [[ (XXSUBLIST (XXSUB1 a) (XXSUB1 1)))"
+    // [[
+    public static QFunction createInternalSubscriptBB() {
+        return new QFunction(null, null) {
+            public boolean isPrimitive() {
+                return true;
+            }
+
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject args = funcEnv.get(ARGNAME);
+                QObject lexpr = getIR(args, 0, intp);
+                QPromise sublistPromise = (QPromise)args.get(1);
+                Environment proEnv = sublistPromise.getEnvironment();
+                Tree sublist = sublistPromise.getExpression();
+                if(sublist.getChildCount() > 1)
+                    throw new RuntimeException("[[]] with multi dimentional, what's happend?");
+
+                if(sublist.getChild(0).getType() != QParser.XXSUB1)
+                    throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
+                QObject index = intp.evalExprWithEnv(proEnv, sublist.getChild(0).getChild(0));
+                return lexpr.getBB(index);
+
+            }
+        };
+    }
 
 
     // sapply

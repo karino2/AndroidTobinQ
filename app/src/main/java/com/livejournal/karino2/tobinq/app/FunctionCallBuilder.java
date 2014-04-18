@@ -55,6 +55,13 @@ public class FunctionCallBuilder {
         addChild(node);
     }
 
+    // sublist = (XXSUBLIST ...)
+    public void mergeSublist(Tree sublist) {
+        for(int i = 0; i < sublist.getChildCount(); i++) {
+            addChild(sublist.getChild(i));
+        }
+    }
+
     // "(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))"
     public static CommonTree convertAssignToFuncall(Tree op, Tree arg1, Tree arg2) {
         FunctionCallBuilder builder = new FunctionCallBuilder();
@@ -81,9 +88,7 @@ public class FunctionCallBuilder {
         Tree sublistRange = arg1.getChild(2);
 
         builder.addArgument(target);
-        for(int i = 0; i < sublistRange.getChildCount(); i++) {
-            builder.addChild(sublistRange.getChild(i));
-        }
+        builder.mergeSublist(sublistRange);
         builder.addArgument(arg2);
         return builder.build();
     }
@@ -91,5 +96,28 @@ public class FunctionCallBuilder {
     public static CommonTree convertSubscriptBBAssignToFuncall(Tree op, Tree arg1, Tree arg2) {
         // (XXFUNCTION [[<- (XXSUBLIST (XXSUB1 target) (XXSUB1 seq1) (XXSUB1 seq2)... (XXSUB1 right))
         return convertSubscriptXXAssignToFuncall("[[<-", arg1, arg2);
+    }
+
+    // (XXSUBSCRIPT '[' lexpr sublist)
+    public static CommonTree convertSubscriptBracketToFuncall(Tree subscript) {
+        // (XXFUNCALL [ (XXSUBLIST (XXSUB1 lexpr) (XXSUB1 sublistchild1) (XXSUB1 sublistchild2)...))
+        return convertSubscriptToFuncall(subscript, "[");
+    }
+
+    // (XXSUBSCRIPT LBB lexpr sublist)
+    public static CommonTree convertSubscriptBBToFuncall(Tree subscript) {
+        // (XXFUNCALL [ (XXSUBLIST (XXSUB1 lexpr) (XXSUB1 sublistchild1) (XXSUB1 sublistchild2)...))
+        return convertSubscriptToFuncall(subscript, "[[");
+    }
+
+
+    private static CommonTree convertSubscriptToFuncall(Tree subscript, String funcName) {
+        FunctionCallBuilder builder = new FunctionCallBuilder();
+        builder.setFunctionName(funcName);
+        builder.addArgument(subscript.getChild(1));
+        Tree sublist = subscript.getChild(2);
+        builder.addArgument(sublist);
+        // builder.mergeSublist(sublist);
+        return builder.build();
     }
 }

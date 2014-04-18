@@ -1,6 +1,7 @@
 package com.livejournal.karino2.tobinq.app.test;
 
 import com.livejournal.karino2.tobinq.app.Environment;
+import com.livejournal.karino2.tobinq.app.FunctionCallBuilder;
 import com.livejournal.karino2.tobinq.app.QInterpreter;
 import com.livejournal.karino2.tobinq.app.QList;
 import com.livejournal.karino2.tobinq.app.QObject;
@@ -267,8 +268,9 @@ public class QInterpreterTest extends TestCase {
 	
 	private QObject callSubscriptBB(String code) throws RecognitionException {
 		Tree tree = parseExpression(code);
-		return _intp.evalSubscriptBB(tree);
-	}
+        Tree converted = FunctionCallBuilder.convertSubscriptBBToFuncall(tree);
+        return _intp.evalCallFunction(converted);
+    }
 	
 	public void test_evalEq_true()
 	{

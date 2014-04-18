@@ -195,6 +195,21 @@ public class QParserTest extends TestCase {
         assertEquals("(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 2) (XXSUB1 3)))", actual.toStringTree());
     }
 
+    public void test_convertSubscriptBracket() throws RecognitionException {
+        CommonTree binary = QParserTest.parseExpressionOrAssign("a[1]");
+        CommonTree actual = FunctionCallBuilder.convertSubscriptBracketToFuncall(binary);
+        String deb = actual.toStringTree();
+        assertEquals("(XXFUNCALL [ (XXSUBLIST (XXSUB1 a) (XXSUB1 (XXSUBLIST (XXSUB1 1)))))", actual.toStringTree());
+    }
+
+    // 		QObject actual_obj = callSubscript("df[2:3,]");
+    public void test_convertSubscriptBracket_colMissing() throws RecognitionException {
+        CommonTree binary = QParserTest.parseExpressionOrAssign("a[1,]");
+        CommonTree actual = FunctionCallBuilder.convertSubscriptBracketToFuncall(binary);
+        String deb = actual.toStringTree();
+        assertEquals("(XXFUNCALL [ (XXSUBLIST (XXSUB1 a) (XXSUB1 (XXSUBLIST (XXSUB1 1) XXSUB0))))", actual.toStringTree());
+    }
+
 
     public void test_funcall_temp() throws RecognitionException
     {

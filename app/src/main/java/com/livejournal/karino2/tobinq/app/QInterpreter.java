@@ -1,13 +1,5 @@
 package com.livejournal.karino2.tobinq.app;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
 import java.util.HashMap;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -59,6 +51,8 @@ public class QInterpreter {
         _curEnv.put("<-", QFunction.createInternalAssign());
         _curEnv.put("[<-", QFunction.createInternalBracketAssign());
         _curEnv.put("[[<-", QFunction.createInternalBBAssign());
+        _curEnv.put("[", QFunction.createInternalSubscriptBracket());
+        _curEnv.put("[[", QFunction.createInternalSubscriptBB());
 	}
 
 	public QInterpreter(Writable console) {
@@ -160,7 +154,17 @@ public class QInterpreter {
 			return ret;
 		return evalExpr(t.getChild(0));
 	}
-	
+
+    public QObject evalExprWithEnv(Environment env, Tree expr) {
+        Environment originalEnv = _curEnv;
+        try {
+            _curEnv = env;
+            return evalExpr(expr);
+        }finally {
+            _curEnv = originalEnv;
+        }
+
+    }
 
 
     private QObject evalPromiseForResolve(QPromise promise) {
@@ -304,67 +308,14 @@ public class QInterpreter {
 	// (XXSUBSCRIPT '[' lexpr sublist)
 	// or (XXSUBSCRIPT LBB lexpr sublist)
     public QObject evalSubscript(Tree term) {
+        Tree converted;
 		if(term.getChild(0).getType() == QParser.LBB)
-			return evalSubscriptBB(term);
-		return evalSubscriptBracket(term);
-	}
-	
-	// (XXSUBSCRIPT [[ df (XXSUBLIST (XXSUB1 "x")))
-    public QObject evalSubscriptBB(Tree term) {
-		QObject lexpr = evalExpr(term.getChild(1));
-		Tree sublistTree = term.getChild(2);
-		if(sublistTree.getChildCount() > 1)
-			throw new RuntimeException("[[]] with multi dimentional, what's happend?");
-		if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
-			throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
-		QObject index = evalExpr(sublistTree.getChild(0).getChild(0));
-		return lexpr.getBB(index);
-	}
-	
+            converted = FunctionCallBuilder.convertSubscriptBBToFuncall(term);
+        else
+            converted = FunctionCallBuilder.convertSubscriptBracketToFuncall(term);
+        return evalCallFunction(converted);
+    }
 
-	private QObject evalSubscriptBracket(Tree term) {
-		QObject lexpr = evalExpr(term.getChild(1));
-		Tree sublistTree = term.getChild(2);
-		validateSubscriptBracket(sublistTree);
-		if(sublistTree.getChildCount() == 1)
-		{
-			QObject range = evalExpr(sublistTree.getChild(0).getChild(0));
-			return lexpr.subscriptByOneArg(range);
-		}
-		else // sublistTree.getChildCount() == 2
-		{
-			Tree rangeRowNode = sublistTree.getChild(0);
-			Tree rangeColNode = sublistTree.getChild(1);
-			
-			// a[1,] 
-			// -> "(XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 1) XXSUB0))"
-			if(rangeRowNode.getType() != QParser.XXSUB0 
-					&& rangeColNode.getType() == QParser.XXSUB0)
-			{
-				QObject rangeRow = evalExpr(rangeRowNode.getChild(0));
-				if(rangeRow.getMode() == "logical")
-					throw new RuntimeException("NYI: multi dimensional subscript with logical array");
-				return subscriptByRowNumber(lexpr, rangeRow);
-			}
-			// other case, NYI.
-			throw new RuntimeException("NYI: multi dimensional subscript");
-		}
-	}
-
-	private QObject subscriptByRowNumber(QObject lexpr, QObject rangeRow) {
-		if(!lexpr.isDataFrame())
-			throw new RuntimeException("NYI: multi dimensional subscript for none data frame");
-		QList df = (QList) lexpr;
-		return df.subscriptByRow(rangeRow);
-	}
-
-	private void validateSubscriptBracket(Tree sublistTree) {
-		if(sublistTree.getChildCount() > 2)
-			throw new RuntimeException("NYI: multi dimentional array more than 2");
-		if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
-			throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
-	}
-	
 	// (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2)))
     public QObject evalCallFunction(Tree term) {
 		QObject funcCand = _curEnv.get(term.getChild(0).getText());
@@ -676,12 +627,7 @@ public class QInterpreter {
 		});
 	}
 
-    // (XXBINARY <- a b)
-    public Tree assignToFuncall(Tree op, Tree arg1, Tree arg2) {
-        return FunctionCallBuilder.convertAssignToFuncall(op, arg1, arg2);
-    }
-	
-	public QObject evalBinary(Tree op, Tree arg1, Tree arg2) {
+    public QObject evalBinary(Tree op, Tree arg1, Tree arg2) {
 		if(QParser.LEFT_ASSIGN == op.getType() ||
 				QParser.EQ_ASSIGN == op.getType())
 		{
@@ -698,7 +644,7 @@ public class QInterpreter {
             // hoge(2, a, values=c(1, 2))
             // (XXFUNCALL hoge (XXSUBLIST (XXSUB1 2) (XXSUB1 a) (XXSYMSUB1 values (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2))))))
             if(arg1.getType() == QParser.SYMBOL) {
-                Tree converted = assignToFuncall(op, arg1, arg2);
+                Tree converted = FunctionCallBuilder.convertAssignToFuncall(op, arg1, arg2);
                 return evalCallFunction(converted);
             }
             if(arg1.getType() == QParser.XXSUBSCRIPT) {
