@@ -85,8 +85,32 @@ public class QInterpreterTest extends TestCase {
         assertEquals(QObject.createNumeric(expected1), actual.get(0));
         assertEquals(QObject.createNumeric(expected2), actual.get(1));
     }
-	
-	public static void assertQCharEquals(String expected, QObject actual)
+
+    public void test_eval_logicalAssign()
+    {
+        String code = "a <- 1:3; a[c(FALSE, TRUE, TRUE)] <- 5;a";
+        QObject actual = _intp.eval(code);
+        assertEquals(3, actual.getLength());
+        assertQNumericEquals(1, actual.get(0));
+        assertQNumericEquals(5, actual.get(1));
+        assertQNumericEquals(5, actual.get(2));
+    }
+
+    public void test_eval_logicalAssign_rightHandRule()
+    {
+        String code = "a <- rep(0, 6); a[c(FALSE, TRUE)] <- 1:3;a";
+        QObject actual = _intp.eval(code);
+        assertEquals(6, actual.getLength());
+        assertQNumericEquals(0, actual.get(0));
+        assertQNumericEquals(1, actual.get(1));
+        assertQNumericEquals(0, actual.get(2));
+        assertQNumericEquals(2, actual.get(3));
+        assertQNumericEquals(0, actual.get(4));
+        assertQNumericEquals(3, actual.get(5));
+    }
+
+
+    public static void assertQCharEquals(String expected, QObject actual)
 	{
 		assertEquals(QObject.createCharacter(expected), actual);
 	}
@@ -721,7 +745,7 @@ public class QInterpreterTest extends TestCase {
 		
 		assertQNumericEquals(3, _intp._curEnv.get("x"));
 	}
-	
+
 	// @Test
 	public void test_evalBinary_eqAssign() throws RecognitionException
 	{
@@ -810,7 +834,7 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(4, actual.get(0));
 		assertQNumericEquals(5, actual.get(1));
 	}
-	
+
 	// @Test
 	public void test_assignToFormalList_nullFormalList_multipleArg() throws RecognitionException
 	{

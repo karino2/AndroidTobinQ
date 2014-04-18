@@ -439,9 +439,51 @@ public class QFunction extends QObject {
                     throw new RuntimeException("NYI: multi dimensional assignment.");
 
                 QObject range = getIR(args, 1, intp);
+                if(range.getMode().equals("logical")) {
+                    return assignByLogicalSubscript(funcEnv, promiseTarget, range, rightVal, intp);
+                }
+
+
+                return assignByNumericSubscript(funcEnv, promiseTarget, range, rightVal, intp);
+            }
+
+            private QObject assignByLogicalSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
+                QObject targetCand = intp.resolveIfNecessary(promiseTarget);
+
+                if(range.getLength() != targetCand.getLength()) {
+                    range = range.recycle(targetCand.getLength());
+                }
+
+
+                if(targetCand.getLength() != rightVal.getLength()) {
+                    rightVal = rightVal.recycle(targetCand.getLength());
+                }
+
+                Tree expression = promiseTarget.getExpression();
+                if(expression.getType() != QParser.SYMBOL)
+                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+
+                String symName = expression.getText();
+                if(targetCand.isShared())
+                    targetCand = targetCand.QClone();
+
+
+                int ridx = 0;
+                for (int i = 0; i < range.getLength(); i++) {
+                    if(range.get(i).isTrue()) {
+                        QObject rval = getIR(rightVal, ridx, intp);
+                        rval.share();
+                        targetCand.set(i, rval);
+                        ridx++;
+                    }
+                }
+                funcEnv._parent.put(symName, targetCand);
+                return QObject.Null;
+            }
+
+            private QObject assignByNumericSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
                 if(range.getLength() != rightVal.getLength()) {
-                    rightVal = rightVal.QClone();
-                    rightVal.recycle(range.getLength());
+                    rightVal = rightVal.recycle(range.getLength());
                 }
 
                 Tree expression = promiseTarget.getExpression();
@@ -454,19 +496,17 @@ public class QFunction extends QObject {
                     targetCand = targetCand.QClone();
 
 
-                for(int i = 0; i < range.getLength(); i++) {
+                for (int i = 0; i < range.getLength(); i++) {
                     int idx = range.get(i).getInt();
                     QObject rval = getIR(rightVal, i, intp);
                     rval.share();
-                    targetCand.set(idx-1, rval);
+                    targetCand.set(idx - 1, rval);
                 }
                 funcEnv._parent.put(symName, targetCand);
                 return QObject.Null;
             }
         };
     }
-
-
 
     // sapply
     public static QFunction createSapply()
@@ -511,7 +551,7 @@ public class QFunction extends QObject {
         };
     }
 
-	// sum
+    // sum
 	public static QFunction createSum()
 	{
 		return new QFunction(null, null){
