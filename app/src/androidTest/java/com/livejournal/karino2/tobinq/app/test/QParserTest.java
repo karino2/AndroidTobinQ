@@ -1,6 +1,7 @@
 package com.livejournal.karino2.tobinq.app.test;
 
 
+import com.livejournal.karino2.tobinq.app.FunctionCallBuilder;
 import com.livejournal.karino2.tobinq.app.QLexer;
 import com.livejournal.karino2.tobinq.app.QParser;
 
@@ -146,7 +147,89 @@ public class QParserTest extends TestCase {
         assertEquals("(XXBINARY * (XXBINARY / 2 3) 3)", actual.toStringTree());
     }
 
-	public void test_expr_paren() throws RecognitionException
+    /*
+            FunctionCallBuilder Test.
+     */
+    public void test_FunctionCallBuilder() throws RecognitionException {
+        // a <- b
+        // (XXBINARY = a b)
+        CommonTree binary = parseExpressionOrAssign("a = b");
+        FunctionCallBuilder builder = new FunctionCallBuilder();
+        builder.setFunctionName("<-");
+        builder.addArgument(binary.getChild(1));
+        builder.addNamedArgument("values", binary.getChild(2));
+
+        CommonTree actual = builder.build();
+        Tree child0 = actual.getChild(0);
+        Tree child1 = actual.getChild(1);
+        Tree child1_0 = child1.getChild(0);
+        Tree child1_1 = child1.getChild(1);
+        Tree child1_1_0 = child1_1.getChild(0);
+        String deb = child1_0.toStringTree();
+
+        assertEquals("(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))", actual.toStringTree());
+    }
+
+    public void test_convertAssignToFuncall() throws RecognitionException {
+        // (XXBINARY = a b)
+        CommonTree binary = QParserTest.parseExpressionOrAssign("a = b");
+        CommonTree actual = FunctionCallBuilder.convertAssignToFuncall(binary.getChild(0), binary.getChild(1), binary.getChild(2));
+        assertEquals("(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))", actual.toStringTree());
+    }
+
+    public void test_convertAssignToFuncall_rightHandFunction() throws RecognitionException {
+        CommonTree binary = QParserTest.parseExpressionOrAssign("a = c(1, 2)");
+        CommonTree actual = FunctionCallBuilder.convertAssignToFuncall(binary.getChild(0), binary.getChild(1), binary.getChild(2));
+        assertEquals("(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2))))))", actual.toStringTree());
+    }
+
+    public void test_convertSubscriptBracketAssignToFuncall() throws RecognitionException {
+        CommonTree binary = QParserTest.parseExpressionOrAssign("a[1] <- 2");
+        CommonTree actual = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(binary.getChild(0), binary.getChild(1), binary.getChild(2));
+        assertEquals("(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 2)))", actual.toStringTree());
+    }
+
+    public void test_convertSubscriptBracketAssignToFuncall_multiDim() throws RecognitionException {
+        CommonTree binary = QParserTest.parseExpressionOrAssign("a[1, 2] <- 3");
+        CommonTree actual = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(binary.getChild(0), binary.getChild(1), binary.getChild(2));
+        assertEquals("(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 2) (XXSUB1 3)))", actual.toStringTree());
+    }
+
+
+    public void test_funcall_temp() throws RecognitionException
+    {
+        // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)) (XXSUB1 3))) c)
+        CommonTree actual = parseExpression("a[1:2, 3] <- c");
+        String deb = actual.toStringTree();
+        // assertEquals("dummy", deb);
+
+        /*
+        // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)))) c)
+        CommonTree actual = parseExpression("a[1:2] <- c");
+         */
+
+
+        // (XXFUNCALL a (XXSUBLIST (XXSUB1 b) (XXSYMSUB1 values c)))
+        /*
+        CommonTree actual = parseExpression("a(b, values=c)");
+        Tree arg1 = actual.getChild(1);
+        Tree arg1_0 = arg1.getChild(0);
+        String deb1 = arg1_0.toStringTree();
+        String deb = actual.toStringTree();
+        */
+
+        /*
+        // (XXFUNCALL hoge (XXSUBLIST (XXSUB1 2) (XXSUB1 a) (XXSYMSUB1 values c)))
+        CommonTree actual = parseExpression("a <- b");
+        String deb = actual.toStringTree();
+        Tree arg0 = actual.getChild(0);
+        Tree arg1 = actual.getChild(1);
+        assertEquals("(XXBINARY * (XXBINARY / 2 3) 3)", actual.toStringTree());
+        */
+    }
+
+
+    public void test_expr_paren() throws RecognitionException
 	{
 		CommonTree actual_tree = parseExpression("(1+2)/3");
 		// (XXBINARY / (XXPAREN (XXBINARY + 1 2)) 3)

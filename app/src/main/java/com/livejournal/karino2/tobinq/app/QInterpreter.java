@@ -55,6 +55,9 @@ public class QInterpreter {
 		_curEnv.put("deparse", QFunction.createDeParse());
 		_curEnv.put("match.arg", QFunction.createMatchArg());
 		_curEnv.put("read.csv", QFunction.createReadCsv(_csvRetrievable));
+        // internal
+        _curEnv.put("<-", QFunction.createInternalAssign());
+        _curEnv.put("[<-", QFunction.createInternalBracketAssign());
 	}
 
 	public QInterpreter(Writable console) {
@@ -157,36 +160,7 @@ public class QInterpreter {
 		return evalExpr(t.getChild(0));
 	}
 	
-	interface Assignable {
-		void assign(QObject rval);
-	}
-	
-	abstract class DefaultAssign implements Assignable {
 
-		Tree _term;
-		public DefaultAssign(Tree term) { _term = term ;}		
-	};
-	
-	public Assignable evalLexpr(Tree term)
-	{
-		if(term.getType() == QParser.SYMBOL) {
-			return new DefaultAssign(term) {
-				public void assign(QObject rval) {
-					_curEnv.put(_term.getText(), rval);
-				}				
-			};
-		}
-		if(term.getType() == QParser.XXSUBSCRIPT)
-		{
-			// (XXSUBSCRIPT '[' lexpr sublist)
-			// or (XXSUBSCRIPT LBB lexpr sublist)
-			if(term.getChild(0).getType() == QParser.LBB)
-				throw new RuntimeException("NYI: LBB assignment");
-			return evalLexprForAssignSubscriptBracket(term);
-			
-		}
-		throw new RuntimeException("assign: unsupported lexpr type(" + term.getType() + ")");
-	}
 
     private QObject evalPromiseForResolve(QPromise promise) {
         Environment originalEnv = _curEnv;
@@ -346,66 +320,7 @@ public class QInterpreter {
 		return lexpr.getBB(index);
 	}
 	
-	public class LogicalSubscriptAssigner implements Assignable {
-		QObject _range;
-		QObject _lval;
-		
-		public LogicalSubscriptAssigner(QObject lexpr, QObject range) {
-			if(_lval.getLength() != _range.getLength())
-				throw new RuntimeException("logical subscript, not the same length with arg and lexpr");
-			_lval = lexpr;
-			_range = range;
-		}
-
-		public void assign(QObject rvalList) {
-			int rIndex = 0;
-			for(int i = 0; i < _range.getLength(); i++){
-				if(_range.get(i).isTrue())
-				{
-					if(rIndex >= rvalList.getLength())
-						throw new RuntimeException("logical subscript assign: rval length is not equal to logical true num");
-					_lval.set(i, rvalList.get(rIndex));
-					rIndex++;
-				}
-			}
-			if(rIndex != rvalList.getLength())
-				throw new RuntimeException("logical subscript assign: rval length is not equal to logical true num");			
-		}
-	}
 	
-	public class NumberSubscriptAssigner implements Assignable {
-		QObject _range;
-		QObject _lval;
-		
-		public NumberSubscriptAssigner(QObject lexpr, QObject range) {
-			_lval = lexpr;
-			_range = range;
-		}
-
-		public void assign(QObject rvalList) {
-			if(_range.getLength() != rvalList.getLength())
-				throw new RuntimeException("number subscript: assignment of lval and rval is not the same length.");
-			for(int i = 0; i < _range.getLength(); i++)
-			{
-				_lval.set(_range.get(i).getInt()-1, rvalList.get(i));
-			}
-		}
-	}
-	
-	private Assignable evalLexprForAssignSubscriptBracket(Tree term) {
-		QObject lexpr = evalExpr(term.getChild(1));
-		Tree sublistTree = term.getChild(2);
-		validateSubscriptBracket(sublistTree);
-		if(sublistTree.getChildCount() > 1)
-			throw new RuntimeException("NYI: assigment with multi dimensional subscript");
-		
-		QObject range = evalExpr(sublistTree.getChild(0).getChild(0));
-		if(range.getMode() == "logical")
-			return new LogicalSubscriptAssigner(lexpr, range);
-		return new NumberSubscriptAssigner(lexpr, range);
-		
-	}
-
 	private QObject evalSubscriptBracket(Tree term) {
 		QObject lexpr = evalExpr(term.getChild(1));
 		Tree sublistTree = term.getChild(2);
@@ -759,14 +674,47 @@ public class QInterpreter {
 			}
 		});
 	}
+
+    // (XXBINARY <- a b)
+    public Tree assignToFuncall(Tree op, Tree arg1, Tree arg2) {
+        return FunctionCallBuilder.convertAssignToFuncall(op, arg1, arg2);
+    }
 	
 	public QObject evalBinary(Tree op, Tree arg1, Tree arg2) {
 		if(QParser.LEFT_ASSIGN == op.getType() ||
 				QParser.EQ_ASSIGN == op.getType())
 		{
+
+            // a <- c(1, 2)
+            // (XXBINARY <- a (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2))))
+            // a <- b
+            // (XXBINARY <- a b)
+            // (XXFUNCALL "<-" (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))
+            // (XXSYMSUB1 beg 4)
+            // 	// (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2)))
+            // hoge(2, a, values=c)
+            // (XXFUNCALL hoge (XXSUBLIST (XXSUB1 2) (XXSUB1 a) (XXSYMSUB1 values c)))
+            // hoge(2, a, values=c(1, 2))
+            // (XXFUNCALL hoge (XXSUBLIST (XXSUB1 2) (XXSUB1 a) (XXSYMSUB1 values (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2))))))
+            if(arg1.getType() == QParser.SYMBOL) {
+                Tree converted = assignToFuncall(op, arg1, arg2);
+                return evalCallFunction(converted);
+            }
+            if(arg1.getType() == QParser.XXSUBSCRIPT) {
+                // (XXSUBSCRIPT '[' lexpr sublist)
+                // or (XXSUBSCRIPT LBB lexpr sublist)
+                if(arg1.getChild(0).getType() == QParser.LBB)
+                    throw new RuntimeException("NYI: LBB assignment");
+                Tree converted = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(op, arg1, arg2);
+                return evalCallFunction(converted);
+            }
+            throw new RuntimeException("assign: unsupported lexpr type(" + arg1.getType() + ")");
+            /*
+
 			Assignable assignable = evalLexpr(arg1);
 			assignable.assign(evalExpr(arg2).QClone());
 			return QObject.Null;
+			*/
 		}
 		QObject term1 = evalExpr(arg1);
 		QObject term2 = evalExpr(arg2);

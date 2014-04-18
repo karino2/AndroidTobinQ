@@ -398,6 +398,76 @@ public class QFunction extends QObject {
 		return new ForestIterater<QObjectForestAdapter>(root);
 	}
 
+    //  "(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))"
+    // <-
+    public static QFunction createInternalAssign()
+    {
+        return new QFunction(parseFormalList("target, values"), null) {
+            public boolean isPrimitive() {
+                return true;
+            }
+
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QPromise promiseTarget = (QPromise)funcEnv.get("target");
+                Tree expression = promiseTarget.getExpression();
+                if(expression.getType() != QParser.SYMBOL)
+                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+
+                String symName = expression.getText();
+                QObject vals = getR(funcEnv, "values", intp);
+                vals.share();
+                funcEnv._parent.put(symName, vals);
+                return QObject.Null;
+            }
+        };
+    }
+
+    // "(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 "rightHandVal")))"
+    // [<-
+    public static QFunction createInternalBracketAssign()
+    {
+        return new QFunction(null, null) {
+            public boolean isPrimitive() {
+                return true;
+            }
+
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject args = funcEnv.get(ARGNAME);
+                QPromise promiseTarget = (QPromise)args.get(0);
+                QObject rightVal = getIR(args, args.getLength()-1, intp);
+                if(args.getLength() != 3)
+                    throw new RuntimeException("NYI: multi dimensional assignment.");
+
+                QObject range = getIR(args, 1, intp);
+                if(range.getLength() != rightVal.getLength()) {
+                    rightVal = rightVal.QClone();
+                    rightVal.recycle(range.getLength());
+                }
+
+                Tree expression = promiseTarget.getExpression();
+                if(expression.getType() != QParser.SYMBOL)
+                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+
+                String symName = expression.getText();
+                QObject targetCand = intp.resolveIfNecessary(promiseTarget);
+                if(targetCand.isShared())
+                    targetCand = targetCand.QClone();
+
+
+                for(int i = 0; i < range.getLength(); i++) {
+                    int idx = range.get(i).getInt();
+                    QObject rval = getIR(rightVal, i, intp);
+                    rval.share();
+                    targetCand.set(idx-1, rval);
+                }
+                funcEnv._parent.put(symName, targetCand);
+                return QObject.Null;
+            }
+        };
+    }
+
+
+
     // sapply
     public static QFunction createSapply()
     {

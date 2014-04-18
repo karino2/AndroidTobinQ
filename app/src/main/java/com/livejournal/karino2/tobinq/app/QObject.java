@@ -22,12 +22,21 @@ public class QObject {
 	public String _mode;
 	HashMap<String, QObject> _attributes;
 	ArrayList<QObject> _vector = null;
+    boolean _shared = false;
 	
 	public QObject(String mode, Object val, HashMap<String, QObject> attrs)
 	{
 		this(mode, val);
 		copyAttributes(attrs);
 	}
+
+    public void share() {
+        _shared = true;
+    }
+
+    public boolean isShared() {
+        return _shared;
+    }
 
 	private void copyAttributes(HashMap<String, QObject> attrs) {
 		if(attrs != null) {
