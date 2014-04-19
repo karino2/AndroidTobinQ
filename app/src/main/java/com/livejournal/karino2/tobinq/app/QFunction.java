@@ -105,6 +105,11 @@ public class QFunction extends QObject {
     }
 
     // %*%
+    interface VectorMatrixAdapter {
+        int getRowNum();
+        int getColNum();
+        QObject rawGetByRowCol(int row, int col);
+    }
     public static QFunction createSpecialMultiply() {
         return new QPrimitive(parseFormalList("e1, e2"), null) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
@@ -127,11 +132,30 @@ public class QFunction extends QObject {
                     throw new RuntimeException("NYI: cross product, first term is not matrix");
            }
 
-            // almost the same as matrixMatrixCrossProduct...
-            private QObject matrixVectorCrossProduct(QObject term1, QObject term2) {
-                if(term1.getColNum() != term2.getLength())
-                    throw new RuntimeException("Invalid col-row for %*%, right side vector.");
-                QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), 1);
+
+            private QObject matrixVectorCrossProduct(QObject term1, final QObject term2) {
+                VectorMatrixAdapter term2wrapper = new VectorMatrixAdapter() {
+                    @Override
+                    public int getRowNum() {
+                        return term2.getLength();
+                    }
+                    @Override
+                    public int getColNum() {
+                        return 1;
+                    }
+                    @Override
+                    public QObject rawGetByRowCol(int row, int col) {
+                        return term2.get(row);
+
+                    }
+                };
+                return matrixMatrixProductCommon(term1, term2wrapper);
+            }
+
+            private QObject matrixMatrixProductCommon(QObject term1, VectorMatrixAdapter term2wrapper) {
+                if(term1.getColNum() != term2wrapper.getRowNum())
+                    throw new RuntimeException("%*%: non-conformable arguments");
+                QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2wrapper.getColNum());
                 int resultCol = 0;
                 for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
                 {
@@ -139,7 +163,7 @@ public class QFunction extends QObject {
                     for(int icol = 0; icol < term1.getColNum(); icol++)
                     {
                         double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
-                        double arg2 = term2.get(icol).getDouble();
+                        double arg2 = term2wrapper.rawGetByRowCol(icol, resultCol).getDouble();
                         sum += arg1*arg2;
                     }
                     ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
@@ -147,25 +171,23 @@ public class QFunction extends QObject {
                 return ret;
             }
 
-            private QObject matrixMatrixCrossProduct(QObject term1, QObject term2) {
-                if(term1.getColNum() != term2.getRowNum())
-                    throw new RuntimeException("%*%: non-conformable arguments");
-                QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2.getColNum());
-                for(int resultCol = 0; resultCol < term2.getColNum(); resultCol++)
-                {
-                    for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
-                    {
-                        double sum = 0;
-                        for(int icol = 0; icol < term1.getColNum(); icol++)
-                        {
-                            double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
-                            double arg2 = term2.rawGetByRowCol(icol, resultCol).getDouble();
-                            sum += arg1*arg2;
-                        }
-                        ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
+            private QObject matrixMatrixCrossProduct(QObject term1, final QObject term2) {
+                VectorMatrixAdapter term2wrapper = new VectorMatrixAdapter() {
+                    @Override
+                    public int getRowNum() {
+                        return term2.getRowNum();
                     }
-                }
-                return ret;
+                    @Override
+                    public int getColNum() {
+                        return term2.getColNum();
+                    }
+
+                    @Override
+                    public QObject rawGetByRowCol(int row, int col) {
+                         return term2.rawGetByRowCol(row, col);
+                    }
+                };
+                return matrixMatrixProductCommon(term1, term2wrapper);
             }
         };
     }
