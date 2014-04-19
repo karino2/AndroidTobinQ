@@ -249,6 +249,8 @@ public class QInterpreter {
 			return QObject.TRUE;
 		if(term.getType() == QParser.FALSE)
 			return QObject.FALSE;
+        if(term.getType() == QParser.NA)
+            return QObject.NA;
 		if(term.getType() == QParser.XXSUBSCRIPT)
 			return evalSubscript(term);
 		if(term.getType() == QParser.XXPAREN)

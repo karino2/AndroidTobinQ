@@ -36,6 +36,7 @@ WHILE='while';
 REPEAT='repeat';
 TRUE='TRUE';
 FALSE='FALSE';
+NA='NA' ;
 // imaginary, from gram.y function name in R source.
 XXVALUE;
 XXBINARY;
@@ -320,7 +321,7 @@ integerLiteral : HexLiteral
 num_const
 	: integerLiteral
 	| FloatingPointLiteral
-	| 'NA'
+	| NA
 	| TRUE
 	| FALSE
 	| 'Inf'

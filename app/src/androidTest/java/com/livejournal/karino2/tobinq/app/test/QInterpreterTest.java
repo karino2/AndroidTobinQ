@@ -643,6 +643,13 @@ public class QInterpreterTest extends TestCase {
 		assertEquals(QObject.TRUE, actual); 		
 	}
 	
+    public void test_evalExpr_NA() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("NA");
+        assertEquals(QObject.NA, actual);
+    }
+
+
 	public void test_eval_substitute_insideFunction()
 	{
 		QObject actual = _intp.eval("f <- function(a) { substitute(a); }\nf(1+2+3)");
