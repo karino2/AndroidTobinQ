@@ -36,6 +36,19 @@ public class QFunction extends QObject {
 		return null;
 	}
 
+    public static Tree parseExpr(String code)
+    {
+        QParser parser = createParser(code);
+        try {
+            return (Tree)parser.expr().getTree();
+        } catch (RecognitionException e) {
+            // This input is statically determined.
+            // Never come here if once it passed.
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     private static QParser createParser(String code) {
         CharStream codes = new ANTLRStringStream(code);
         QLexer lex = new QLexer(codes);
@@ -66,6 +79,41 @@ public class QFunction extends QObject {
     public static QObject resolve(QObject obj, QInterpreter intp) {
        return intp.resolveIfNecessary(obj);
     }
+
+    public static class QPrimitive extends QFunction {
+        public QPrimitive(Tree formalList, Tree body) {
+            super(formalList, body);
+        }
+        public boolean isPrimitive() {return true; }
+    }
+
+
+    // "matrix"
+    public static QObject createMatrix() {
+        return new QPrimitive(parseFormalList("data=NA, nrow=1, ncol=1, byrow = FALSE, dimnames = NULL"), null) {
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject nrow = getR(funcEnv, "nrow", intp);
+                QObject ncol = getR(funcEnv, "ncol", intp);
+                QObject data = getR(funcEnv, "data", intp);
+                QObject matrix;
+                if(data.isNA())
+                    matrix = QObject.createNumeric(0);
+                else
+                    matrix = data.QClone();
+
+                matrix.setAttribute("class", QObject.createCharacter("matrix"));
+
+                QObject dim =QObject.createNumeric(nrow.getInt());
+                dim.set(1, ncol.QClone());
+                matrix.setAttribute("dim", dim);
+
+                return matrix;
+            }
+        };
+    }
+
+
 
 	// "c"
 	public static QFunction createConcatinate()
@@ -911,7 +959,7 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject arg = funcEnv.get("obj");
+				QObject arg = getR(funcEnv, "obj", intp);
 				if(arg.isNull())
 					throw new RuntimeException("Argument of attributes should be one object");
 				return arg.attributesAsList();
@@ -996,7 +1044,7 @@ public class QFunction extends QObject {
 					Tree orgVal = promise.getExpression();
 					if(orgVal.getType() != QParser.SYMBOL)
 						throw new RuntimeException("match.arg, arg's caller sexp is not symbol. what situation? :" + orgVal.toStringTree());
-					choices = funcEnv.getDefaultValue(orgVal.getText());
+					choices = intp.resolveIfNecessary(funcEnv.getDefaultValue(orgVal.getText()));
 				}
 				String argStr = (String)arg.getValue();
 				for(int i = 0; i < choices.getLength(); i++)

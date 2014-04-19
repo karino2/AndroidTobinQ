@@ -169,16 +169,43 @@ public class QObject {
 	{
 		if(_vector == null)
 			return toStringOne(this);
-		StringBuffer buf = new StringBuffer();
-		for(QObject obj : _vector)
-		{
-			if(buf.length() != 0)
-				buf.append(" ");
-			buf.append(toStringOne(obj));
-		}
-		return buf.toString();
-	}
-	
+        QObject dim = getAttribute("dim");
+        if(dim.isNull())
+        {
+            StringBuffer buf = new StringBuffer();
+            for(QObject obj : _vector)
+            {
+                if(buf.length() != 0)
+                    buf.append(" ");
+                buf.append(toStringOne(obj));
+            }
+            return buf.toString();
+        }
+        else
+        {
+            ArrayList<String> rowNames = createRowNames(getRowNum());
+            ArrayList<String> colNames = createColNames(getColNum());
+            return toStringGrid(rowNames, colNames);
+        }
+    }
+
+    private ArrayList<String> createColNames(int colNum) {
+        ArrayList<String> ret = new ArrayList<String>();
+        for(int i = 0; i < colNum; i++)
+        {
+            ret.add("[," + String.valueOf(i+1) + "]");
+        }
+        return ret;
+    }
+
+    private ArrayList<String> createRowNames(int rowNum) {
+        ArrayList<String> ret = new ArrayList<String>();
+        for(int i = 0; i < rowNum; i++)
+        {
+            ret.add("[" + String.valueOf(i+1) + ",]");
+        }
+        return ret;
+    }
 
 	public int getLength()
 	{
@@ -250,8 +277,13 @@ public class QObject {
 	{
 		return QObject.Null.equals(this);		
 	}
-	
-	public QObject get(int i)
+
+    public boolean isNA()
+    {
+        return QObject.NA.equals(this);
+    }
+
+    public QObject get(int i)
 	{
 		// atom
 		if(i == 0 && getLength() == 1)
@@ -261,7 +293,38 @@ public class QObject {
 		return _vector.get(i);
 	}
 
-	public void set(int i, QObject qObject) {
+
+    int getRowNum()
+    {
+        return getDim().get(0).getInt();
+    }
+    int getColNum()
+    {
+        return getDim().get(1).getInt();
+    }
+
+    QObject getDim() {
+        QObject dim = getAttribute("dim");
+        if(dim.isNull())
+            throw new RuntimeException("wrong dimension");
+        return dim;
+    }
+
+    QObject rawGetByRowCol(int row, int col)
+    {
+        int rowNum = getRowNum();
+        int newIndex = col*rowNum+row;
+        return get(newIndex);
+    }
+
+    private void appendSpace(StringBuffer buf, int maxRowLength) {
+        for(int i = 0; i < maxRowLength; i++)
+            buf.append(" ");
+    }
+
+
+
+    public void set(int i, QObject qObject) {
 		if(this == QObject.NA)
 			return;
 		ensureVector();		
@@ -440,4 +503,63 @@ public class QObject {
 		else
 			return toString();
 	}
+
+
+    ArrayList<String> QVectorToList(QObject obj)
+    {
+        ArrayList<String> ret = new ArrayList<String>();
+        for(int i = 0; i < obj.getLength(); i++)
+        {
+            ret.add(obj.get(i).toRawString());
+        }
+        return ret;
+    }
+
+    protected String toStringGrid(ArrayList<String> rowNames, ArrayList<String> names) {
+        ArrayList<Integer> colMaxLength = new ArrayList<Integer>();
+        colMaxLength.add(0,maxRawStrLength(rowNames));
+        StringBuffer buf = new StringBuffer();
+
+        // print header
+        appendSpace(buf, colMaxLength.get(0));
+        for(int i = 0; i < names.size(); i++)
+        {
+            buf.append(" ");
+
+            String nameRawStr = names.get(i);
+            int nameLen = nameRawStr.length();
+            colMaxLength.add(i+1, Math.max(nameLen, maxRawStrLength(QVectorToList(get(i).get(0)))));
+            buf.append(nameRawStr);
+            appendSpace(buf, colMaxLength.get(i+1) - nameLen);
+        }
+        buf.append("\n");
+
+        for(int i = 0; i < getRowNum(); i++)
+        {
+            String rowName = rowNames.get(i);
+            buf.append(rowName);
+            appendSpace(buf, colMaxLength.get(0) - rowName.length());
+            for(int j = 0; j < getColNum(); j++) {
+                String val = rawGetByRowCol(i, j).toString();
+                buf.append(" ");
+                appendSpace(buf, colMaxLength.get(j+1) - val.length());
+                buf.append(val);
+            }
+            buf.append("\n");
+        }
+        return buf.toString();
+    }
+
+
+    private int maxRawStrLength(ArrayList<String> rowNames) {
+        int max = 0;
+        for(int i = 0; i < rowNames.size(); i++)
+        {
+            int l = rowNames.get(i).length();
+            if(max < l)
+                max = l;
+        }
+        return max;
+    }
+
 }

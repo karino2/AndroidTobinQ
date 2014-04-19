@@ -158,65 +158,26 @@ public class QList extends QObject {
 	{
 		return getQClass() == "data.frame";
 	}
-	
-	
-	// slow...
-	private String toStringDataFrame() {
-		QObject rowNames = getRowNamesAttr();
-		QObject names = getNamesAttr();
-		
-		ArrayList<Integer> colMaxLength = new ArrayList<Integer>();
-		colMaxLength.add(0,maxRawStrLength(rowNames));
-		StringBuffer buf = new StringBuffer();
-	
-		// print header
-		appendSpace(buf, colMaxLength.get(0));
-		for(int i = 0; i < names.getLength(); i++)
-		{
-			buf.append(" ");
-			
-			QObject name = names.get(i);
-			int nameLen = name.toRawString().length();
-			colMaxLength.add(i+1, Math.max(nameLen, maxRawStrLength(get(i).get(0))));
-			buf.append(name.toRawString());
-			appendSpace(buf, colMaxLength.get(i+1) - nameLen);
-		}
-		buf.append("\n");
-		
-		QObject firstList = get(0);
-		QObject firstVector = firstList.get(0);
-		for(int i = 0; i < firstVector.getLength(); i++)
-		{
-			String rowName = rowNames.get(i).toRawString();
-			buf.append(rowName);
-			appendSpace(buf, colMaxLength.get(0) - rowName.length());
-			for(int j = 0; j < getLength(); j++) {
-				buf.append(" ");
-				String val = rawGetByRowCol(i, j).toString();
-				buf.append(val);
-				appendSpace(buf, colMaxLength.get(j+1) - val.length());
-			}
-			buf.append("\n");
-		}
-		return buf.toString();
-	}
-	private void appendSpace(StringBuffer buf, int maxRowLength) {
-		for(int i = 0; i < maxRowLength; i++)
-			buf.append(" ");
-	}
 
-	private int maxRawStrLength(QObject rowNames) {
-		int max = 0;
-		for(int i = 0; i < rowNames.getLength(); i++)
-		{
-			int l = rowNames.get(i).toRawString().length();
-			if(max < l)
-				max = l;
-		}
-		return max;
-	}
-	
-	
+    private String toStringDataFrame() {
+        ArrayList<String> rowNames = QVectorToList(getRowNamesAttr());
+        ArrayList<String> names = QVectorToList(getNamesAttr());
+
+        return toStringGrid(rowNames, names);
+    }
+
+    int getRowNum()
+    {
+        QObject firstList = get(0);
+        QObject firstVector = firstList.get(0);
+
+        return firstVector.getLength();
+    }
+
+    int getColNum() {
+        return getLength();
+    }
+
 	public static QList createDataFrameFromCsvTable(CsvTable table) {
         CsvTableConverter converter = new CsvTableConverter(table);
         return converter.doConvert();
@@ -226,8 +187,10 @@ public class QList extends QObject {
 	protected static QList copyVectorAsDataFrame(QObject o) {
 		QList df = createDataFrame();
 		QObjectBuilder bldr = new QObjectBuilder();
-		for(int i = 0; i < o.getLength(); i++)
-			bldr.add(o.get(i).QClone()); //TODO: remove clone.
+		for(int i = 0; i < o.getLength(); i++) {
+            o.get(i).share();
+            bldr.add(o.get(i));
+        }
 		df.set(0, bldr.result());
 		return df;
 	}
@@ -334,7 +297,9 @@ public class QList extends QObject {
 	
 	public QObject subscriptByRowIndex(int rowIndex) {
 		QList df = dupBaseDataFrame();
-		df.setRowName(0, getRowName(rowIndex).QClone());
+        QObject name = getRowName(rowIndex);
+        name.share();
+		df.setRowName(0, name);
 		
 		for(int col = 0; col < getLength(); col++) {
 			QObject colVector = getBBInt(col);

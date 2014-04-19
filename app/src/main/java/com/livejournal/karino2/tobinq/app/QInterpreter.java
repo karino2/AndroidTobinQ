@@ -47,6 +47,13 @@ public class QInterpreter {
 		_curEnv.put("deparse", QFunction.createDeParse());
 		_curEnv.put("match.arg", QFunction.createMatchArg());
 		_curEnv.put("read.csv", QFunction.createReadCsv(_csvRetrievable));
+        _curEnv.put("matrix", QFunction.createMatrix());
+
+        // not primitive
+        registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");
+        registerNonePrimitiveFunction("dim", "obj", "attributes(obj)[[\"dim\"]]");
+
+
         // internal
         _curEnv.put("<-", QFunction.createInternalAssign());
         _curEnv.put("[<-", QFunction.createInternalBracketAssign());
@@ -55,7 +62,18 @@ public class QInterpreter {
         _curEnv.put("[[", QFunction.createInternalSubscriptBB());
 	}
 
-	public QInterpreter(Writable console) {
+    public void registerNonePrimitiveFunction(String name, String formal, String body)
+    {
+        _curEnv.put(name, createFunction(formal, body));
+    }
+
+    public QFunction createFunction(String formal, String body)
+    {
+        return new QFunction(QFunction.parseFormalList(formal), QFunction.parseExpr(body));
+    }
+
+
+    public QInterpreter(Writable console) {
 		this(console, null,  null);
 	}	
 
@@ -402,7 +420,8 @@ public class QInterpreter {
 				continue;
 			Tree sym = formArg.getChild(0);
 			Tree val = formArg.getChild(1);
-			funcEnv.putDefault(sym.getText(), evalExprWithoutResolve(val));
+            QPromise promise = new QPromise(_curEnv, val);
+			funcEnv.putDefault(sym.getText(), promise /* evalExprWithoutResolve(val) */);
 		}
 	}
 

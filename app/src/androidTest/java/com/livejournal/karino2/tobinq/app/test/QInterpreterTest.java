@@ -75,6 +75,13 @@ public class QInterpreterTest extends TestCase {
 
     }
 
+    public void test_eval_function_promiseResolve2()
+    {
+        QObject actual = _intp.eval("f <- function(a) { a+1; }\nf(1+2+3)");
+        assertQNumericEquals(7, actual);
+    }
+
+
     public void test_eval_function_promiseModeBug()
     {
         double expected1 = 6.5;
@@ -131,8 +138,29 @@ public class QInterpreterTest extends TestCase {
 		assertEquals(true, actual.get(1).isTrue());
 		assertEquals(false, actual.get(2).isTrue());
 	}
-	
-	public void test_evalExpr_exprList() throws RecognitionException
+
+    public void test_evalExpr_matrix_class() throws RecognitionException
+    {
+        String expected = "matrix";
+        QObject actual = callEvalExpr("class(matrix(1:4, 2, 2))");
+        assertQCharEquals(expected, actual);
+    }
+
+    public void test_evalExpr_matrix_dim() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("dim(matrix(1:6, 2, 3))");
+        assertQNumericEquals(2, actual.get(0));
+        assertQNumericEquals(3, actual.get(1));
+    }
+
+    public void test_evalExpr_matrix_toString() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("matrix(1:6, 2, 3)");
+        assertEquals("     [,1] [,2] [,3]\n[1,]  1.0  3.0  5.0\n[2,]  2.0  4.0  6.0\n",
+                actual.toString());
+    }
+
+    public void test_evalExpr_exprList() throws RecognitionException
 	{
 		int expected = 5;
 		QObject actual = callEvalExpr("{3; 5}");
@@ -621,7 +649,7 @@ public class QInterpreterTest extends TestCase {
 		assertEquals("(XXBINARY + 1 (XXBINARY + 2 3))", actual.toString());
 	}
 
-	
+
 	public void test_evalExpr_substitute_justSymbol() throws RecognitionException
 	{
 		QObject actual = callEvalExpr("substitute(a)");
