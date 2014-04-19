@@ -172,6 +172,18 @@ public class QInterpreterTest extends TestCase {
         assertQNumericEquals(14, actual.get(0));
     }
 
+    public void test_evalExpr_matrix_crossproduct_2row() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("matrix(1:6, 2, 3) %*% 1:3");
+        assertQNumericEquals(22, actual.get(0));
+        assertQNumericEquals(28, actual.get(1));
+    }
+
+    public void test_evalExpr_matrix_crossproduct_2row_tostring() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("matrix(1:6, 2, 3) %*% 1:3");
+        assertEquals("     [,1]\n[1,] 22.0\n[2,] 28.0\n", actual.toString());
+    }
 
 
     public void test_evalExpr_exprList() throws RecognitionException

@@ -115,49 +115,58 @@ public class QFunction extends QObject {
                 if(term1.getQClass() == "matrix" &&
                         term2.getQClass() == "matrix")
                 {
-                    if(term1.getColNum() != term2.getRowNum())
-                        throw new RuntimeException("%*%: non-conformable arguments");
-                    QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2.getColNum());
-                    for(int resultCol = 0; resultCol < term2.getColNum(); resultCol++)
-                    {
-                        for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
-                        {
-                            double sum = 0;
-                            for(int icol = 0; icol < term1.getColNum(); icol++)
-                            {
-                                double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
-                                double arg2 = term2.rawGetByRowCol(icol, resultCol).getDouble();
-                                sum += arg1*arg2;
-                            }
-                            ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
-                        }
-                    }
-                    return ret;
+                    return matrixMatrixCrossProduct(term1, term2);
                 }
                 else if(term1.getQClass() == "matrix")
                 {
-                    // almost the same to above.
-                    if(term1.getColNum() != term2.getLength())
-                        throw new RuntimeException("Invalid col-row for %*%, right side vector.");
-                    QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2.getLength());
-                    int resultCol = 0;
+                    return matrixVectorCrossProduct(term1, term2);
+
+
+                }
+                else
+                    throw new RuntimeException("NYI: cross product, first term is not matrix");
+           }
+
+            // almost the same as matrixMatrixCrossProduct...
+            private QObject matrixVectorCrossProduct(QObject term1, QObject term2) {
+                if(term1.getColNum() != term2.getLength())
+                    throw new RuntimeException("Invalid col-row for %*%, right side vector.");
+                QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), 1);
+                int resultCol = 0;
+                for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
+                {
+                    double sum = 0;
+                    for(int icol = 0; icol < term1.getColNum(); icol++)
+                    {
+                        double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
+                        double arg2 = term2.get(icol).getDouble();
+                        sum += arg1*arg2;
+                    }
+                    ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
+                }
+                return ret;
+            }
+
+            private QObject matrixMatrixCrossProduct(QObject term1, QObject term2) {
+                if(term1.getColNum() != term2.getRowNum())
+                    throw new RuntimeException("%*%: non-conformable arguments");
+                QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2.getColNum());
+                for(int resultCol = 0; resultCol < term2.getColNum(); resultCol++)
+                {
                     for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
                     {
                         double sum = 0;
                         for(int icol = 0; icol < term1.getColNum(); icol++)
                         {
                             double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
-                            double arg2 = term2.get(icol).getDouble();
+                            double arg2 = term2.rawGetByRowCol(icol, resultCol).getDouble();
                             sum += arg1*arg2;
                         }
                         ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
                     }
-                    return ret;
-
                 }
-                else
-                    throw new RuntimeException("NYI: cross product, first term is not matrix");
-           }
+                return ret;
+            }
         };
     }
 

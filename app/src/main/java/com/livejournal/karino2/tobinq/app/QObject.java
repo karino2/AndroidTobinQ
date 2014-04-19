@@ -537,7 +537,8 @@ public class QObject {
 
             String nameRawStr = names.get(i);
             int nameLen = nameRawStr.length();
-            colMaxLength.add(i+1, Math.max(nameLen, maxRawStrLength(QVectorToList(get(i).get(0)))));
+            colMaxLength.add(i+1, Math.max(nameLen, maxRawStrLength(getColumnList(i))));
+
             buf.append(nameRawStr);
             appendSpace(buf, colMaxLength.get(i+1) - nameLen);
         }
@@ -557,6 +558,15 @@ public class QObject {
             buf.append("\n");
         }
         return buf.toString();
+    }
+
+    ArrayList<String> getColumnList(int i) {
+        ArrayList<String> ret = new ArrayList<String>();
+        for(int row = 0; row < getRowNum(); row++)
+        {
+            ret.add(rawGetByRowCol(row, i).toRawString());
+        }
+        return ret;
     }
 
 

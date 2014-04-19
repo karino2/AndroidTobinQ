@@ -174,6 +174,15 @@ public class QList extends QObject {
         return firstVector.getLength();
     }
 
+    ArrayList<String> getColumnList(int i) {
+        return QVectorToList(getColumnVector(i));
+    }
+
+    QObject getColumnVector(int i) {
+        return get(i).get(0);
+    }
+
+
     int getColNum() {
         return getLength();
     }
