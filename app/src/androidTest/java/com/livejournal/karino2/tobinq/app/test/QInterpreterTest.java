@@ -305,8 +305,21 @@ public class QInterpreterTest extends TestCase {
 		assertNotNull(actual.toString());
 		assertEquals("numeric", actual.getMode());
 	}
-	
-	public void test_evalExpr_dataFrame_subscriptBB_int() throws RecognitionException
+
+    public void test_evalExpr_dataFrame_subscriptUSD() throws RecognitionException
+    {
+        // setup
+        callEvalExpr("x<-1:3");
+        callEvalExpr("y<-4:6");
+        callEvalExpr("df<-data.frame(x, y)");
+
+        QObject actual = callEvalExpr("df$y");
+
+        assertEquals("4.0 5.0 6.0", actual.toString());
+    }
+
+
+    public void test_evalExpr_dataFrame_subscriptBB_int() throws RecognitionException
 	{
 		// setup
 		callEvalExpr("x<-1:3");

@@ -52,6 +52,7 @@ public class QInterpreter {
         // not primitive
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");
         registerNonePrimitiveFunction("dim", "obj", "attributes(obj)[[\"dim\"]]");
+        registerNonePrimitiveFunction("$", "obj, sym", "obj[[deparse(substitute(sym))]]");
 
 
         // internal
@@ -687,11 +688,10 @@ public class QInterpreter {
         {
             return convertAndCallBinaryCall("seq", arg1, arg2);
         }
-        else if("%*%".equals(op.getText()))
+        else if("%*%".equals(op.getText()) || "$".equals(op.getText()))
         {
-            return convertAndCallBinaryCall("%*%", arg1, arg2);
+            return convertAndCallBinaryCall(op.getText(), arg1, arg2);
         }
-
 
 
 		QObject term1 = evalExpr(arg1);
