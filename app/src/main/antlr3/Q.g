@@ -161,13 +161,19 @@ relationalOp
 	 (LT | LE | EQ | NE | GE | GT | AND2 | OR2 )
 	;
 
+
+// '?' is not assign, but the same precedance.
 assign_op:
-	(LEFT_ASSIGN | RIGHT_ASSIGN)
+	(LEFT_ASSIGN | RIGHT_ASSIGN | '?')
 	;
 	
 multicative_op
-	:(':'| '*' |  '/' | '^' | SPECIAL | '%' | '~' | '?')
+	:( '*' |  '/')
 	;
+
+
+// ^ > : > %*%=%% > * = /
+// | > ~ > ?=<-
 
 refer	: (lexpr -> lexpr)
 	    ('(' sublist ')'
@@ -181,6 +187,29 @@ refer	: (lexpr -> lexpr)
 	    )*
 	  ;
 
+powerExpression
+    : (refer -> refer)
+    ( '^' powerExpression
+        -> ^(XXBINARY '^' refer powerExpression)
+     )?
+     ;
+
+
+seqExpression
+    : (powerExpression -> powerExpression)
+    ( ':' seqExpression
+        -> ^(XXBINARY ':' powerExpression seqExpression)
+     )?
+     ;
+
+specialExpression
+    : (seqExpression -> seqExpression)
+    ( SPECIAL specialExpression
+        -> ^(XXBINARY SPECIAL seqExpression specialExpression)
+    )?
+    ;
+
+
 additiveExpression
     :   (multiplicativeExpression -> multiplicativeExpression)
 	 ( additive_op additiveExpression
@@ -189,9 +218,9 @@ additiveExpression
     ;
 
 oneMulExpression
-   : (a = refer->$a)
+   : (a = specialExpression->$a)
       (
-        multicative_op b = refer
+        multicative_op b = specialExpression
            ->^(XXBINARY multicative_op $a $b)
        )?
        ;
@@ -199,8 +228,8 @@ oneMulExpression
 multiplicativeExpression
     :   (oneMulExpression -> oneMulExpression)
 	  (
-		multicative_op refer
-		  -> ^(XXBINARY multicative_op oneMulExpression refer)
+		multicative_op specialExpression
+		  -> ^(XXBINARY multicative_op oneMulExpression specialExpression)
 	  )?
     ;
 
@@ -225,11 +254,19 @@ relationalExpression
 		  -> ^(XXBINARY relationalOp additiveExpression relationalExpression)
 	)?
     ;
+
+tildeExpression
+    : (inclusiveOrExpression ->inclusiveOrExpression)
+    (
+    '~' tildeExpression
+      -> ^(XXBINARY '~' inclusiveOrExpression tildeExpression)
+    )?
+    ;
 	  
-expr	: (inclusiveOrExpression ->inclusiveOrExpression)
+expr	: (tildeExpression ->tildeExpression)
 	    (
 		assign_op expr
-		  -> ^(XXBINARY assign_op inclusiveOrExpression expr)
+		  -> ^(XXBINARY assign_op tildeExpression expr)
 	    )?
 	;
 

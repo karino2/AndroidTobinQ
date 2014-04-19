@@ -147,6 +147,17 @@ public class QParserTest extends TestCase {
         assertEquals("(XXBINARY * (XXBINARY / 2 3) 3)", actual.toStringTree());
     }
 
+    // (XXBINARY : (XXBINARY %*% (XXFUNCALL matrix (XXSUBLIST (XXSUB1 (XXBINARY : 1 3)) (XXSYMSUB1 ncol 3))) 1) 3)
+    public void test_seq_priority() throws RecognitionException {
+        CommonTree actual = parseExpression("a * 1:2");
+        assertEquals("(XXBINARY * a (XXBINARY : 1 2))", actual.toStringTree());
+    }
+
+    public void test_spacial_priority() throws RecognitionException {
+        CommonTree actual = parseExpression("a %*% 1:2");
+        assertEquals("(XXBINARY %*% a (XXBINARY : 1 2))", actual.toStringTree());
+    }
+
     /*
             FunctionCallBuilder Test.
      */
@@ -213,10 +224,15 @@ public class QParserTest extends TestCase {
 
     public void test_funcall_temp() throws RecognitionException
     {
-        // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)) (XXSUB1 3))) c)
-        CommonTree actual = parseExpression("a[1:2, 3] <- c");
+        CommonTree actual = parseExpression("matrix(1:3, ncol=3) %*% 1:3");
         String deb = actual.toStringTree();
         // assertEquals("dummy", deb);
+
+
+        /*
+        // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)) (XXSUB1 3))) c)
+        CommonTree actual = parseExpression("a[1:2, 3] <- c");
+        */
 
         /*
         // (XXBINARY <- (XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 (XXBINARY : 1 2)))) c)
