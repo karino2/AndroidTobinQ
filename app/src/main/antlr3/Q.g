@@ -95,13 +95,13 @@ prog : prog_begin prog_continue* ('\n' | ';')*
 
 prog_begin : ('\n' | ';')* expr_or_assign
 		-> ^(XXVALUE expr_or_assign)
-		;
-		
+    ;
+
 prog_continue: 
 		('\n' | ';')+ expr_or_assign 
 		-> ^(XXVALUE expr_or_assign)
 		;
-		
+
 expr_or_assign  :    (expr->expr) (EQ_ASSIGN expr_or_assign -> ^(XXBINARY EQ_ASSIGN expr expr_or_assign))?
                 ;
 
@@ -217,20 +217,12 @@ additiveExpression
 	 )?
     ;
 
-oneMulExpression
-   : (a = specialExpression->$a)
-      (
-        multicative_op b = specialExpression
-           ->^(XXBINARY multicative_op $a $b)
-       )?
-       ;
-
 multiplicativeExpression
-    :   (oneMulExpression -> oneMulExpression)
+    :   (a=specialExpression -> $a)
 	  (
-		multicative_op specialExpression
-		  -> ^(XXBINARY multicative_op oneMulExpression specialExpression)
-	  )?
+		multicative_op b=specialExpression
+		  -> ^(XXBINARY multicative_op $multiplicativeExpression $b)
+	  )*
     ;
 
 inclusiveOrExpression
