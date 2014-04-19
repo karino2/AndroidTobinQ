@@ -166,9 +166,10 @@ relationalOp
 assign_op:
 	(LEFT_ASSIGN | RIGHT_ASSIGN | '?')
 	;
-	
+
+// SPECIAL is higher priority than multicative, but need to reduce call stack...
 multicative_op
-	:( '*' |  '/')
+	:( '*' |  '/' | SPECIAL)
 	;
 
 
@@ -202,13 +203,6 @@ seqExpression
      )?
      ;
 
-specialExpression
-    : (seqExpression -> seqExpression)
-    ( SPECIAL specialExpression
-        -> ^(XXBINARY SPECIAL seqExpression specialExpression)
-    )?
-    ;
-
 
 additiveExpression
     :   (multiplicativeExpression -> multiplicativeExpression)
@@ -218,9 +212,9 @@ additiveExpression
     ;
 
 multiplicativeExpression
-    :   (a=specialExpression -> $a)
+    :   (a=seqExpression -> $a)
 	  (
-		multicative_op b=specialExpression
+		multicative_op b=seqExpression
 		  -> ^(XXBINARY multicative_op $multiplicativeExpression $b)
 	  )*
     ;

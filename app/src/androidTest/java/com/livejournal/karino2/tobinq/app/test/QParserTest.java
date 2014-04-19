@@ -224,9 +224,10 @@ public class QParserTest extends TestCase {
 
     public void test_funcall_temp() throws RecognitionException
     {
-        CommonTree actual = parseExpression("matrix(1:3, ncol=3) %*% 1:3");
+        // (XXVALUE (XXBINARY <- x (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2) (XXSUB1 3))))) (XXVALUE (XXBINARY <- y (XXFUNCALL c (XXSUBLIST (XXSUB1 5) (XXSUB1 76)))))
+        CommonTree actual = parseProg("x<-c(1,2,3)\ny<-c(5,76)");
         String deb = actual.toStringTree();
-        // assertEquals("dummy", deb);
+//        assertEquals("dummy", deb);
 
 
         /*
@@ -272,7 +273,22 @@ public class QParserTest extends TestCase {
 		CommonTree actual = parseExpression("gdp.year");
 		assertEquals("gdp.year", actual.getText());
 	}
-	
+
+    /*
+            String code = "x<-1:24; sumMonths <- function(total) { n<-(length(total)/12);"
+        + "y<-1:n; for(i in 1:n) {b<-(12*(i-1))+1;e<-(12*(i-1))+12; y[i]<-mean(total[b:e]) }\n y}"
+        + "\nsumMonths(x)";
+
+     */
+    public void test_expr_stackOverflowBug() throws RecognitionException
+    {
+        String code = "x<-1:24; sumMonths <- function(total) { n<-(length(total)/12);"
+                + "y<-1:n; for(i in 1:n) {b<-(12*(i-1))+1;e<-(12*(i-1))+12; y[i]<-mean(total[b:e]) }\n y}"
+                + "\nsumMonths(x)";
+        CommonTree actual = parseProg("code");
+        assertNotNull(actual);
+    }
+
 	private void assertEqualsNoType(String expect, Tree actual) {
 		assertEquals(expect, actual.getText());
 	}
