@@ -312,9 +312,18 @@ public class QObject {
 
     QObject rawGetByRowCol(int row, int col)
     {
+        return get(calculateIndex(row, col));
+    }
+
+    void rawSetByRowCol(int row, int col, QObject obj)
+    {
+        set(calculateIndex(row, col), obj);
+    }
+
+    int calculateIndex(int row, int col) {
         int rowNum = getRowNum();
         int newIndex = col*rowNum+row;
-        return get(newIndex);
+        return newIndex;
     }
 
     private void appendSpace(StringBuffer buf, int maxRowLength) {
@@ -417,7 +426,7 @@ public class QObject {
 		return FALSE.QClone();
 	}
 
-	// current implementation is read only.
+    // current implementation is read only.
 	public QObject attributesAsList() {
 		if(_attributes == null)
 			return QObject.Null;

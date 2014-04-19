@@ -60,6 +60,7 @@ public class QInterpreter {
         _curEnv.put("[[<-", QFunction.createInternalBBAssign());
         _curEnv.put("[", QFunction.createInternalSubscriptBracket());
         _curEnv.put("[[", QFunction.createInternalSubscriptBB());
+        _curEnv.put("%*%", QFunction.createSpecialMultiply());
 	}
 
     public void registerNonePrimitiveFunction(String name, String formal, String body)
@@ -680,6 +681,19 @@ public class QInterpreter {
             }
             throw new RuntimeException("assign: unsupported lexpr type(" + arg1.getType() + ")");
 		}
+
+
+        if(":".equals(op.getText()))
+        {
+            return convertAndCallBinaryCall("seq", arg1, arg2);
+        }
+        else if("%*%".equals(op.getText()))
+        {
+            return convertAndCallBinaryCall("%*%", arg1, arg2);
+        }
+
+
+
 		QObject term1 = evalExpr(arg1);
 		QObject term2 = evalExpr(arg2);
 		if("+".equals(op.getText()))
@@ -734,18 +748,15 @@ public class QInterpreter {
 		{
 			return evalAND(term1, term2);
 		}
-		else if(":".equals(op.getText()))
-		{
-			Environment funcEnv = new Environment(_curEnv);
-			// Be careful! I assume seq fomral name!
-			funcEnv.put("beg", term1);
-			funcEnv.put("end", term2);
-			return ((QFunction)_curEnv.get("seq")).callPrimitive(funcEnv, this);
-		}
 		else 		throw new RuntimeException("NYI1");
 	}
 
-	private Tree buildTree(String codestext) throws RecognitionException {
+    private QObject convertAndCallBinaryCall(String funcName, Tree arg1, Tree arg2) {
+        Tree converted = FunctionCallBuilder.convertBinaryCallToFuncall(funcName, arg1, arg2);
+        return evalCallFunction(converted);
+    }
+
+    private Tree buildTree(String codestext) throws RecognitionException {
 		CharStream codes = new ANTLRStringStream(codestext);
 		QLexer lex = new QLexer(codes);
 		CommonTokenStream tokens = new CommonTokenStream(lex);

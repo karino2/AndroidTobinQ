@@ -160,6 +160,20 @@ public class QInterpreterTest extends TestCase {
                 actual.toString());
     }
 
+    public void test_evalExpr_matrix_crossproduct_result_mustbe_matrix() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("matrix(1:3, ncol=3) %*% 1:3");
+        assertEquals("matrix", actual.getQClass());
+    }
+
+    public void test_evalExpr_matrix_crossproduct() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("matrix(1:3, ncol=3) %*% 1:3");
+        assertQNumericEquals(14, actual.get(0));
+    }
+
+
+
     public void test_evalExpr_exprList() throws RecognitionException
 	{
 		int expected = 5;
@@ -642,7 +656,7 @@ public class QInterpreterTest extends TestCase {
 		QObject actual = callEvalExpr("is.null(NULL)");
 		assertEquals(QObject.TRUE, actual); 		
 	}
-	
+
     public void test_evalExpr_NA() throws RecognitionException
     {
         QObject actual = callEvalExpr("NA");

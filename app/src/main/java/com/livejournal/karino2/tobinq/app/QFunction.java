@@ -89,33 +89,97 @@ public class QFunction extends QObject {
 
 
     // "matrix"
-    public static QObject createMatrix() {
+    public static QFunction createMatrix() {
         return new QPrimitive(parseFormalList("data=NA, nrow=1, ncol=1, byrow = FALSE, dimnames = NULL"), null) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
             {
                 QObject nrow = getR(funcEnv, "nrow", intp);
                 QObject ncol = getR(funcEnv, "ncol", intp);
                 QObject data = getR(funcEnv, "data", intp);
-                QObject matrix;
-                if(data.isNA())
-                    matrix = QObject.createNumeric(0);
-                else
-                    matrix = data.QClone();
 
-                matrix.setAttribute("class", QObject.createCharacter("matrix"));
-
-                QObject dim =QObject.createNumeric(nrow.getInt());
-                dim.set(1, ncol.QClone());
-                matrix.setAttribute("dim", dim);
-
-                return matrix;
+                int irow = nrow.getInt();
+                int icol = ncol.getInt();
+                return createRawMatrix(data, irow, icol);
             }
         };
     }
 
+    // %*%
+    public static QFunction createSpecialMultiply() {
+        return new QPrimitive(parseFormalList("e1, e2"), null) {
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject term1 = getR(funcEnv, "e1", intp);
+                QObject term2 = getR(funcEnv, "e2", intp);
+
+                if(term1.getQClass() == "matrix" &&
+                        term2.getQClass() == "matrix")
+                {
+                    if(term1.getColNum() != term2.getRowNum())
+                        throw new RuntimeException("%*%: non-conformable arguments");
+                    QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2.getColNum());
+                    for(int resultCol = 0; resultCol < term2.getColNum(); resultCol++)
+                    {
+                        for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
+                        {
+                            double sum = 0;
+                            for(int icol = 0; icol < term1.getColNum(); icol++)
+                            {
+                                double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
+                                double arg2 = term2.rawGetByRowCol(icol, resultCol).getDouble();
+                                sum += arg1*arg2;
+                            }
+                            ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
+                        }
+                    }
+                    return ret;
+                }
+                else if(term1.getQClass() == "matrix")
+                {
+                    // almost the same to above.
+                    if(term1.getColNum() != term2.getLength())
+                        throw new RuntimeException("Invalid col-row for %*%, right side vector.");
+                    QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2.getLength());
+                    int resultCol = 0;
+                    for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
+                    {
+                        double sum = 0;
+                        for(int icol = 0; icol < term1.getColNum(); icol++)
+                        {
+                            double arg1 = term1.rawGetByRowCol(resultRow, icol).getDouble();
+                            double arg2 = term2.get(icol).getDouble();
+                            sum += arg1*arg2;
+                        }
+                        ret.rawSetByRowCol(resultRow, resultCol, QObject.createNumeric(sum));
+                    }
+                    return ret;
+
+                }
+                else
+                    throw new RuntimeException("NYI: cross product, first term is not matrix");
+           }
+        };
+    }
+
+    static QObject createRawMatrix(QObject data, int irow, int icol) {
+        QObject matrix;
+        if(data.isNA())
+            matrix = QObject.createNumeric(0);
+        else
+            matrix = data.QClone();
+
+        matrix.setAttribute("class", QObject.createCharacter("matrix"));
+
+        QObject dim =QObject.createNumeric(irow);
+        dim.set(1, QObject.createNumeric(icol));
+        matrix.setAttribute("dim", dim);
+
+        return matrix;
+    }
 
 
-	// "c"
+
+    // "c"
 	public static QFunction createConcatinate()
 	{
 		return new QFunction(null, null){

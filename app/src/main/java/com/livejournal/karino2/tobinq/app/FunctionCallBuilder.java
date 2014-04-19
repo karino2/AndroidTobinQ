@@ -120,4 +120,12 @@ public class FunctionCallBuilder {
         // builder.mergeSublist(sublist);
         return builder.build();
     }
+
+    public static CommonTree convertBinaryCallToFuncall(String funcName, Tree arg1, Tree arg2) {
+        FunctionCallBuilder builder = new FunctionCallBuilder();
+        builder.setFunctionName(funcName);
+        builder.addArgument(arg1);
+        builder.addArgument(arg2);
+        return builder.build();
+    }
 }
