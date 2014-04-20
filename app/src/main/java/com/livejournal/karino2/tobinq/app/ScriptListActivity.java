@@ -176,6 +176,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             @Override
             public void onFail(String message) {
                 showNotification(getString(R.string.notification_title), "Sync scripts fail: " + message, "Sync script fail.");
+                writeLastCheckedTime(startCheck);
                 startCheck = -1;
             }
         });
