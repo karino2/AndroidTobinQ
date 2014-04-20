@@ -38,7 +38,7 @@ public class QList extends QObject {
 		if(arg.isNumber())
 			return getBBInt(arg.getInt()-1);
 		if(arg.getMode() != CHARACTER_TYPE)
-			throw new RuntimeException("Arg of [[]] neither number nor string: " + arg.getMode());
+			throw new QException("Arg of [[]] neither number nor string: " + arg.getMode());
 		String colName = (String)arg.getValue();
 		int i = getIndex(colName);
 		return getBBInt(i);
@@ -52,12 +52,12 @@ public class QList extends QObject {
             return;
         }
         if(arg.getMode() != CHARACTER_TYPE)
-            throw new RuntimeException("Arg of [[]] neither number nor string: " + arg.getMode());
+            throw new QException("Arg of [[]] neither number nor string: " + arg.getMode());
         String colName = (String)arg.getValue();
         try {
             int i = getIndex(colName);
             set(i, val);
-        }catch(RuntimeException e) {
+        }catch(QException e) {
             int i = getLength();
             set(i+1, val);
             QObject names = getNamesAttr();
@@ -73,7 +73,7 @@ public class QList extends QObject {
 			if(name.getValue().equals(colName))
 				return i;
 		}
-		throw new RuntimeException("Arg of [[]] does not match to names: " + colName);
+		throw new QException("Arg of [[]] does not match to names: " + colName);
 	}
 	
 	private QObject getName(int colIndex) {
@@ -282,13 +282,13 @@ public class QList extends QObject {
 	
 	public static void validateArg(QObject args) {
 		if(args.getMode() != LIST_TYPE)
-			throw new RuntimeException("data.frame arg is not list");
+			throw new QException("data.frame arg is not list");
 		int len = args.get(0).getLength();
 		for(int i = 0; i < args.getLength(); i++)
 		{
 			if(args.get(i).getLength() != len)
 			{
-				throw new RuntimeException("data.frame arg length mismatch: 0's=" + len + ", " + i + "'s=" + args.get(i).getLength());
+				throw new QException("data.frame arg length mismatch: 0's=" + len + ", " + i + "'s=" + args.get(i).getLength());
 			}
 		}
 	}

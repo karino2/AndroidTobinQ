@@ -275,7 +275,7 @@ public class QObject {
 	{
 		if(arg.isNumber() && arg.getInt() == 0)
 			return this;
-		throw new RuntimeException("index of [[]] out of bound.");
+		throw new QException("index of [[]] out of bound.");
 	}
 	
 	public boolean isTrue()
@@ -326,7 +326,7 @@ public class QObject {
     QObject getDim() {
         QObject dim = getAttribute("dim");
         if(dim.isNull())
-            throw new RuntimeException("wrong dimension");
+            throw new QException("wrong dimension");
         return dim;
     }
 
@@ -487,7 +487,7 @@ public class QObject {
 
 	QObject subscriptByLogical(QObject range) {
 		if(range.getLength() != getLength())
-			throw new RuntimeException("subscriptByLogical: length of logical list and lexpr is different");
+			throw new QException("subscriptByLogical: length of logical list and lexpr is different");
 		QObjectBuilder bldr = new QObjectBuilder();
 		for(int i = 0; i < range.getLength(); i++)
 		{

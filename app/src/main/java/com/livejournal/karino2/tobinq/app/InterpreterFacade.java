@@ -136,6 +136,8 @@ public class InterpreterFacade {
             finishListener.onFinish(result);
         } catch (BlockException be) {
             // block call. wait callback.
+        } catch (QException qe) {
+            interpreter.println(qe.getMessage());
         } catch (RuntimeException re) {
             interpreter.println("error: " + re.toString());
         }

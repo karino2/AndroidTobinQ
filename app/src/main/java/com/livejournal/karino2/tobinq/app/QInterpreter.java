@@ -286,7 +286,7 @@ public class QInterpreter {
 		if(term.getType() == QParser.XXUNARY)
 			return evalUnary(term);
 		System.out.println(term.getType());
-		throw new RuntimeException("NYI2:" + term.getType());
+		throw new QException("NYI2:" + term.getType());
 	}
 
 	QObject evalUnary(Tree term) {
@@ -300,7 +300,7 @@ public class QInterpreter {
 			}
 			return bldr.result();
 		}
-		throw new RuntimeException("NYI unary: " + term.getChild(0).getText());
+		throw new QException("NYI unary: " + term.getChild(0).getText());
 	}
 
 	// "(XXFOR (XXFORCOND i (XXBINARY : 1 10)) (XXEXPRLIST (XXBINARY <- b (XXBINARY * i 2)) (XXBINARY <- e (XXBINARY * i 13))))
@@ -310,7 +310,7 @@ public class QInterpreter {
 		Tree sym = forCond.getChild(0);
 		Tree forCondExp = forCond.getChild(1);
 		if(sym.getType() != QParser.SYMBOL)
-			throw new RuntimeException("argument of for expression is not symbol.");
+			throw new QException("argument of for expression is not symbol.");
 		QObject condList = evalExpr(forCondExp);
 		for(int i = 0; i < condList.getLength(); i++)
 		{
@@ -346,7 +346,7 @@ public class QInterpreter {
     public QObject evalCallFunction(Tree term) {
 		QObject funcCand = _curEnv.get(term.getChild(0).getText());
         if(funcCand == null)
-            throw new RuntimeException("Error: object '"+ term.getChild(0).getText() +"' not found");
+            throw new QException("Error: object '"+ term.getChild(0).getText() +"' not found");
 		if(funcCand.getMode() == "function")
 		{
 			QFunction func = (QFunction)funcCand;
@@ -481,7 +481,7 @@ public class QInterpreter {
 				continue;
 			return sym;
 		}
-		throw new RuntimeException("Too much arguments");
+		throw new QException("Too much arguments");
     }
 
 	void handleXXSymSub1(Tree subList, Environment funcEnv,
@@ -684,7 +684,7 @@ public class QInterpreter {
                     converted = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(op, arg1, arg2);
                 return evalCallFunction(converted);
             }
-            throw new RuntimeException("assign: unsupported lexpr type(" + arg1.getType() + ")");
+            throw new QException("assign: unsupported lexpr type(" + arg1.getType() + ")");
 		}
 
 
@@ -752,7 +752,7 @@ public class QInterpreter {
 		{
 			return evalAND(term1, term2);
 		}
-		else 		throw new RuntimeException("NYI1");
+		else 		throw new QException("NYI1");
 	}
 
     private QObject convertAndCallBinaryCall(String funcName, Tree arg1, Tree arg2) {

@@ -130,7 +130,7 @@ public class QFunction extends QObject {
 
                 }
                 else
-                    throw new RuntimeException("NYI: cross product, first term is not matrix");
+                    throw new QException("NYI: cross product, first term is not matrix");
            }
 
 
@@ -155,7 +155,7 @@ public class QFunction extends QObject {
 
             private QObject matrixMatrixProductCommon(QObject term1, VectorMatrixAdapter term2wrapper) {
                 if(term1.getColNum() != term2wrapper.getRowNum())
-                    throw new RuntimeException("%*%: non-conformable arguments");
+                    throw new QException("%*%: non-conformable arguments");
                 QObject ret = createRawMatrix(QObject.NA, term1.getRowNum(), term2wrapper.getColNum());
                 int resultCol = 0;
                 for(int resultRow = 0; resultRow < term1.getRowNum(); resultRow++)
@@ -255,7 +255,7 @@ public class QFunction extends QObject {
 				QObject begO = getR(funcEnv, "beg", intp);
 				QObject endO = getR(funcEnv, "end", intp);
 				if(begO == null || endO == null)
-					throw new RuntimeException("seq argument seems wrong");
+					throw new QException("seq argument seems wrong");
 				double beg = begO.getDouble();
 				double end = endO.getDouble();
 				
@@ -327,7 +327,7 @@ public class QFunction extends QObject {
                 QObject ylab = getR(funcEnv, "ylab", intp);
                 QObject typ = getR(funcEnv, "type", intp);
 				if(x.getLength() != y.getLength())
-					throw new RuntimeException("x, y length differ");
+					throw new QException("x, y length differ");
 				// _plotable.resetChart();
 
                 // renderer hold XYAxis related param. So recreate is better.
@@ -350,7 +350,7 @@ public class QFunction extends QObject {
 				if(ylim != QObject.Null)
 				{
 					if(ylim.getLength() != 2)
-						throw new RuntimeException("ylim is not 2 element object");
+						throw new QException("ylim is not 2 element object");
                     renderer.setYAxisMin(getIR(ylim, 0, intp).getDouble());
                     renderer.setYAxisMax(getIR(ylim, 1, intp).getDouble());
 				}
@@ -358,7 +358,7 @@ public class QFunction extends QObject {
                 if(xlim != QObject.Null)
                 {
                     if(xlim.getLength() != 2)
-                        throw new RuntimeException("xlim is not 2 element object");
+                        throw new QException("xlim is not 2 element object");
                     renderer.setXAxisMin(getIR(xlim, 0, intp).getDouble());
                     renderer.setXAxisMax(getIR(xlim, 1, intp).getDouble());
                 }
@@ -498,9 +498,9 @@ public class QFunction extends QObject {
 				QObject y = getR(funcEnv, "y", intp);
                 QObject typ = getR(funcEnv, "type", intp);
 				if(QObject.Null.equals(y))
-					throw new RuntimeException("lines: y=NULL, NYI");
+					throw new QException("lines: y=NULL, NYI");
 				if(x.getLength() != y.getLength())
-					throw new RuntimeException("lines: x, y length differ");
+					throw new QException("lines: x, y length differ");
 
                 XYSeries series = new XYSeries("");
 			    addPoints(x, y, series, intp);
@@ -538,7 +538,7 @@ public class QFunction extends QObject {
             {
                 QObject legend = getR(funcEnv, "legend", intp);
                 if(QObject.Null.equals(legend))
-                    throw new RuntimeException("at legend(), argument legend=NULL");
+                    throw new QException("at legend(), argument legend=NULL");
 
                 for(int i = 0; i < legend.getLength(); i++) {
                     if(i >= dataset.getSeriesCount())
@@ -572,7 +572,7 @@ public class QFunction extends QObject {
 			{
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
-					throw new RuntimeException("Argument of var should be 1");
+					throw new QException("Argument of var should be 1");
 				QObject arg = getIR(args, 0, intp);
 				int len = arg.getLength();
 				double mean = sumObj(arg, intp)/len;
@@ -651,7 +651,7 @@ public class QFunction extends QObject {
                 QPromise promiseTarget = (QPromise)funcEnv.get("target");
                 Tree expression = promiseTarget.getExpression();
                 if(expression.getType() != QParser.SYMBOL)
-                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
 
                 String symName = expression.getText();
                 QObject vals = getR(funcEnv, "values", intp);
@@ -676,7 +676,7 @@ public class QFunction extends QObject {
                 QPromise promiseTarget = (QPromise)args.get(0);
                 QObject rightVal = getIR(args, args.getLength()-1, intp);
                 if(args.getLength() != 3)
-                    throw new RuntimeException("NYI: multi dimensional assignment.");
+                    throw new QException("NYI: multi dimensional assignment.");
 
                 QObject range = getIR(args, 1, intp);
                 if(range.getMode().equals("logical")) {
@@ -701,7 +701,7 @@ public class QFunction extends QObject {
 
                 Tree expression = promiseTarget.getExpression();
                 if(expression.getType() != QParser.SYMBOL)
-                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
 
                 String symName = expression.getText();
                 if(targetCand.isShared())
@@ -728,7 +728,7 @@ public class QFunction extends QObject {
 
                 Tree expression = promiseTarget.getExpression();
                 if(expression.getType() != QParser.SYMBOL)
-                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
 
                 String symName = expression.getText();
                 QObject targetCand = intp.resolveIfNecessary(promiseTarget);
@@ -760,14 +760,14 @@ public class QFunction extends QObject {
                 QPromise promiseTarget = (QPromise)args.get(0);
                 QObject rightVal = getIR(args, args.getLength()-1, intp);
                 if(args.getLength() != 3)
-                    throw new RuntimeException("NYI: multi dimensional assignment.");
+                    throw new QException("NYI: multi dimensional assignment.");
                 QObject range = getIR(args, 1, intp);
                 if(range.getLength() != 1)
-                    throw new RuntimeException("attempt to select more than one element.");
+                    throw new QException("attempt to select more than one element.");
 
                 Tree expression = promiseTarget.getExpression();
                 if(expression.getType() != QParser.SYMBOL)
-                    throw new RuntimeException("Left expr of assign is not symbol: " + expression.toStringTree());
+                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
 
                 String symName = expression.getText();
                 QObject targetCand = intp.resolveIfNecessary(promiseTarget);
@@ -793,9 +793,9 @@ public class QFunction extends QObject {
 
             private void validateSubscriptBracket(Tree sublistTree) {
                 if(sublistTree.getChildCount() > 2)
-                    throw new RuntimeException("NYI: multi dimentional array more than 2");
+                    throw new QException("NYI: multi dimentional array more than 2");
                 if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
-                    throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
+                    throw new QException("Sublist with assign: gramatically accepted, but what situation?");
             }
 
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
@@ -823,14 +823,14 @@ public class QFunction extends QObject {
                     {
                         QObject rangeRow = intp.evalExprWithEnv(proEnv, rangeRowNode.getChild(0));
                         if(rangeRow.getMode() == "logical")
-                            throw new RuntimeException("NYI: multi dimensional subscript with logical array");
+                            throw new QException("NYI: multi dimensional subscript with logical array");
                         if(!lexpr.isDataFrame())
-                            throw new RuntimeException("NYI: multi dimensional subscript for none data frame");
+                            throw new QException("NYI: multi dimensional subscript for none data frame");
                         QList df = (QList) lexpr;
                         return df.subscriptByRow(rangeRow);
                     }
                     // other case, NYI.
-                    throw new RuntimeException("NYI: multi dimensional subscript");
+                    throw new QException("NYI: multi dimensional subscript");
                 }
             }
         };
@@ -850,10 +850,10 @@ public class QFunction extends QObject {
                 Environment proEnv = sublistPromise.getEnvironment();
                 Tree sublist = sublistPromise.getExpression();
                 if(sublist.getChildCount() > 1)
-                    throw new RuntimeException("[[]] with multi dimentional, what's happend?");
+                    throw new QException("[[]] with multi dimentional, what's happend?");
 
                 if(sublist.getChild(0).getType() != QParser.XXSUB1)
-                    throw new RuntimeException("Sublist with assign: gramatically accepted, but what situation?");
+                    throw new QException("Sublist with assign: gramatically accepted, but what situation?");
                 QObject index = intp.evalExprWithEnv(proEnv, sublist.getChild(0).getChild(0));
                 return lexpr.getBB(index);
 
@@ -873,7 +873,7 @@ public class QFunction extends QObject {
                 QObject funCand = (QObject)getR(funcEnv, "FUN", intp);
 
                 if(!funCand.getMode().equals("function"))
-                    throw new RuntimeException("Argument of sapply, FUN is not function");
+                    throw new QException("Argument of sapply, FUN is not function");
 
                 QFunction fun = (QFunction)funCand;
 
@@ -895,7 +895,7 @@ public class QFunction extends QObject {
                     }
                     callEnv.remove(randArgName);
                 } catch (RecognitionException e) {
-                    throw new RuntimeException("Never reached here. sapply: " + e.getMessage());
+                    throw new QException("Never reached here. sapply: " + e.getMessage());
                 } finally {
                     intp._curEnv = preservedEnv;
                 }
@@ -913,7 +913,7 @@ public class QFunction extends QObject {
                 QObject arg = getR(funcEnv, "x", intp);
                 HashMap<Object, Boolean> map = new HashMap<Object, Boolean>();
                 if(arg.getMode().equals("list"))
-                    throw new RuntimeException("NYI: unique only support vector now");
+                    throw new QException("NYI: unique only support vector now");
 
                 QObject ret = new QObject(arg.getMode());
                 int retIdx = 0;
@@ -1025,7 +1025,7 @@ public class QFunction extends QObject {
 			{
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
-					throw new RuntimeException("Argument of cumsum should be 1");
+					throw new QException("Argument of cumsum should be 1");
 				QObjectBuilder bldr = new QObjectBuilder();
 				QObject arg = getIR(args, 0, intp);
 				int len = arg.getLength();
@@ -1050,7 +1050,7 @@ public class QFunction extends QObject {
 			{
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
-					throw new RuntimeException("Argument of mean should be 1");
+					throw new QException("Argument of mean should be 1");
 				QObject arg = getIR(args, 0, intp);
 				int len = arg.getLength();
 				double mean = sumObj(arg, intp)/len;
@@ -1118,7 +1118,7 @@ public class QFunction extends QObject {
 			{
 				QObject args = funcEnv.get(ARGNAME);
 				if(args.getLength() != 1)
-					throw new RuntimeException("Argument of length should be 1");
+					throw new QException("Argument of length should be 1");
 				QObject arg = getIR(args, 0, intp);
 				return QObject.createNumeric(arg.getLength());
 			}
@@ -1178,7 +1178,7 @@ public class QFunction extends QObject {
 			{
 				QObject arg = getR(funcEnv, "obj", intp);
 				if(arg.isNull())
-					throw new RuntimeException("Argument of attributes should be one object");
+					throw new QException("Argument of attributes should be one object");
 				return arg.attributesAsList();
 				
 			}
@@ -1215,7 +1215,7 @@ public class QFunction extends QObject {
 	
 	public static QObject asNumeric(QObject arg) {
 		if(arg.isNull())
-			throw new RuntimeException("Argument of as.numeric should be one object");
+			throw new QException("Argument of as.numeric should be one object");
 		if(QObject.CHARACTER_TYPE.equals(arg.getMode())) {
 			QObjectBuilder bldr = new QObjectBuilder();
 			for(int i = 0; i < arg.getLength(); i++) {
@@ -1231,17 +1231,17 @@ public class QFunction extends QObject {
 			{
 				QObject col = dfArg.getBBInt(i);
 				if(col.getLength() != 1)
-					throw new RuntimeException("as.numeric: unsupported data.frame dimension.");
+					throw new QException("as.numeric: unsupported data.frame dimension.");
 				if(QObject.CHARACTER_TYPE.equals(col.getMode()))
 					bldr.add(QObject.createNumeric(Double.valueOf((String)col.getValue())));
 				else if(QObject.NUMERIC_TYPE.equals(col.getMode()))
 					bldr.add(QObject.createNumeric((Double)col.getValue()));
 				else
-					throw new RuntimeException("as.numeric: unsupported df element type");
+					throw new QException("as.numeric: unsupported df element type");
 			}
 			return bldr.result();
 		}
-		throw new RuntimeException("as.numeric: unsupported argument");
+		throw new QException("as.numeric: unsupported argument");
 	}
 	
 	// match.arg
@@ -1255,12 +1255,12 @@ public class QFunction extends QObject {
 				QObject arg = resolve(promise, intp);
 				QObject choices = getR(funcEnv, "choices", intp);
 				if(arg.getLength() > 1)
-					throw new RuntimeException("first argument of match.arg is not scalar.");
+					throw new QException("first argument of match.arg is not scalar.");
 				if(choices == null)
 				{
 					Tree orgVal = promise.getExpression();
 					if(orgVal.getType() != QParser.SYMBOL)
-						throw new RuntimeException("match.arg, arg's caller sexp is not symbol. what situation? :" + orgVal.toStringTree());
+						throw new QException("match.arg, arg's caller sexp is not symbol. what situation? :" + orgVal.toStringTree());
 					choices = intp.resolveIfNecessary(funcEnv.getDefaultValue(orgVal.getText()));
 				}
 				String argStr = (String)arg.getValue();
@@ -1270,7 +1270,7 @@ public class QFunction extends QObject {
 					if(target.startsWith(argStr))
 						return choices.get(i);
 				}
-				throw new RuntimeException("[arg] should match to one of the member of [choices]");
+				throw new QException("[arg] should match to one of the member of [choices]");
 			}
 		};
 	}
@@ -1336,7 +1336,7 @@ public class QFunction extends QObject {
 			{
 				QObject arg = getR(funcEnv, "obj", intp);
 				if(arg.getMode() != "call")
-					throw new RuntimeException("not supported deparse with non-expression arg");
+					throw new QException("not supported deparse with non-expression arg");
 				
 				StringBuffer buf = new StringBuffer();
 				Tree sexp = arg.getSexp();
