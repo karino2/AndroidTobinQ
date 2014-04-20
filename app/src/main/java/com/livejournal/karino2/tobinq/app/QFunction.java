@@ -411,7 +411,6 @@ public class QFunction extends QObject {
                 double[]   w = new double[matrix.getColNum()];
                 double[][] V = new double[matrix.getColNum()][matrix.getColNum()];
                 SVD_NR.Rsvd(darray, w, V);
-                // SingularValueDecomposition svd = LinearAlgebra.singular(darray);
                 QList ret = QList.createList();
                 ret.setNamesAttr(new String[] {"d", "u", "v"});
                 ret.set(0, toQVector(w));

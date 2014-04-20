@@ -306,26 +306,8 @@ public final class SVD_NR
                 marker[marker[l]] = marker[l];
             }
         }
-      /*
-      negate(a);
-      negate(v);
-      transpose(v);
-      */
     }
 
-    private static void negate(double[][] a) {
-        for(int i = 0; i < a.length; i++)
-            for(int j = 0; j < a[0].length; j++)
-                a[i][j] = -a[i][j];
-    }
-    private static final void transpose(double[][] v) {
-        for(int row = 0; row < v.length; row++)
-            for(int col = row+1; col < v[0].length; col++) {
-                double tmp = v[col][row];
-                v[col][row] = v[row][col];
-                v[row][col] = tmp;
-            }
-    }
     private static final void swapI(int i1, int i2, int[] w) {
         int tmp = w[i1];
         w[i1] = w[i2];
@@ -336,10 +318,6 @@ public final class SVD_NR
         double tmp = w[i1];
         w[i1] = w[i2];
         w[i2] = tmp;
-      /*
-      swap(i1, i2, a);
-      swapRow(i1, i2, v);
-      */
     }
     static double[] _tmp = null;
     private static final double[] getArray(int len)
