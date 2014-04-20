@@ -51,6 +51,7 @@ public class QInterpreter {
         _curEnv.put("svd", QFunction.createSvd());
         _curEnv.put("diag", QFunction.createDiag());
         _curEnv.put("t", QFunction.createTranspose());
+        _curEnv.put("unique", QFunction.createUnique());
 
         // not primitive
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");

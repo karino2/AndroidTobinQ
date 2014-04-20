@@ -15,6 +15,7 @@ import org.antlr.runtime.tree.Tree;
 
 import com.livejournal.karino2.tobinq.app.ForestNode.*;
 
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -81,8 +82,8 @@ public class QFunction extends QObject {
     }
 
     public static class QPrimitive extends QFunction {
-        public QPrimitive(Tree formalList, Tree body) {
-            super(formalList, body);
+        public QPrimitive(Tree formalList) {
+            super(formalList, null);
         }
         public boolean isPrimitive() {return true; }
     }
@@ -90,7 +91,7 @@ public class QFunction extends QObject {
 
     // "matrix"
     public static QFunction createMatrix() {
-        return new QPrimitive(parseFormalList("data=NA, nrow=1, ncol=1, byrow = FALSE, dimnames = NULL"), null) {
+        return new QPrimitive(parseFormalList("data=NA, nrow=1, ncol=1, byrow = FALSE, dimnames = NULL")) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
             {
                 QObject nrow = getR(funcEnv, "nrow", intp);
@@ -111,7 +112,7 @@ public class QFunction extends QObject {
         QObject rawGetByRowCol(int row, int col);
     }
     public static QFunction createSpecialMultiply() {
-        return new QPrimitive(parseFormalList("e1, e2"), null) {
+        return new QPrimitive(parseFormalList("e1, e2")) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
             {
                 QObject term1 = getR(funcEnv, "e1", intp);
@@ -403,7 +404,7 @@ public class QFunction extends QObject {
 
     // "svd"
     public static QObject createSvd() {
-        return new QPrimitive(parseFormalList("x"), null) {
+        return new QPrimitive(parseFormalList("x")) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
             {
                 QObject matrix = getR(funcEnv, "x", intp);
@@ -447,7 +448,7 @@ public class QFunction extends QObject {
 
     // "t"
     public static QObject createTranspose() {
-        return new QPrimitive(parseFormalList("x"), null) {
+        return new QPrimitive(parseFormalList("x")) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
             {
                 QObject mat = getR(funcEnv, "x", intp);
@@ -465,7 +466,7 @@ public class QFunction extends QObject {
 
     // "diag"
     public static QObject createDiag() {
-        return new QPrimitive(parseFormalList("x"), null) {
+        return new QPrimitive(parseFormalList("x")) {
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
             {
                 QObject v = getR(funcEnv, "x", intp);
@@ -899,6 +900,31 @@ public class QFunction extends QObject {
                     intp._curEnv = preservedEnv;
                 }
 
+                return ret;
+            }
+        };
+    }
+
+    // unique
+    public static QPrimitive createUnique()
+    {
+        return new QPrimitive(parseFormalList("x")) {
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject arg = getR(funcEnv, "x", intp);
+                HashMap<Object, Boolean> map = new HashMap<Object, Boolean>();
+                if(arg.getMode().equals("list"))
+                    throw new RuntimeException("NYI: unique only support vector now");
+
+                QObject ret = new QObject(arg.getMode());
+                int retIdx = 0;
+                for(int i = 0; i < arg.getLength(); i++) {
+                    QObject obj = getIR(arg, i, intp);
+                    if(map.containsKey(obj.getValue()))
+                        continue;
+                    map.put(obj.getValue(), true);
+                    obj.share();
+                    ret.set(retIdx++, obj);
+                }
                 return ret;
             }
         };

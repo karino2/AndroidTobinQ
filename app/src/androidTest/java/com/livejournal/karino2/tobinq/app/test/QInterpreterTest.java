@@ -668,6 +668,14 @@ public class QInterpreterTest extends TestCase {
         assertEquals(2, actual.get(3).getInt());
     }
 
+    public void test_evalExpr_unique() throws RecognitionException {
+        QObject actual = callEvalExpr("unique(c(3, 3, 4, 3, 4, 5, 4))");
+        assertEquals(3, actual.getLength());
+        assertQNumericEquals(3, actual.get(0));
+        assertQNumericEquals(4, actual.get(1));
+        assertQNumericEquals(5, actual.get(2));
+    }
+
 	public void test_evalExpr_priority() throws RecognitionException
 	{
 		int expected = 7;
