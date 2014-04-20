@@ -390,7 +390,65 @@ public class QFunction extends QObject {
 		};
 	}
 
-	public static QObject createLines(Plotable plotable) {
+
+    QObject toQVector(double[] values)
+    {
+        QObjectBuilder bldr = new QObjectBuilder();
+        for(double v : values)
+        {
+            bldr.add(QObject.createNumeric(v));
+        }
+        return bldr.result();
+    }
+
+    // "svd"
+    public static QObject createSvd() {
+        return new QPrimitive(parseFormalList("x"), null) {
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject matrix = getR(funcEnv, "x", intp);
+                double[][] darray = toDoubleArray(matrix);
+                double[]   w = new double[matrix.getColNum()];
+                double[][] V = new double[matrix.getColNum()][matrix.getColNum()];
+                SVD_NR.Rsvd(darray, w, V);
+                // SingularValueDecomposition svd = LinearAlgebra.singular(darray);
+                QList ret = QList.createList();
+                ret.setNamesAttr(new String[] {"d", "u", "v"});
+                ret.set(0, toQVector(w));
+                ret.set(1, toQMatrix(darray));
+                ret.set(2, toQMatrix(V));
+                return ret;
+            }
+
+            private QObject toQMatrix(double[][] s) {
+                QObject matrix = createRawMatrix(QObject.NA, s.length, s[0].length);
+                for(int row = 0; row < s.length; row++)
+                {
+                    for(int col = 0; col < s[0].length; col++)
+                    {
+                        matrix.rawSetByRowCol(row, col, QObject.createNumeric(s[row][col]));
+                    }
+                }
+                return matrix;
+            }
+
+            private double[][] toDoubleArray(QObject matrix) {
+                double[][] darray = new double[matrix.getRowNum()][matrix.getColNum()];
+                for(int row = 0; row < matrix.getRowNum(); row++)
+                {
+                    for(int col = 0; col < matrix.getColNum(); col++)
+                    {
+                        darray[row][col] = matrix.rawGetByRowCol(row, col).getDouble();
+                    }
+                }
+                return darray;
+            }
+        };
+    }
+
+
+
+    public static QObject createLines(Plotable plotable) {
 		// Share to createPlot. Be careful!
 		_plotable = plotable;
 		return new QFunction(parseFormalList("x, y=NULL,type=\"l\""), null) {

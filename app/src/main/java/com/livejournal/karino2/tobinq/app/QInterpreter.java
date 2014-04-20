@@ -48,6 +48,7 @@ public class QInterpreter {
 		_curEnv.put("match.arg", QFunction.createMatchArg());
 		_curEnv.put("read.csv", QFunction.createReadCsv(_csvRetrievable));
         _curEnv.put("matrix", QFunction.createMatrix());
+        _curEnv.put("svd", QFunction.createSvd());
 
         // not primitive
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");

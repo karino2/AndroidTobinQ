@@ -167,6 +167,13 @@ public class QInterpreterTest extends TestCase {
                 actual.toString());
     }
 
+    public void test_evalExpr_matrix_svd() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("svd(matrix(1:4, 2, 2))");
+        //R output.		assertEquals("$d\n[1] 5.4649857 0.3659662\n\n$u\n           [,1]       [,2]\n[1,] -0.5760484 -0.8174156\n[2,] -0.8174156  0.5760484\n\n$v\n           [,1]       [,2]\n[1,] -0.4045536  0.9145143\n[2,] -0.9145143 -0.4045536\n\n",
+        assertEquals("$d\n[1] 5.4649857 0.3659662\n\n$u\n          [,1]       [,2]\n[1,] 0.5760484  0.8174156\n[2,] 0.8174156 -0.5760484\n\n$v\n           [,1]      [,2]\n[1,]  0.4045536 0.9145143\n[2,] -0.9145143 0.4045536\n\n",
+                actual.toString());
+    }
 
     public void test_evalExpr_matrix_crossproduct_result_mustbe_matrix() throws RecognitionException
     {

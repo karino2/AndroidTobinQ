@@ -4,9 +4,8 @@
 //
 // zlib - this just contains an assert routine, you can comment it out.
 
-package ZS;
+package com.livejournal.karino2.tobinq.app;
 
-import zlib.*;
 
 /****************
 results from matlab
@@ -74,7 +73,7 @@ public final class SVD_NR
     int n = a[0].length;
     double c,f,h,s,x,y,z;
     double anorm = 0., g = 0., scale=0. ;
-    zliberror._assert(m>=n) ;
+    // zliberror._assert(m>=n) ;
     double[] rv1 = new double[n];
 
     System.out.println("SVD beware results may not be sorted!");
@@ -225,7 +224,7 @@ public final class SVD_NR
 	  }
 	  break;
 	} //l==k
-	zliberror._assert(its<50, "no svd convergence in 50 iterations");
+	// zliberror._assert(its<50, "no svd convergence in 50 iterations");
 	x = w[l];
 	nm = k-1;
 	y = w[nm];
@@ -279,6 +278,108 @@ public final class SVD_NR
     // free rv1
   } //svd
 
+    public static void Rsvd(double[][] a,double[] w,double[][] v)
+    {
+        svd(a, w, v);
+        int[] marker = new int[w.length];
+        for(int k = 0; k < w.length; k++)
+            marker[k] = k;
+
+        for(int i = 0; i < w.length; i++)
+        {
+            for(int j = w.length-1; j > i; j--)
+            {
+                if(w[j-1] < w[j])
+                {
+                    swap(j-1, j, w);
+                    swapI(j-1, j, marker);
+                }
+            }
+        }
+
+        for(int l = 0; l < marker.length; l++)
+        {
+            if(marker[l] != l)
+            {
+                swap(l, marker[l], a);
+                swapRow(l, marker[l], v);
+                marker[marker[l]] = marker[l];
+            }
+        }
+      /*
+      negate(a);
+      negate(v);
+      transpose(v);
+      */
+    }
+
+    private static void negate(double[][] a) {
+        for(int i = 0; i < a.length; i++)
+            for(int j = 0; j < a[0].length; j++)
+                a[i][j] = -a[i][j];
+    }
+    private static final void transpose(double[][] v) {
+        for(int row = 0; row < v.length; row++)
+            for(int col = row+1; col < v[0].length; col++) {
+                double tmp = v[col][row];
+                v[col][row] = v[row][col];
+                v[row][col] = tmp;
+            }
+    }
+    private static final void swapI(int i1, int i2, int[] w) {
+        int tmp = w[i1];
+        w[i1] = w[i2];
+        w[i2] = tmp;
+    }
+
+    private static final void swap(int i1, int i2, double[] w) {
+        double tmp = w[i1];
+        w[i1] = w[i2];
+        w[i2] = tmp;
+      /*
+      swap(i1, i2, a);
+      swapRow(i1, i2, v);
+      */
+    }
+    static double[] _tmp = null;
+    private static final double[] getArray(int len)
+    {
+        if(_tmp == null || _tmp.length != len)
+            _tmp = new double[len];
+        return _tmp;
+    }
+    private static final void swapRow(int i1, int i2, double[][] v) {
+        double[] tmp = getArray(v[0].length);
+        copy(tmp, v[i1]);
+        copy(v[i1], v[i2]);
+        copy(v[i2], tmp);
+
+    }
+    private static final void copyColToVector(double[] dst, double[][] v, int i1) {
+        for(int i = 0; i < v[0].length; i++)
+            dst[i] = v[i][i1];
+    }
+    private static final void swap(int i1, int i2, double[][] a) {
+        double[] tmp = getArray(a.length);
+        copyColToVector(tmp, a, i1);
+        copyCol(a, i1, a, i2);
+        copyColFromVector(a, i2, tmp);
+    }
+
+
+    private static final void copyColFromVector(double[][] a, int i2, double[] tmp) {
+        for(int i = 0; i < tmp.length; i++)
+            a[i][i2] = tmp[i];
+    }
+    private static final void copyCol(double[][] dst, int i1, double[][] src, int i2) {
+        for(int i = 0; i < src[0].length; i++)
+            dst[i][i1] = src[i][i2];
+    }
+    private static final void copy(double[] dst, double[] src) {
+        for(int i = 0; i < src.length; i++)
+            dst[i] = src[i];
+    }
+
   static final double abs(double a)
   {
     return (a < 0.) ? -a  : a;
@@ -296,33 +397,6 @@ public final class SVD_NR
 
   //----------------------------------------------------------------
 
-  // test it
-  public static void main(String[] cmdline)
-  {
-      int nr = 6; int nc = 5 ;
-      //int nr = 300; int nc = 300;
-      //int nr = 600; int nc = 600;
-      double[][] M = new double[nr][nc] ;
-      for( int r = 0; r < nr; r++ ) {
-	float p = (float)r / (nr-1);
-	for( int c = 0; c < nc; c++ ) {
-	  float frac = (float)c / (nc-1);
-	  M[r][c] = Math.pow(frac,p);
-	}
-      }
-      if (nr < 10)
-	matrix.print("M=",M);
-      double[]   w = new double[nc];
-      double[][] V = new double[nc][nc];
-
-      svd(M, w, V);
-
-      matrix.print("D=",w);
-      if (nr < 10)
-	matrix.print("V=",V);
-
-      System.exit(0);
-  } //main
 
 } //SVD_NR
 

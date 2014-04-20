@@ -10,6 +10,7 @@ import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.assertQNu
 import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.createNumeric;
 import static junit.framework.Assert.assertEquals;
 import com.livejournal.karino2.tobinq.app.QFunction.QObjectForestAdapter;
+import com.livejournal.karino2.tobinq.app.SVD_NR;
 
 
 import junit.framework.TestCase;
@@ -24,6 +25,26 @@ public class QFunctionTest extends TestCase {
 
 		assertEquals(true, actual.isNull());
 	}
+
+    public void test_svd()
+    {
+        int nr = 6; int nc = 5 ;
+        //int nr = 300; int nc = 300;
+        //int nr = 600; int nc = 600;
+        double[][] M = new double[nr][nc] ;
+        for( int r = 0; r < nr; r++ ) {
+            float p = (float)r / (nr-1);
+            for( int c = 0; c < nc; c++ ) {
+                float frac = (float)c / (nc-1);
+                M[r][c] = Math.pow(frac,p);
+            }
+        }
+        double[]   w = new double[nc];
+        double[][] V = new double[nc][nc];
+        SVD_NR.svd(M, w, V);
+        assertEquals(4.014, w[0], 0.001);
+    }
+
 
 	// // @Test
 	public void test_attributesAsList_oneAttr()
