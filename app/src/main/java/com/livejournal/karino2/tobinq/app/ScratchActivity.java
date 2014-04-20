@@ -153,6 +153,8 @@ public class ScratchActivity extends ActionBarActivity {
         if(popup != null) {
             popup.dismiss();
             popup = null;
+            chart = null;
+            removeChartMenuIfExist();
         }
         super.onStop();
     }
@@ -195,6 +197,14 @@ public class ScratchActivity extends ActionBarActivity {
                 _menu.findItem(R.id.action_toggle_chart).setIcon(rid);
             }
         }
+    }
+
+    private void removeChartMenuIfExist() {
+        chartMenuAdded = false;
+        if(_menu == null)
+            return;
+        _menu.removeItem(R.id.action_share);
+        _menu.removeItem(R.id.action_toggle_chart);
     }
 
     @Override
