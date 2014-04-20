@@ -1,5 +1,6 @@
 package com.livejournal.karino2.tobinq.app;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -128,8 +129,15 @@ public class QObject {
 			return QObject.Null;
 		return _attributes.get(name);
 	}
-	
-	public Object getValue()
+
+    private void removeAttribute(String name) {
+        if(_attributes == null ||
+                !_attributes.containsKey(name))
+            return; // do nothing
+        _attributes.remove(name);
+    }
+
+    public Object getValue()
 	{
 		return _val;
 	}
@@ -161,32 +169,34 @@ public class QObject {
 		{
 			if(obj.getMode() == "NULL")
 				return "NULL";
-			return obj._val.toString();
+            if(obj.getMode() == "numeric")
+                return (new DecimalFormat("0.#######").format(((Double)obj._val)));
+            return obj._val.toString();
 		}
 	}
 	
 	public String toString()
 	{
-		if(_vector == null)
-			return toStringOne(this);
         QObject dim = getAttribute("dim");
-        if(dim.isNull())
-        {
-            StringBuffer buf = new StringBuffer();
-            for(QObject obj : _vector)
-            {
-                if(buf.length() != 0)
-                    buf.append(" ");
-                buf.append(toStringOne(obj));
-            }
-            return buf.toString();
-        }
-        else
+        if(!dim.isNull())
         {
             ArrayList<String> rowNames = createRowNames(getRowNum());
             ArrayList<String> colNames = createColNames(getColNum());
             return toStringGrid(rowNames, colNames);
         }
+
+        if(_vector == null)
+            return toStringOne(this);
+        StringBuffer buf = new StringBuffer();
+        for(QObject obj : _vector)
+        {
+            if(buf.length() != 0)
+                buf.append(" ");
+            buf.append(toStringOne(obj));
+        }
+        return buf.toString();
+
+
     }
 
     private ArrayList<String> createColNames(int colNum) {
@@ -287,7 +297,17 @@ public class QObject {
 	{
 		// atom
 		if(i == 0 && getLength() == 1)
-			return this;
+        {
+            if(getQClass() == "matrix")
+            {
+                QObject elem = QClone();
+                elem.setAttribute("class", QObject.createCharacter(elem.getMode()));
+                elem.removeAttribute("dim");
+                return elem;
+            }
+            else
+                return this;
+        }
 		if(_vector == null)
 			return QObject.NA;
 		return _vector.get(i);
@@ -539,8 +559,8 @@ public class QObject {
             int nameLen = nameRawStr.length();
             colMaxLength.add(i+1, Math.max(nameLen, maxRawStrLength(getColumnList(i))));
 
-            buf.append(nameRawStr);
             appendSpace(buf, colMaxLength.get(i+1) - nameLen);
+            buf.append(nameRawStr);
         }
         buf.append("\n");
 
@@ -555,7 +575,8 @@ public class QObject {
                 appendSpace(buf, colMaxLength.get(j+1) - val.length());
                 buf.append(val);
             }
-            buf.append("\n");
+            if(i != getRowNum()-1)
+                buf.append("\n");
         }
         return buf.toString();
     }

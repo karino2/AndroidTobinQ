@@ -53,7 +53,7 @@ public class QInterpreterTest extends TestCase {
 	
 	public void test_eval_dataFrame()
 	{
-		String expected = "  x   y  \n1 1.0 1.0\n2 2.0 2.0\n3 3.0 3.0\n";
+        String expected = "  x y\n1 1 1\n2 2 2\n3 3 3";
 		QObject df = _intp.eval("x<-1:3;y<-1:3;data.frame(x, y)");
 		assertEquals(expected, df.toString());
 	}
@@ -156,9 +156,17 @@ public class QInterpreterTest extends TestCase {
     public void test_evalExpr_matrix_toString() throws RecognitionException
     {
         QObject actual = callEvalExpr("matrix(1:6, 2, 3)");
-        assertEquals("     [,1] [,2] [,3]\n[1,]  1.0  3.0  5.0\n[2,]  2.0  4.0  6.0\n",
+        assertEquals("     [,1] [,2] [,3]\n[1,]    1    3    5\n[2,]    2    4    6",
                 actual.toString());
     }
+
+    public void test_evalExpr_matrix_toString_precision() throws RecognitionException
+    {
+        QObject actual = callEvalExpr("matrix(1.2345)");
+        assertEquals("       [,1]\n[1,] 1.2345",
+                actual.toString());
+    }
+
 
     public void test_evalExpr_matrix_crossproduct_result_mustbe_matrix() throws RecognitionException
     {
@@ -182,7 +190,7 @@ public class QInterpreterTest extends TestCase {
     public void test_evalExpr_matrix_crossproduct_2row_tostring() throws RecognitionException
     {
         QObject actual = callEvalExpr("matrix(1:6, 2, 3) %*% 1:3");
-        assertEquals("     [,1]\n[1,] 22.0\n[2,] 28.0\n", actual.toString());
+        assertEquals("     [,1]\n[1,]   22\n[2,]   28", actual.toString());
     }
 
 
@@ -315,7 +323,7 @@ public class QInterpreterTest extends TestCase {
 
         QObject actual = callEvalExpr("df$y");
 
-        assertEquals("4.0 5.0 6.0", actual.toString());
+        assertEquals("4 5 6", actual.toString());
     }
 
 

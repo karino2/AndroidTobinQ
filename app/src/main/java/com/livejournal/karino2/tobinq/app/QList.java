@@ -87,6 +87,18 @@ public class QList extends QObject {
 	{
 		setAttribute("names", namesObj);		
 	}
+    public void setNamesAttr(String[] names) {
+        QObject qnames = toQVector(names);
+        setNamesAttr(qnames);
+    }
+    private QObject toQVector(String[] names) {
+        QObjectBuilder bldr = new QObjectBuilder();
+        for(String name : names)
+        {
+            bldr.add(QObject.createCharacter(name));
+        }
+        return bldr.result();
+    }
 	private QObject getRowNamesAttr() {
 		QObject rowNames = getAttribute("row.names");
 		return rowNames;
@@ -139,7 +151,8 @@ public class QList extends QObject {
 		{
 			buf.append(getNameOfIndex(i));
 			buf.append("\n");
-			buf.append("[1] ");
+            if(get(i).getQClass() != "matrix")
+                buf.append("[1] ");
 			buf.append(get(i).toString());
 			buf.append("\n\n");
 		}

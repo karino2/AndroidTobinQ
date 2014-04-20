@@ -168,7 +168,7 @@ public class QTypesTest extends TestCase {
 		QObject y = createVector12("y");
 		args.set(0, x);
 		args.set(1, y);		
-		assertEquals("[[1]]\n[1] 1.0 2.0\n\n[[2]]\n[1] 1.0 2.0\n\n", args.toString());
+		assertEquals("[[1]]\n[1] 1 2\n\n[[2]]\n[1] 1 2\n\n", args.toString());
 		
 	}
 	
@@ -178,7 +178,7 @@ public class QTypesTest extends TestCase {
 		QObject x = createVector12("x");
 		args.set(0, x);
 		args.setAttribute("names", createCharacter("hoge"));
-		assertEquals("$hoge\n[1] 1.0 2.0\n\n", args.toString());
+		assertEquals("$hoge\n[1] 1 2\n\n", args.toString());
 		
 	}
 	
@@ -339,7 +339,7 @@ public class QTypesTest extends TestCase {
 		args.set(1, y);
 		QObject df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		
-		assertEquals("  x   y  \n1 1.0 1.0\n2 2.0 2.0\n", df.toString());
+        assertEquals("  x y\n1 1 1\n2 2 2", df.toString());
 	}
 	
 	public void test_dataFrame_getBB() {
