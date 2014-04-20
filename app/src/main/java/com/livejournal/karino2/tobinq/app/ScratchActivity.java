@@ -1,5 +1,6 @@
 package com.livejournal.karino2.tobinq.app;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -8,19 +9,13 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import org.achartengine.ChartFactory;
 import org.achartengine.GraphicalView;
-import org.achartengine.model.XYMultipleSeriesDataset;
-import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
@@ -169,7 +164,6 @@ public class ScratchActivity extends ActionBarActivity {
         return true;
     }
 
-
     boolean chartMenuAdded = false;
     void inflateChartMenu() {
         if(!chartMenuAdded) {
@@ -248,10 +242,17 @@ public class ScratchActivity extends ActionBarActivity {
         if (id==R.id.action_run) {
             String code = findEditText(R.id.etScript).getText().toString();
             eval(code);
+            hideSoftkey();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void hideSoftkey() {
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(findEditText(R.id.etScript).getWindowToken(), 0);
+    }
+
 
     private void eval(String code) {
         interpreter.eval(code);
