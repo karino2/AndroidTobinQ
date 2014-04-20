@@ -445,6 +445,45 @@ public class QFunction extends QObject {
         };
     }
 
+    // "t"
+    public static QObject createTranspose() {
+        return new QPrimitive(parseFormalList("x"), null) {
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject mat = getR(funcEnv, "x", intp);
+                QObjectBuilder bldr = new QObjectBuilder();
+                for(int row = 0; row < mat.getRowNum(); row++) {
+                    for(int col = 0; col < mat.getColNum(); col++)
+                    {
+                        bldr.add(mat.rawGetByRowCol(row, col));
+                    }
+                }
+                return createRawMatrix(bldr.result(), mat.getColNum(), mat.getRowNum());
+            }
+        };
+    }
+
+    // "diag"
+    public static QObject createDiag() {
+        return new QPrimitive(parseFormalList("x"), null) {
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
+            {
+                QObject v = getR(funcEnv, "x", intp);
+                QObject m = createRawMatrix(QObject.NA, v.getLength(), v.getLength());
+                QObject zero = QObject.createNumeric(0);
+                for(int row = 0; row < v.getLength(); row++) {
+                    for(int col = 0; col < v.getLength(); col++)
+                    {
+                        if(row == col)
+                            m.rawSetByRowCol(row, col, v.get(row));
+                        else
+                            m.rawSetByRowCol(row, col, zero);
+                    }
+                }
+                return m;
+            }
+        };
+    }
 
 
     public static QObject createLines(Plotable plotable) {

@@ -49,6 +49,8 @@ public class QInterpreter {
 		_curEnv.put("read.csv", QFunction.createReadCsv(_csvRetrievable));
         _curEnv.put("matrix", QFunction.createMatrix());
         _curEnv.put("svd", QFunction.createSvd());
+        _curEnv.put("diag", QFunction.createDiag());
+        _curEnv.put("t", QFunction.createTranspose());
 
         // not primitive
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");
