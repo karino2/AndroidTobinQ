@@ -285,7 +285,6 @@ public class QInterpreter {
 			return new QFunction(term.getChild(0), term.getChild(1));
 		if(term.getType() == QParser.XXUNARY)
 			return evalUnary(term);
-		System.out.println(term.getType());
 		throw new QException("NYI2:" + term.getType());
 	}
 
@@ -764,7 +763,14 @@ public class QInterpreter {
 		CharStream codes = new ANTLRStringStream(codestext);
 		QLexer lex = new QLexer(codes);
 		CommonTokenStream tokens = new CommonTokenStream(lex);
-		QParser parser = new QParser(tokens);
+		QParser parser = new QParser(tokens){
+            @Override
+            public void displayRecognitionError(String[] tokenNames, RecognitionException e) {
+                String hdr = getErrorHeader(e);
+                String msg = getErrorMessage(e, tokenNames);
+                throw new QException("Syntax Error: " + hdr+ ": " + msg);
+            }
+        };
 	 	QParser.prog_return r = parser.prog();
 		Tree tree = (Tree)r.getTree();
 		return tree;
