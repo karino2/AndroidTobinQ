@@ -81,11 +81,12 @@ public class QFunction extends QObject {
        return intp.resolveIfNecessary(obj);
     }
 
-    public static class QPrimitive extends QFunction {
+    public abstract static class QPrimitive extends QFunction {
         public QPrimitive(Tree formalList) {
             super(formalList, null);
         }
         public boolean isPrimitive() {return true; }
+        public abstract QObject callPrimitive(Environment funcEnv, QInterpreter intp);
     }
 
 
@@ -956,6 +957,24 @@ public class QFunction extends QObject {
 			}
 		};
 	}
+
+    public static QPrimitive createWhich()
+    {
+        return new QPrimitive(parseFormalList("x, arr.ind=FALSE")) {
+            @Override
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject x = getR(funcEnv, "x", intp);
+                QObject ret = new QObject(QObject.NUMERIC_TYPE);
+                int ridx = 0;
+                for(int i = 0; i < x.getLength(); i++) {
+                    QObject elm = getIR(x, i, intp);
+                    if(elm.isTrue())
+                        ret.set(ridx++, QObject.createNumeric(i+1));
+                }
+                return ret;
+            }
+        };
+    }
 
     // max
     public static QFunction createMax()

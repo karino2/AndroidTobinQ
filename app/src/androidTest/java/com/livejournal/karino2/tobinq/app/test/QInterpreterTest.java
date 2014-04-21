@@ -676,6 +676,27 @@ public class QInterpreterTest extends TestCase {
         assertQNumericEquals(5, actual.get(2));
     }
 
+    public void test_evalExpr_which() throws RecognitionException {
+        QObject actual = callEvalExpr("which(c(FALSE, TRUE, FALSE))");
+        assertEquals(1, actual.getLength());
+        assertQNumericEquals(2, actual.get(0));
+    }
+
+    public void test_evalExpr_which_multi() throws RecognitionException {
+        QObject actual = callEvalExpr("which(c(TRUE, FALSE, TRUE))");
+        assertEquals(2, actual.getLength());
+        assertQNumericEquals(1, actual.get(0));
+        assertQNumericEquals(3, actual.get(1));
+    }
+
+    public void test_evalExpr_which_nomatch() throws RecognitionException {
+        QObject actual = callEvalExpr("which(c(FALSE, FALSE, FALSE))");
+        assertEquals(0, actual.getLength());
+        // this should be integer(0), but currently non compatible.
+        assertEquals("numeric(0)", actual.toString());
+    }
+
+
 	public void test_evalExpr_priority() throws RecognitionException
 	{
 		int expected = 7;

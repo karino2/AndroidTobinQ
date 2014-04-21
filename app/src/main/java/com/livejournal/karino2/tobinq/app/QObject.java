@@ -144,6 +144,9 @@ public class QObject {
 
 	public String toStringOne(QObject obj)
 	{
+        if(obj.getLength() == 0) {
+            return obj.getMode() + "(0)";
+        }
 		if(obj.getMode() == "logical")
 		{
 			if(obj == QObject.NA)
@@ -219,8 +222,11 @@ public class QObject {
 
 	public int getLength()
 	{
-		if(_vector == null)
-			return 1;
+		if(_vector == null) {
+            if(_val == null)
+                return 0;
+            return 1;
+        }
 		return _vector.size();
 	}
 	
