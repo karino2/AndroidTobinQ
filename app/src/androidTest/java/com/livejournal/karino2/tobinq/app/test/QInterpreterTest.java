@@ -779,7 +779,7 @@ public class QInterpreterTest extends TestCase {
 	// // @Test
 	public void test_eval_matchArg_defaultArg()
 	{
-		QObject actual = _intp.eval("f <- function(tp = c(\"foo\", \"bar\", \"baz\") { match.arg(tp); }\nf(\"ba\")");
+		QObject actual = _intp.eval("f <- function(tp = c(\"foo\", \"bar\", \"baz\")) { match.arg(tp); }\nf(\"ba\")");
 		assertQCharEquals("bar", actual);
 	}
 
