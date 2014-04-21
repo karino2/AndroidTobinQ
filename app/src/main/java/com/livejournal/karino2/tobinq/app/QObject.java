@@ -492,8 +492,9 @@ public class QObject {
 	}
 
 	QObject subscriptByLogical(QObject range) {
-		if(range.getLength() != getLength())
-			throw new QException("subscriptByLogical: length of logical list and lexpr is different");
+		if(range.getLength() != getLength()) {
+            range = range.recycle(getLength());
+        }
 		QObjectBuilder bldr = new QObjectBuilder();
 		for(int i = 0; i < range.getLength(); i++)
 		{
@@ -502,7 +503,12 @@ public class QObject {
 				bldr.add(get(i));
 				
 		}
-		return bldr.result();
+		QObject res = bldr.result();
+        if(res == null) {
+            QObject empty = new QObject(getMode());
+            return empty;
+        }
+        return res;
 	}
 
 	public QObject subscriptByNumber(QObject range) {

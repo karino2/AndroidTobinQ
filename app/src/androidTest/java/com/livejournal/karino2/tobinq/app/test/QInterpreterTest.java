@@ -526,6 +526,14 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(expected, actual);
 	}
 
+    public void test_eval_subscript_logical_NoMuch()
+    {
+        QObject actual = _intp.eval("(1:3)[FALSE]");
+        assertEquals(0, actual.getLength());
+        // currently not compatible to R here.
+        assertEquals("numeric(0)", actual.toString());
+    }
+
     public void test_evalExpr_length() throws RecognitionException {
         int expected = 5;
         QObject actual = callEvalExpr("length(1:5)");
