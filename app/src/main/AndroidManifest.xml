@@ -21,6 +21,7 @@
         </activity>
         <activity
             android:name="com.livejournal.karino2.tobinq.app.ScratchActivity"
+            android:windowSoftInputMode="adjustResize"
             android:label="@string/title_activity_scratch" >
         </activity>
         <activity
