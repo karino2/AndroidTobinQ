@@ -238,16 +238,18 @@ public class QList extends QObject {
     }
 
 
+    // This function is very likey at QFunction. But this function use many intenral method.
+    // So I place this method here for a while.
     // args must be list of vector.
 	public static QList createDataFrameFromVector(QObject args, QInterpreter intp)
 	{
 		validateArg(args);
-		
+
 		QList ret = createDataFrame();
-		
+
 		QObject rowNames = rowNames(args, intp);
-		ret.setRowNamesAttr(rowNames);		
-		
+		ret.setRowNamesAttr(rowNames);
+
 		QObjectBuilder nameBldr = new QObjectBuilder();
 		for(int i = 0; i < args.getLength(); i++)
 		{
@@ -269,7 +271,7 @@ public class QList extends QObject {
             }
 			else
 				name = o.getAttribute("names");
-	
+
 			nameBldr.add(name);
 			df.setNamesAttr(name);
 			df.setRowNamesAttr(rowNames);
@@ -279,7 +281,7 @@ public class QList extends QObject {
 		ret.setNamesAttr(nameBldr.result());
 		return ret;
 	}
-	
+
 	public static void validateArg(QObject args) {
 		if(args.getMode() != LIST_TYPE)
 			throw new QException("data.frame arg is not list");

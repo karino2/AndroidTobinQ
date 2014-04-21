@@ -241,7 +241,16 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(11, actual.get(1));
 		assertQNumericEquals(12, actual.get(2));
 	}
-	
+
+    // NYI
+    /*
+    public void test_evalExpr_dataFrame_explicitName() throws RecognitionException {
+        QObject actual = callEvalExpr("data.frame(a=1:2)");
+        assertQCharEquals("a", actual.getAttribute("names"));
+        assertEquals(2, actual.getAttribute("row.names").getLength());
+    }
+    */
+
 	public void test_evalExpr_dataFrame_subscript() throws RecognitionException
 	{
 		// setup

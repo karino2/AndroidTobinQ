@@ -1112,7 +1112,7 @@ public class QFunction extends QObject {
 			}
 		};
 	}
-	
+
 	public static QFunction createList()
 	{
 		return new QFunction(null, null){
