@@ -1,4 +1,4 @@
-// $ANTLR 3.5.2 Q.g 2014-04-20 00:49:05
+// $ANTLR 3.5.2 Q.g 2014-04-21 21:09:05
 
        package com.livejournal.karino2.tobinq.app;
 
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class QLexer extends Lexer {
 	public static final int EOF=-1;
-	public static final int T__79=79;
 	public static final int T__80=80;
 	public static final int T__81=81;
 	public static final int T__82=82;
@@ -37,81 +36,83 @@ public class QLexer extends Lexer {
 	public static final int T__102=102;
 	public static final int T__103=103;
 	public static final int T__104=104;
+	public static final int T__105=105;
 	public static final int AND=4;
 	public static final int AND2=5;
 	public static final int BREAK=6;
-	public static final int DecimalLiteral=7;
-	public static final int ELSE=8;
-	public static final int EQ=9;
-	public static final int EQ_ASSIGN=10;
-	public static final int EscapeSequence=11;
-	public static final int Exponent=12;
-	public static final int FALSE=13;
-	public static final int FOR=14;
-	public static final int FUNCTION=15;
-	public static final int FloatTypeSuffix=16;
-	public static final int FloatingPointLiteral=17;
-	public static final int GE=18;
-	public static final int GT=19;
-	public static final int HexDigit=20;
-	public static final int HexLiteral=21;
-	public static final int IF=22;
-	public static final int IN=23;
-	public static final int IntegerTypeSuffix=24;
-	public static final int JavaIDDigit=25;
-	public static final int LBB=26;
-	public static final int LE=27;
-	public static final int LEFT_ASSIGN=28;
-	public static final int LT=29;
-	public static final int Letter=30;
-	public static final int NA=31;
-	public static final int NE=32;
-	public static final int NEXT=33;
-	public static final int NS_GET=34;
-	public static final int NS_GET_INT=35;
-	public static final int NULL_CONST=36;
-	public static final int OR=37;
-	public static final int OR2=38;
-	public static final int OctalEscape=39;
-	public static final int OctalLiteral=40;
-	public static final int REPEAT=41;
-	public static final int RIGHT_ASSIGN=42;
-	public static final int SPECIAL=43;
-	public static final int STR_CONST=44;
-	public static final int SYMBOL=45;
-	public static final int TRUE=46;
-	public static final int UnicodeEscape=47;
-	public static final int WHILE=48;
-	public static final int XXBINARY=49;
-	public static final int XXCOND=50;
-	public static final int XXDEFUN=51;
-	public static final int XXEXPRLIST=52;
-	public static final int XXEXPRLIST0=53;
-	public static final int XXEXPRLIST1=54;
-	public static final int XXEXPRLIST2=55;
-	public static final int XXFOR=56;
-	public static final int XXFORCOND=57;
-	public static final int XXFORMAL0=58;
-	public static final int XXFORMAL1=59;
-	public static final int XXFORMALLIST=60;
-	public static final int XXFUNCALL=61;
-	public static final int XXIF=62;
-	public static final int XXIFCOND=63;
-	public static final int XXIFELSE=64;
-	public static final int XXNULLSUB0=65;
-	public static final int XXNULLSUB1=66;
-	public static final int XXNXTBRK=67;
-	public static final int XXPAREN=68;
-	public static final int XXREPEAT=69;
-	public static final int XXSUB0=70;
-	public static final int XXSUB1=71;
-	public static final int XXSUBLIST=72;
-	public static final int XXSUBSCRIPT=73;
-	public static final int XXSYMSUB0=74;
-	public static final int XXSYMSUB1=75;
-	public static final int XXUNARY=76;
-	public static final int XXVALUE=77;
-	public static final int XXWHILE=78;
+	public static final int Comment=7;
+	public static final int DecimalLiteral=8;
+	public static final int ELSE=9;
+	public static final int EQ=10;
+	public static final int EQ_ASSIGN=11;
+	public static final int EscapeSequence=12;
+	public static final int Exponent=13;
+	public static final int FALSE=14;
+	public static final int FOR=15;
+	public static final int FUNCTION=16;
+	public static final int FloatTypeSuffix=17;
+	public static final int FloatingPointLiteral=18;
+	public static final int GE=19;
+	public static final int GT=20;
+	public static final int HexDigit=21;
+	public static final int HexLiteral=22;
+	public static final int IF=23;
+	public static final int IN=24;
+	public static final int IntegerTypeSuffix=25;
+	public static final int JavaIDDigit=26;
+	public static final int LBB=27;
+	public static final int LE=28;
+	public static final int LEFT_ASSIGN=29;
+	public static final int LT=30;
+	public static final int Letter=31;
+	public static final int NA=32;
+	public static final int NE=33;
+	public static final int NEXT=34;
+	public static final int NS_GET=35;
+	public static final int NS_GET_INT=36;
+	public static final int NULL_CONST=37;
+	public static final int OR=38;
+	public static final int OR2=39;
+	public static final int OctalEscape=40;
+	public static final int OctalLiteral=41;
+	public static final int REPEAT=42;
+	public static final int RIGHT_ASSIGN=43;
+	public static final int SPECIAL=44;
+	public static final int STR_CONST=45;
+	public static final int SYMBOL=46;
+	public static final int TRUE=47;
+	public static final int UnicodeEscape=48;
+	public static final int WHILE=49;
+	public static final int XXBINARY=50;
+	public static final int XXCOND=51;
+	public static final int XXDEFUN=52;
+	public static final int XXEXPRLIST=53;
+	public static final int XXEXPRLIST0=54;
+	public static final int XXEXPRLIST1=55;
+	public static final int XXEXPRLIST2=56;
+	public static final int XXFOR=57;
+	public static final int XXFORCOND=58;
+	public static final int XXFORMAL0=59;
+	public static final int XXFORMAL1=60;
+	public static final int XXFORMALLIST=61;
+	public static final int XXFUNCALL=62;
+	public static final int XXIF=63;
+	public static final int XXIFCOND=64;
+	public static final int XXIFELSE=65;
+	public static final int XXNULLSUB0=66;
+	public static final int XXNULLSUB1=67;
+	public static final int XXNXTBRK=68;
+	public static final int XXPAREN=69;
+	public static final int XXREPEAT=70;
+	public static final int XXSUB0=71;
+	public static final int XXSUB1=72;
+	public static final int XXSUBLIST=73;
+	public static final int XXSUBSCRIPT=74;
+	public static final int XXSYMSUB0=75;
+	public static final int XXSYMSUB1=76;
+	public static final int XXUNARY=77;
+	public static final int XXVALUE=78;
+	public static final int XXWHILE=79;
 
 	// delegates
 	// delegators
@@ -711,35 +712,15 @@ public class QLexer extends Lexer {
 	}
 	// $ANTLR end "WHILE"
 
-	// $ANTLR start "T__79"
-	public final void mT__79() throws RecognitionException {
-		try {
-			int _type = T__79;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:34:7: ( '!' )
-			// Q.g:34:9: '!'
-			{
-			match('!'); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__79"
-
 	// $ANTLR start "T__80"
 	public final void mT__80() throws RecognitionException {
 		try {
 			int _type = T__80;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:35:7: ( '$' )
-			// Q.g:35:9: '$'
+			// Q.g:34:7: ( '!' )
+			// Q.g:34:9: '!'
 			{
-			match('$'); 
+			match('!'); 
 			}
 
 			state.type = _type;
@@ -756,10 +737,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__81;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:36:7: ( '(' )
-			// Q.g:36:9: '('
+			// Q.g:35:7: ( '$' )
+			// Q.g:35:9: '$'
 			{
-			match('('); 
+			match('$'); 
 			}
 
 			state.type = _type;
@@ -776,10 +757,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__82;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:37:7: ( ')' )
-			// Q.g:37:9: ')'
+			// Q.g:36:7: ( '(' )
+			// Q.g:36:9: '('
 			{
-			match(')'); 
+			match('('); 
 			}
 
 			state.type = _type;
@@ -796,10 +777,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__83;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:38:7: ( '*' )
-			// Q.g:38:9: '*'
+			// Q.g:37:7: ( ')' )
+			// Q.g:37:9: ')'
 			{
-			match('*'); 
+			match(')'); 
 			}
 
 			state.type = _type;
@@ -816,10 +797,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__84;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:39:7: ( '+' )
-			// Q.g:39:9: '+'
+			// Q.g:38:7: ( '*' )
+			// Q.g:38:9: '*'
 			{
-			match('+'); 
+			match('*'); 
 			}
 
 			state.type = _type;
@@ -836,10 +817,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__85;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:40:7: ( ',' )
-			// Q.g:40:9: ','
+			// Q.g:39:7: ( '+' )
+			// Q.g:39:9: '+'
 			{
-			match(','); 
+			match('+'); 
 			}
 
 			state.type = _type;
@@ -856,10 +837,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__86;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:41:7: ( '-' )
-			// Q.g:41:9: '-'
+			// Q.g:40:7: ( ',' )
+			// Q.g:40:9: ','
 			{
-			match('-'); 
+			match(','); 
 			}
 
 			state.type = _type;
@@ -876,10 +857,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__87;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:42:7: ( '/' )
-			// Q.g:42:9: '/'
+			// Q.g:41:7: ( '-' )
+			// Q.g:41:9: '-'
 			{
-			match('/'); 
+			match('-'); 
 			}
 
 			state.type = _type;
@@ -896,10 +877,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__88;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:43:7: ( ':' )
-			// Q.g:43:9: ':'
+			// Q.g:42:7: ( '/' )
+			// Q.g:42:9: '/'
 			{
-			match(':'); 
+			match('/'); 
 			}
 
 			state.type = _type;
@@ -916,10 +897,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__89;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:44:7: ( ';' )
-			// Q.g:44:9: ';'
+			// Q.g:43:7: ( ':' )
+			// Q.g:43:9: ':'
 			{
-			match(';'); 
+			match(':'); 
 			}
 
 			state.type = _type;
@@ -936,10 +917,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__90;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:45:7: ( '?' )
-			// Q.g:45:9: '?'
+			// Q.g:44:7: ( ';' )
+			// Q.g:44:9: ';'
 			{
-			match('?'); 
+			match(';'); 
 			}
 
 			state.type = _type;
@@ -956,10 +937,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__91;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:46:7: ( '@' )
-			// Q.g:46:9: '@'
+			// Q.g:45:7: ( '?' )
+			// Q.g:45:9: '?'
 			{
-			match('@'); 
+			match('?'); 
 			}
 
 			state.type = _type;
@@ -976,11 +957,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__92;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:47:7: ( 'Inf' )
-			// Q.g:47:9: 'Inf'
+			// Q.g:46:7: ( '@' )
+			// Q.g:46:9: '@'
 			{
-			match("Inf"); 
-
+			match('@'); 
 			}
 
 			state.type = _type;
@@ -997,10 +977,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__93;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:48:7: ( 'NA_character_' )
-			// Q.g:48:9: 'NA_character_'
+			// Q.g:47:7: ( 'Inf' )
+			// Q.g:47:9: 'Inf'
 			{
-			match("NA_character_"); 
+			match("Inf"); 
 
 			}
 
@@ -1018,10 +998,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__94;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:49:7: ( 'NA_complex_' )
-			// Q.g:49:9: 'NA_complex_'
+			// Q.g:48:7: ( 'NA_character_' )
+			// Q.g:48:9: 'NA_character_'
 			{
-			match("NA_complex_"); 
+			match("NA_character_"); 
 
 			}
 
@@ -1039,10 +1019,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__95;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:50:7: ( 'NA_integer_' )
-			// Q.g:50:9: 'NA_integer_'
+			// Q.g:49:7: ( 'NA_complex_' )
+			// Q.g:49:9: 'NA_complex_'
 			{
-			match("NA_integer_"); 
+			match("NA_complex_"); 
 
 			}
 
@@ -1060,10 +1040,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__96;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:51:7: ( 'NA_real_' )
-			// Q.g:51:9: 'NA_real_'
+			// Q.g:50:7: ( 'NA_integer_' )
+			// Q.g:50:9: 'NA_integer_'
 			{
-			match("NA_real_"); 
+			match("NA_integer_"); 
 
 			}
 
@@ -1081,10 +1061,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__97;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:52:7: ( 'NaN' )
-			// Q.g:52:9: 'NaN'
+			// Q.g:51:7: ( 'NA_real_' )
+			// Q.g:51:9: 'NA_real_'
 			{
-			match("NaN"); 
+			match("NA_real_"); 
 
 			}
 
@@ -1102,10 +1082,11 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__98;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:53:7: ( '[' )
-			// Q.g:53:9: '['
+			// Q.g:52:7: ( 'NaN' )
+			// Q.g:52:9: 'NaN'
 			{
-			match('['); 
+			match("NaN"); 
+
 			}
 
 			state.type = _type;
@@ -1122,10 +1103,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__99;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:54:7: ( '\\n' )
-			// Q.g:54:9: '\\n'
+			// Q.g:53:7: ( '[' )
+			// Q.g:53:9: '['
 			{
-			match('\n'); 
+			match('['); 
 			}
 
 			state.type = _type;
@@ -1142,10 +1123,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__100;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:55:8: ( ']' )
-			// Q.g:55:10: ']'
+			// Q.g:54:8: ( '\\n' )
+			// Q.g:54:10: '\\n'
 			{
-			match(']'); 
+			match('\n'); 
 			}
 
 			state.type = _type;
@@ -1162,10 +1143,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__101;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:56:8: ( '^' )
-			// Q.g:56:10: '^'
+			// Q.g:55:8: ( ']' )
+			// Q.g:55:10: ']'
 			{
-			match('^'); 
+			match(']'); 
 			}
 
 			state.type = _type;
@@ -1182,10 +1163,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__102;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:57:8: ( '{' )
-			// Q.g:57:10: '{'
+			// Q.g:56:8: ( '^' )
+			// Q.g:56:10: '^'
 			{
-			match('{'); 
+			match('^'); 
 			}
 
 			state.type = _type;
@@ -1202,10 +1183,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__103;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:58:8: ( '}' )
-			// Q.g:58:10: '}'
+			// Q.g:57:8: ( '{' )
+			// Q.g:57:10: '{'
 			{
-			match('}'); 
+			match('{'); 
 			}
 
 			state.type = _type;
@@ -1222,6 +1203,26 @@ public class QLexer extends Lexer {
 		try {
 			int _type = T__104;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Q.g:58:8: ( '}' )
+			// Q.g:58:10: '}'
+			{
+			match('}'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "T__104"
+
+	// $ANTLR start "T__105"
+	public final void mT__105() throws RecognitionException {
+		try {
+			int _type = T__105;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
 			// Q.g:59:8: ( '~' )
 			// Q.g:59:10: '~'
 			{
@@ -1235,15 +1236,15 @@ public class QLexer extends Lexer {
 			// do for sure before leaving
 		}
 	}
-	// $ANTLR end "T__104"
+	// $ANTLR end "T__105"
 
 	// $ANTLR start "HexLiteral"
 	public final void mHexLiteral() throws RecognitionException {
 		try {
 			int _type = HexLiteral;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:311:12: ( '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )? )
-			// Q.g:311:14: '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )?
+			// Q.g:312:12: ( '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )? )
+			// Q.g:312:14: '0' ( 'x' | 'X' ) ( HexDigit )+ ( IntegerTypeSuffix )?
 			{
 			match('0'); 
 			if ( input.LA(1)=='X'||input.LA(1)=='x' ) {
@@ -1254,7 +1255,7 @@ public class QLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// Q.g:311:28: ( HexDigit )+
+			// Q.g:312:28: ( HexDigit )+
 			int cnt1=0;
 			loop1:
 			while (true) {
@@ -1287,7 +1288,7 @@ public class QLexer extends Lexer {
 				cnt1++;
 			}
 
-			// Q.g:311:38: ( IntegerTypeSuffix )?
+			// Q.g:312:38: ( IntegerTypeSuffix )?
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='L'||LA2_0=='l') ) {
@@ -1326,10 +1327,10 @@ public class QLexer extends Lexer {
 		try {
 			int _type = DecimalLiteral;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:313:16: ( ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )? )
-			// Q.g:313:18: ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )?
+			// Q.g:314:16: ( ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )? )
+			// Q.g:314:18: ( '0' | '1' .. '9' ( '0' .. '9' )* ) ( IntegerTypeSuffix )?
 			{
-			// Q.g:313:18: ( '0' | '1' .. '9' ( '0' .. '9' )* )
+			// Q.g:314:18: ( '0' | '1' .. '9' ( '0' .. '9' )* )
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0=='0') ) {
@@ -1347,16 +1348,16 @@ public class QLexer extends Lexer {
 
 			switch (alt4) {
 				case 1 :
-					// Q.g:313:19: '0'
+					// Q.g:314:19: '0'
 					{
 					match('0'); 
 					}
 					break;
 				case 2 :
-					// Q.g:313:25: '1' .. '9' ( '0' .. '9' )*
+					// Q.g:314:25: '1' .. '9' ( '0' .. '9' )*
 					{
 					matchRange('1','9'); 
-					// Q.g:313:34: ( '0' .. '9' )*
+					// Q.g:314:34: ( '0' .. '9' )*
 					loop3:
 					while (true) {
 						int alt3=2;
@@ -1390,7 +1391,7 @@ public class QLexer extends Lexer {
 
 			}
 
-			// Q.g:313:45: ( IntegerTypeSuffix )?
+			// Q.g:314:45: ( IntegerTypeSuffix )?
 			int alt5=2;
 			int LA5_0 = input.LA(1);
 			if ( (LA5_0=='L'||LA5_0=='l') ) {
@@ -1429,11 +1430,11 @@ public class QLexer extends Lexer {
 		try {
 			int _type = OctalLiteral;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:315:14: ( '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )? )
-			// Q.g:315:16: '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )?
+			// Q.g:316:14: ( '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )? )
+			// Q.g:316:16: '0' ( '0' .. '7' )+ ( IntegerTypeSuffix )?
 			{
 			match('0'); 
-			// Q.g:315:20: ( '0' .. '7' )+
+			// Q.g:316:20: ( '0' .. '7' )+
 			int cnt6=0;
 			loop6:
 			while (true) {
@@ -1466,7 +1467,7 @@ public class QLexer extends Lexer {
 				cnt6++;
 			}
 
-			// Q.g:315:32: ( IntegerTypeSuffix )?
+			// Q.g:316:32: ( IntegerTypeSuffix )?
 			int alt7=2;
 			int LA7_0 = input.LA(1);
 			if ( (LA7_0=='L'||LA7_0=='l') ) {
@@ -1503,7 +1504,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "HexDigit"
 	public final void mHexDigit() throws RecognitionException {
 		try {
-			// Q.g:319:10: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
+			// Q.g:320:10: ( ( '0' .. '9' | 'a' .. 'f' | 'A' .. 'F' ) )
 			// Q.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'F')||(input.LA(1) >= 'a' && input.LA(1) <= 'f') ) {
@@ -1526,7 +1527,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "IntegerTypeSuffix"
 	public final void mIntegerTypeSuffix() throws RecognitionException {
 		try {
-			// Q.g:322:19: ( ( 'l' | 'L' ) )
+			// Q.g:323:19: ( ( 'l' | 'L' ) )
 			// Q.g:
 			{
 			if ( input.LA(1)=='L'||input.LA(1)=='l' ) {
@@ -1551,14 +1552,14 @@ public class QLexer extends Lexer {
 		try {
 			int _type = FloatingPointLiteral;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:325:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix )
+			// Q.g:326:5: ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix )
 			int alt18=4;
 			alt18 = dfa18.predict(input);
 			switch (alt18) {
 				case 1 :
-					// Q.g:325:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )?
+					// Q.g:326:9: ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )?
 					{
-					// Q.g:325:9: ( '0' .. '9' )+
+					// Q.g:326:9: ( '0' .. '9' )+
 					int cnt8=0;
 					loop8:
 					while (true) {
@@ -1592,7 +1593,7 @@ public class QLexer extends Lexer {
 					}
 
 					match('.'); 
-					// Q.g:325:25: ( '0' .. '9' )*
+					// Q.g:326:25: ( '0' .. '9' )*
 					loop9:
 					while (true) {
 						int alt9=2;
@@ -1621,7 +1622,7 @@ public class QLexer extends Lexer {
 						}
 					}
 
-					// Q.g:325:37: ( Exponent )?
+					// Q.g:326:37: ( Exponent )?
 					int alt10=2;
 					int LA10_0 = input.LA(1);
 					if ( (LA10_0=='E'||LA10_0=='e') ) {
@@ -1629,7 +1630,7 @@ public class QLexer extends Lexer {
 					}
 					switch (alt10) {
 						case 1 :
-							// Q.g:325:37: Exponent
+							// Q.g:326:37: Exponent
 							{
 							mExponent(); 
 
@@ -1638,7 +1639,7 @@ public class QLexer extends Lexer {
 
 					}
 
-					// Q.g:325:47: ( FloatTypeSuffix )?
+					// Q.g:326:47: ( FloatTypeSuffix )?
 					int alt11=2;
 					int LA11_0 = input.LA(1);
 					if ( (LA11_0=='D'||LA11_0=='F'||LA11_0=='d'||LA11_0=='f') ) {
@@ -1664,10 +1665,10 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Q.g:326:9: '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )?
+					// Q.g:327:9: '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )?
 					{
 					match('.'); 
-					// Q.g:326:13: ( '0' .. '9' )+
+					// Q.g:327:13: ( '0' .. '9' )+
 					int cnt12=0;
 					loop12:
 					while (true) {
@@ -1700,7 +1701,7 @@ public class QLexer extends Lexer {
 						cnt12++;
 					}
 
-					// Q.g:326:25: ( Exponent )?
+					// Q.g:327:25: ( Exponent )?
 					int alt13=2;
 					int LA13_0 = input.LA(1);
 					if ( (LA13_0=='E'||LA13_0=='e') ) {
@@ -1708,7 +1709,7 @@ public class QLexer extends Lexer {
 					}
 					switch (alt13) {
 						case 1 :
-							// Q.g:326:25: Exponent
+							// Q.g:327:25: Exponent
 							{
 							mExponent(); 
 
@@ -1717,7 +1718,7 @@ public class QLexer extends Lexer {
 
 					}
 
-					// Q.g:326:35: ( FloatTypeSuffix )?
+					// Q.g:327:35: ( FloatTypeSuffix )?
 					int alt14=2;
 					int LA14_0 = input.LA(1);
 					if ( (LA14_0=='D'||LA14_0=='F'||LA14_0=='d'||LA14_0=='f') ) {
@@ -1743,9 +1744,9 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 3 :
-					// Q.g:327:9: ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )?
+					// Q.g:328:9: ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )?
 					{
-					// Q.g:327:9: ( '0' .. '9' )+
+					// Q.g:328:9: ( '0' .. '9' )+
 					int cnt15=0;
 					loop15:
 					while (true) {
@@ -1780,7 +1781,7 @@ public class QLexer extends Lexer {
 
 					mExponent(); 
 
-					// Q.g:327:30: ( FloatTypeSuffix )?
+					// Q.g:328:30: ( FloatTypeSuffix )?
 					int alt16=2;
 					int LA16_0 = input.LA(1);
 					if ( (LA16_0=='D'||LA16_0=='F'||LA16_0=='d'||LA16_0=='f') ) {
@@ -1806,9 +1807,9 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 4 :
-					// Q.g:328:9: ( '0' .. '9' )+ FloatTypeSuffix
+					// Q.g:329:9: ( '0' .. '9' )+ FloatTypeSuffix
 					{
-					// Q.g:328:9: ( '0' .. '9' )+
+					// Q.g:329:9: ( '0' .. '9' )+
 					int cnt17=0;
 					loop17:
 					while (true) {
@@ -1859,8 +1860,8 @@ public class QLexer extends Lexer {
 	// $ANTLR start "Exponent"
 	public final void mExponent() throws RecognitionException {
 		try {
-			// Q.g:333:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
-			// Q.g:333:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
+			// Q.g:334:10: ( ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+ )
+			// Q.g:334:12: ( 'e' | 'E' ) ( '+' | '-' )? ( '0' .. '9' )+
 			{
 			if ( input.LA(1)=='E'||input.LA(1)=='e' ) {
 				input.consume();
@@ -1870,7 +1871,7 @@ public class QLexer extends Lexer {
 				recover(mse);
 				throw mse;
 			}
-			// Q.g:333:22: ( '+' | '-' )?
+			// Q.g:334:22: ( '+' | '-' )?
 			int alt19=2;
 			int LA19_0 = input.LA(1);
 			if ( (LA19_0=='+'||LA19_0=='-') ) {
@@ -1893,7 +1894,7 @@ public class QLexer extends Lexer {
 
 			}
 
-			// Q.g:333:33: ( '0' .. '9' )+
+			// Q.g:334:33: ( '0' .. '9' )+
 			int cnt20=0;
 			loop20:
 			while (true) {
@@ -1938,7 +1939,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "FloatTypeSuffix"
 	public final void mFloatTypeSuffix() throws RecognitionException {
 		try {
-			// Q.g:336:17: ( ( 'f' | 'F' | 'd' | 'D' ) )
+			// Q.g:337:17: ( ( 'f' | 'F' | 'd' | 'D' ) )
 			// Q.g:
 			{
 			if ( input.LA(1)=='D'||input.LA(1)=='F'||input.LA(1)=='d'||input.LA(1)=='f' ) {
@@ -1963,7 +1964,7 @@ public class QLexer extends Lexer {
 		try {
 			int _type = STR_CONST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:364:5: ( '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"' | '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) )* '\\'' )
+			// Q.g:365:5: ( '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"' | '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) )* '\\'' )
 			int alt23=2;
 			int LA23_0 = input.LA(1);
 			if ( (LA23_0=='\"') ) {
@@ -1981,10 +1982,10 @@ public class QLexer extends Lexer {
 
 			switch (alt23) {
 				case 1 :
-					// Q.g:364:8: '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"'
+					// Q.g:365:8: '\"' ( EscapeSequence |~ ( '\\\\' | '\"' ) )* '\"'
 					{
 					match('\"'); 
-					// Q.g:364:12: ( EscapeSequence |~ ( '\\\\' | '\"' ) )*
+					// Q.g:365:12: ( EscapeSequence |~ ( '\\\\' | '\"' ) )*
 					loop21:
 					while (true) {
 						int alt21=3;
@@ -1998,14 +1999,14 @@ public class QLexer extends Lexer {
 
 						switch (alt21) {
 						case 1 :
-							// Q.g:364:14: EscapeSequence
+							// Q.g:365:14: EscapeSequence
 							{
 							mEscapeSequence(); 
 
 							}
 							break;
 						case 2 :
-							// Q.g:364:31: ~ ( '\\\\' | '\"' )
+							// Q.g:365:31: ~ ( '\\\\' | '\"' )
 							{
 							if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 								input.consume();
@@ -2027,10 +2028,10 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Q.g:365:9: '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) )* '\\''
+					// Q.g:366:9: '\\'' ( EscapeSequence |~ ( '\\'' | '\\\\' ) )* '\\''
 					{
 					match('\''); 
-					// Q.g:365:14: ( EscapeSequence |~ ( '\\'' | '\\\\' ) )*
+					// Q.g:366:14: ( EscapeSequence |~ ( '\\'' | '\\\\' ) )*
 					loop22:
 					while (true) {
 						int alt22=3;
@@ -2044,14 +2045,14 @@ public class QLexer extends Lexer {
 
 						switch (alt22) {
 						case 1 :
-							// Q.g:365:16: EscapeSequence
+							// Q.g:366:16: EscapeSequence
 							{
 							mEscapeSequence(); 
 
 							}
 							break;
 						case 2 :
-							// Q.g:365:33: ~ ( '\\'' | '\\\\' )
+							// Q.g:366:33: ~ ( '\\'' | '\\\\' )
 							{
 							if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '&')||(input.LA(1) >= '(' && input.LA(1) <= '[')||(input.LA(1) >= ']' && input.LA(1) <= '\uFFFF') ) {
 								input.consume();
@@ -2086,7 +2087,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "EscapeSequence"
 	public final void mEscapeSequence() throws RecognitionException {
 		try {
-			// Q.g:371:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UnicodeEscape | OctalEscape )
+			// Q.g:372:5: ( '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' ) | UnicodeEscape | OctalEscape )
 			int alt24=3;
 			int LA24_0 = input.LA(1);
 			if ( (LA24_0=='\\') ) {
@@ -2141,7 +2142,7 @@ public class QLexer extends Lexer {
 
 			switch (alt24) {
 				case 1 :
-					// Q.g:371:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
+					// Q.g:372:9: '\\\\' ( 'b' | 't' | 'n' | 'f' | 'r' | '\\\"' | '\\'' | '\\\\' )
 					{
 					match('\\'); 
 					if ( input.LA(1)=='\"'||input.LA(1)=='\''||input.LA(1)=='\\'||input.LA(1)=='b'||input.LA(1)=='f'||input.LA(1)=='n'||input.LA(1)=='r'||input.LA(1)=='t' ) {
@@ -2155,14 +2156,14 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Q.g:372:9: UnicodeEscape
+					// Q.g:373:9: UnicodeEscape
 					{
 					mUnicodeEscape(); 
 
 					}
 					break;
 				case 3 :
-					// Q.g:373:9: OctalEscape
+					// Q.g:374:9: OctalEscape
 					{
 					mOctalEscape(); 
 
@@ -2180,7 +2181,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "OctalEscape"
 	public final void mOctalEscape() throws RecognitionException {
 		try {
-			// Q.g:378:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
+			// Q.g:379:5: ( '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) ( '0' .. '7' ) | '\\\\' ( '0' .. '7' ) )
 			int alt25=3;
 			int LA25_0 = input.LA(1);
 			if ( (LA25_0=='\\') ) {
@@ -2238,7 +2239,7 @@ public class QLexer extends Lexer {
 
 			switch (alt25) {
 				case 1 :
-					// Q.g:378:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
+					// Q.g:379:9: '\\\\' ( '0' .. '3' ) ( '0' .. '7' ) ( '0' .. '7' )
 					{
 					match('\\'); 
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '3') ) {
@@ -2268,7 +2269,7 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Q.g:379:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
+					// Q.g:380:9: '\\\\' ( '0' .. '7' ) ( '0' .. '7' )
 					{
 					match('\\'); 
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '7') ) {
@@ -2290,7 +2291,7 @@ public class QLexer extends Lexer {
 					}
 					break;
 				case 3 :
-					// Q.g:380:9: '\\\\' ( '0' .. '7' )
+					// Q.g:381:9: '\\\\' ( '0' .. '7' )
 					{
 					match('\\'); 
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '7') ) {
@@ -2315,8 +2316,8 @@ public class QLexer extends Lexer {
 	// $ANTLR start "UnicodeEscape"
 	public final void mUnicodeEscape() throws RecognitionException {
 		try {
-			// Q.g:385:5: ( '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit )
-			// Q.g:385:9: '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit
+			// Q.g:386:5: ( '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit )
+			// Q.g:386:9: '\\\\' 'u' HexDigit HexDigit HexDigit HexDigit
 			{
 			match('\\'); 
 			match('u'); 
@@ -2342,8 +2343,8 @@ public class QLexer extends Lexer {
 		try {
 			int _type = NULL_CONST;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:390:2: ( 'NULL' )
-			// Q.g:390:4: 'NULL'
+			// Q.g:391:2: ( 'NULL' )
+			// Q.g:391:4: 'NULL'
 			{
 			match("NULL"); 
 
@@ -2361,7 +2362,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "Letter"
 	public final void mLetter() throws RecognitionException {
 		try {
-			// Q.g:397:5: ( '\\u002e' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u00ff' | '\\u0100' .. '\\u1fff' | '\\u3040' .. '\\u318f' | '\\u3300' .. '\\u337f' | '\\u3400' .. '\\u3d2d' | '\\u4e00' .. '\\u9fff' | '\\uf900' .. '\\ufaff' )
+			// Q.g:398:5: ( '\\u002e' | '\\u0041' .. '\\u005a' | '\\u005f' | '\\u0061' .. '\\u007a' | '\\u00c0' .. '\\u00d6' | '\\u00d8' .. '\\u00f6' | '\\u00f8' .. '\\u00ff' | '\\u0100' .. '\\u1fff' | '\\u3040' .. '\\u318f' | '\\u3300' .. '\\u337f' | '\\u3400' .. '\\u3d2d' | '\\u4e00' .. '\\u9fff' | '\\uf900' .. '\\ufaff' )
 			// Q.g:
 			{
 			if ( input.LA(1)=='.'||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z')||(input.LA(1) >= '\u00C0' && input.LA(1) <= '\u00D6')||(input.LA(1) >= '\u00D8' && input.LA(1) <= '\u00F6')||(input.LA(1) >= '\u00F8' && input.LA(1) <= '\u1FFF')||(input.LA(1) >= '\u3040' && input.LA(1) <= '\u318F')||(input.LA(1) >= '\u3300' && input.LA(1) <= '\u337F')||(input.LA(1) >= '\u3400' && input.LA(1) <= '\u3D2D')||(input.LA(1) >= '\u4E00' && input.LA(1) <= '\u9FFF')||(input.LA(1) >= '\uF900' && input.LA(1) <= '\uFAFF') ) {
@@ -2384,7 +2385,7 @@ public class QLexer extends Lexer {
 	// $ANTLR start "JavaIDDigit"
 	public final void mJavaIDDigit() throws RecognitionException {
 		try {
-			// Q.g:416:5: ( '\\u0030' .. '\\u0039' | '\\u0660' .. '\\u0669' | '\\u06f0' .. '\\u06f9' | '\\u0966' .. '\\u096f' | '\\u09e6' .. '\\u09ef' | '\\u0a66' .. '\\u0a6f' | '\\u0ae6' .. '\\u0aef' | '\\u0b66' .. '\\u0b6f' | '\\u0be7' .. '\\u0bef' | '\\u0c66' .. '\\u0c6f' | '\\u0ce6' .. '\\u0cef' | '\\u0d66' .. '\\u0d6f' | '\\u0e50' .. '\\u0e59' | '\\u0ed0' .. '\\u0ed9' | '\\u1040' .. '\\u1049' )
+			// Q.g:417:5: ( '\\u0030' .. '\\u0039' | '\\u0660' .. '\\u0669' | '\\u06f0' .. '\\u06f9' | '\\u0966' .. '\\u096f' | '\\u09e6' .. '\\u09ef' | '\\u0a66' .. '\\u0a6f' | '\\u0ae6' .. '\\u0aef' | '\\u0b66' .. '\\u0b6f' | '\\u0be7' .. '\\u0bef' | '\\u0c66' .. '\\u0c6f' | '\\u0ce6' .. '\\u0cef' | '\\u0d66' .. '\\u0d6f' | '\\u0e50' .. '\\u0e59' | '\\u0ed0' .. '\\u0ed9' | '\\u1040' .. '\\u1049' )
 			// Q.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= '\u0660' && input.LA(1) <= '\u0669')||(input.LA(1) >= '\u06F0' && input.LA(1) <= '\u06F9')||(input.LA(1) >= '\u0966' && input.LA(1) <= '\u096F')||(input.LA(1) >= '\u09E6' && input.LA(1) <= '\u09EF')||(input.LA(1) >= '\u0A66' && input.LA(1) <= '\u0A6F')||(input.LA(1) >= '\u0AE6' && input.LA(1) <= '\u0AEF')||(input.LA(1) >= '\u0B66' && input.LA(1) <= '\u0B6F')||(input.LA(1) >= '\u0BE7' && input.LA(1) <= '\u0BEF')||(input.LA(1) >= '\u0C66' && input.LA(1) <= '\u0C6F')||(input.LA(1) >= '\u0CE6' && input.LA(1) <= '\u0CEF')||(input.LA(1) >= '\u0D66' && input.LA(1) <= '\u0D6F')||(input.LA(1) >= '\u0E50' && input.LA(1) <= '\u0E59')||(input.LA(1) >= '\u0ED0' && input.LA(1) <= '\u0ED9')||(input.LA(1) >= '\u1040' && input.LA(1) <= '\u1049') ) {
@@ -2409,12 +2410,12 @@ public class QLexer extends Lexer {
 		try {
 			int _type = SYMBOL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:434:2: ( Letter ( Letter | JavaIDDigit )* )
-			// Q.g:434:6: Letter ( Letter | JavaIDDigit )*
+			// Q.g:435:2: ( Letter ( Letter | JavaIDDigit )* )
+			// Q.g:435:6: Letter ( Letter | JavaIDDigit )*
 			{
 			mLetter(); 
 
-			// Q.g:434:13: ( Letter | JavaIDDigit )*
+			// Q.g:435:13: ( Letter | JavaIDDigit )*
 			loop26:
 			while (true) {
 				int alt26=2;
@@ -2459,11 +2460,11 @@ public class QLexer extends Lexer {
 		try {
 			int _type = SPECIAL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Q.g:440:2: ( '%' (~ ( '%' ) )* '%' )
-			// Q.g:440:4: '%' (~ ( '%' ) )* '%'
+			// Q.g:441:2: ( '%' (~ ( '%' ) )* '%' )
+			// Q.g:441:4: '%' (~ ( '%' ) )* '%'
 			{
 			match('%'); 
-			// Q.g:440:8: (~ ( '%' ) )*
+			// Q.g:441:8: (~ ( '%' ) )*
 			loop27:
 			while (true) {
 				int alt27=2;
@@ -2504,12 +2505,62 @@ public class QLexer extends Lexer {
 	}
 	// $ANTLR end "SPECIAL"
 
+	// $ANTLR start "Comment"
+	public final void mComment() throws RecognitionException {
+		try {
+			int _type = Comment;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// Q.g:445:5: ( '#' (~ ( '\\n' ) )* )
+			// Q.g:445:7: '#' (~ ( '\\n' ) )*
+			{
+			match('#'); 
+			// Q.g:445:11: (~ ( '\\n' ) )*
+			loop28:
+			while (true) {
+				int alt28=2;
+				int LA28_0 = input.LA(1);
+				if ( ((LA28_0 >= '\u0000' && LA28_0 <= '\t')||(LA28_0 >= '\u000B' && LA28_0 <= '\uFFFF')) ) {
+					alt28=1;
+				}
+
+				switch (alt28) {
+				case 1 :
+					// Q.g:
+					{
+					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\t')||(input.LA(1) >= '\u000B' && input.LA(1) <= '\uFFFF') ) {
+						input.consume();
+					}
+					else {
+						MismatchedSetException mse = new MismatchedSetException(null,input);
+						recover(mse);
+						throw mse;
+					}
+					}
+					break;
+
+				default :
+					break loop28;
+				}
+			}
+
+			 skip(); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "Comment"
+
 	@Override
 	public void mTokens() throws RecognitionException {
-		// Q.g:1:8: ( AND | AND2 | BREAK | ELSE | EQ | EQ_ASSIGN | FALSE | FOR | FUNCTION | GE | GT | IF | IN | LBB | LE | LEFT_ASSIGN | LT | NA | NE | NEXT | NS_GET | NS_GET_INT | OR | OR2 | REPEAT | RIGHT_ASSIGN | TRUE | WHILE | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | STR_CONST | NULL_CONST | SYMBOL | SPECIAL )
-		int alt28=62;
-		alt28 = dfa28.predict(input);
-		switch (alt28) {
+		// Q.g:1:8: ( AND | AND2 | BREAK | ELSE | EQ | EQ_ASSIGN | FALSE | FOR | FUNCTION | GE | GT | IF | IN | LBB | LE | LEFT_ASSIGN | LT | NA | NE | NEXT | NS_GET | NS_GET_INT | OR | OR2 | REPEAT | RIGHT_ASSIGN | TRUE | WHILE | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | STR_CONST | NULL_CONST | SYMBOL | SPECIAL | Comment )
+		int alt29=63;
+		alt29 = dfa29.predict(input);
+		switch (alt29) {
 			case 1 :
 				// Q.g:1:10: AND
 				{
@@ -2707,240 +2758,247 @@ public class QLexer extends Lexer {
 				}
 				break;
 			case 29 :
-				// Q.g:1:163: T__79
-				{
-				mT__79(); 
-
-				}
-				break;
-			case 30 :
-				// Q.g:1:169: T__80
+				// Q.g:1:163: T__80
 				{
 				mT__80(); 
 
 				}
 				break;
-			case 31 :
-				// Q.g:1:175: T__81
+			case 30 :
+				// Q.g:1:169: T__81
 				{
 				mT__81(); 
 
 				}
 				break;
-			case 32 :
-				// Q.g:1:181: T__82
+			case 31 :
+				// Q.g:1:175: T__82
 				{
 				mT__82(); 
 
 				}
 				break;
-			case 33 :
-				// Q.g:1:187: T__83
+			case 32 :
+				// Q.g:1:181: T__83
 				{
 				mT__83(); 
 
 				}
 				break;
-			case 34 :
-				// Q.g:1:193: T__84
+			case 33 :
+				// Q.g:1:187: T__84
 				{
 				mT__84(); 
 
 				}
 				break;
-			case 35 :
-				// Q.g:1:199: T__85
+			case 34 :
+				// Q.g:1:193: T__85
 				{
 				mT__85(); 
 
 				}
 				break;
-			case 36 :
-				// Q.g:1:205: T__86
+			case 35 :
+				// Q.g:1:199: T__86
 				{
 				mT__86(); 
 
 				}
 				break;
-			case 37 :
-				// Q.g:1:211: T__87
+			case 36 :
+				// Q.g:1:205: T__87
 				{
 				mT__87(); 
 
 				}
 				break;
-			case 38 :
-				// Q.g:1:217: T__88
+			case 37 :
+				// Q.g:1:211: T__88
 				{
 				mT__88(); 
 
 				}
 				break;
-			case 39 :
-				// Q.g:1:223: T__89
+			case 38 :
+				// Q.g:1:217: T__89
 				{
 				mT__89(); 
 
 				}
 				break;
-			case 40 :
-				// Q.g:1:229: T__90
+			case 39 :
+				// Q.g:1:223: T__90
 				{
 				mT__90(); 
 
 				}
 				break;
-			case 41 :
-				// Q.g:1:235: T__91
+			case 40 :
+				// Q.g:1:229: T__91
 				{
 				mT__91(); 
 
 				}
 				break;
-			case 42 :
-				// Q.g:1:241: T__92
+			case 41 :
+				// Q.g:1:235: T__92
 				{
 				mT__92(); 
 
 				}
 				break;
-			case 43 :
-				// Q.g:1:247: T__93
+			case 42 :
+				// Q.g:1:241: T__93
 				{
 				mT__93(); 
 
 				}
 				break;
-			case 44 :
-				// Q.g:1:253: T__94
+			case 43 :
+				// Q.g:1:247: T__94
 				{
 				mT__94(); 
 
 				}
 				break;
-			case 45 :
-				// Q.g:1:259: T__95
+			case 44 :
+				// Q.g:1:253: T__95
 				{
 				mT__95(); 
 
 				}
 				break;
-			case 46 :
-				// Q.g:1:265: T__96
+			case 45 :
+				// Q.g:1:259: T__96
 				{
 				mT__96(); 
 
 				}
 				break;
-			case 47 :
-				// Q.g:1:271: T__97
+			case 46 :
+				// Q.g:1:265: T__97
 				{
 				mT__97(); 
 
 				}
 				break;
-			case 48 :
-				// Q.g:1:277: T__98
+			case 47 :
+				// Q.g:1:271: T__98
 				{
 				mT__98(); 
 
 				}
 				break;
-			case 49 :
-				// Q.g:1:283: T__99
+			case 48 :
+				// Q.g:1:277: T__99
 				{
 				mT__99(); 
 
 				}
 				break;
-			case 50 :
-				// Q.g:1:289: T__100
+			case 49 :
+				// Q.g:1:283: T__100
 				{
 				mT__100(); 
 
 				}
 				break;
-			case 51 :
-				// Q.g:1:296: T__101
+			case 50 :
+				// Q.g:1:290: T__101
 				{
 				mT__101(); 
 
 				}
 				break;
-			case 52 :
-				// Q.g:1:303: T__102
+			case 51 :
+				// Q.g:1:297: T__102
 				{
 				mT__102(); 
 
 				}
 				break;
-			case 53 :
-				// Q.g:1:310: T__103
+			case 52 :
+				// Q.g:1:304: T__103
 				{
 				mT__103(); 
 
 				}
 				break;
-			case 54 :
-				// Q.g:1:317: T__104
+			case 53 :
+				// Q.g:1:311: T__104
 				{
 				mT__104(); 
 
 				}
 				break;
+			case 54 :
+				// Q.g:1:318: T__105
+				{
+				mT__105(); 
+
+				}
+				break;
 			case 55 :
-				// Q.g:1:324: HexLiteral
+				// Q.g:1:325: HexLiteral
 				{
 				mHexLiteral(); 
 
 				}
 				break;
 			case 56 :
-				// Q.g:1:335: DecimalLiteral
+				// Q.g:1:336: DecimalLiteral
 				{
 				mDecimalLiteral(); 
 
 				}
 				break;
 			case 57 :
-				// Q.g:1:350: OctalLiteral
+				// Q.g:1:351: OctalLiteral
 				{
 				mOctalLiteral(); 
 
 				}
 				break;
 			case 58 :
-				// Q.g:1:363: FloatingPointLiteral
+				// Q.g:1:364: FloatingPointLiteral
 				{
 				mFloatingPointLiteral(); 
 
 				}
 				break;
 			case 59 :
-				// Q.g:1:384: STR_CONST
+				// Q.g:1:385: STR_CONST
 				{
 				mSTR_CONST(); 
 
 				}
 				break;
 			case 60 :
-				// Q.g:1:394: NULL_CONST
+				// Q.g:1:395: NULL_CONST
 				{
 				mNULL_CONST(); 
 
 				}
 				break;
 			case 61 :
-				// Q.g:1:405: SYMBOL
+				// Q.g:1:406: SYMBOL
 				{
 				mSYMBOL(); 
 
 				}
 				break;
 			case 62 :
-				// Q.g:1:412: SPECIAL
+				// Q.g:1:413: SPECIAL
 				{
 				mSPECIAL(); 
+
+				}
+				break;
+			case 63 :
+				// Q.g:1:421: Comment
+				{
+				mComment(); 
 
 				}
 				break;
@@ -2950,7 +3008,7 @@ public class QLexer extends Lexer {
 
 
 	protected DFA18 dfa18 = new DFA18(this);
-	protected DFA28 dfa28 = new DFA28(this);
+	protected DFA29 dfa29 = new DFA29(this);
 	static final String DFA18_eotS =
 		"\6\uffff";
 	static final String DFA18_eofS =
@@ -3003,26 +3061,26 @@ public class QLexer extends Lexer {
 		}
 		@Override
 		public String getDescription() {
-			return "324:1: FloatingPointLiteral : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix );";
+			return "325:1: FloatingPointLiteral : ( ( '0' .. '9' )+ '.' ( '0' .. '9' )* ( Exponent )? ( FloatTypeSuffix )? | '.' ( '0' .. '9' )+ ( Exponent )? ( FloatTypeSuffix )? | ( '0' .. '9' )+ Exponent ( FloatTypeSuffix )? | ( '0' .. '9' )+ FloatTypeSuffix );";
 		}
 	}
 
-	static final String DFA28_eotS =
-		"\1\uffff\1\54\2\51\1\60\2\51\1\65\1\51\1\71\1\74\1\51\1\101\1\51\1\104"+
-		"\1\106\1\51\1\111\2\51\12\uffff\1\51\6\uffff\2\116\1\51\5\uffff\2\51\2"+
-		"\uffff\3\51\2\uffff\1\130\1\131\5\uffff\1\133\2\51\2\uffff\1\51\1\140"+
-		"\3\uffff\1\51\2\uffff\3\51\2\uffff\1\145\1\uffff\1\116\1\120\3\51\1\153"+
-		"\1\51\2\uffff\1\51\1\uffff\1\160\2\51\2\uffff\3\51\1\166\1\uffff\1\51"+
-		"\1\120\1\51\1\171\1\51\1\uffff\4\51\1\uffff\1\u0080\1\u0081\1\51\1\u0083"+
-		"\1\51\1\uffff\1\120\1\u0085\1\uffff\1\u0086\5\51\2\uffff\1\51\1\uffff"+
-		"\1\u008d\2\uffff\5\51\1\u0093\1\uffff\5\51\1\uffff\1\u0099\3\51\1\u009d"+
-		"\1\uffff\3\51\1\uffff\4\51\1\u00a5\1\u00a6\1\51\2\uffff\1\u00a8\1\uffff";
-	static final String DFA28_eofS =
-		"\u00a9\uffff";
-	static final String DFA28_minS =
+	static final String DFA29_eotS =
+		"\1\uffff\1\55\2\51\1\61\2\51\1\66\1\51\1\72\1\75\1\51\1\102\1\51\1\105"+
+		"\1\107\1\51\1\112\2\51\12\uffff\1\51\6\uffff\2\117\1\51\6\uffff\2\51\2"+
+		"\uffff\3\51\2\uffff\1\131\1\132\5\uffff\1\134\2\51\2\uffff\1\51\1\141"+
+		"\3\uffff\1\51\2\uffff\3\51\2\uffff\1\146\1\uffff\1\117\1\121\3\51\1\154"+
+		"\1\51\2\uffff\1\51\1\uffff\1\161\2\51\2\uffff\3\51\1\167\1\uffff\1\51"+
+		"\1\121\1\51\1\172\1\51\1\uffff\4\51\1\uffff\1\u0081\1\u0082\1\51\1\u0084"+
+		"\1\51\1\uffff\1\121\1\u0086\1\uffff\1\u0087\5\51\2\uffff\1\51\1\uffff"+
+		"\1\u008e\2\uffff\5\51\1\u0094\1\uffff\5\51\1\uffff\1\u009a\3\51\1\u009e"+
+		"\1\uffff\3\51\1\uffff\4\51\1\u00a6\1\u00a7\1\51\2\uffff\1\u00a9\1\uffff";
+	static final String DFA29_eofS =
+		"\u00aa\uffff";
+	static final String DFA29_minS =
 		"\1\12\1\46\1\162\1\154\1\75\1\101\1\157\1\75\1\146\1\133\1\55\1\101\1"+
 		"\75\1\145\1\72\1\174\1\145\1\76\1\122\1\150\12\uffff\1\156\6\uffff\2\56"+
-		"\1\60\5\uffff\1\145\1\163\2\uffff\1\114\1\162\1\156\2\uffff\2\56\5\uffff"+
+		"\1\60\6\uffff\1\145\1\163\2\uffff\1\114\1\162\1\156\2\uffff\2\56\5\uffff"+
 		"\1\56\1\116\1\114\2\uffff\1\170\1\72\3\uffff\1\160\2\uffff\1\125\1\151"+
 		"\1\146\2\uffff\1\56\1\uffff\2\56\1\141\1\145\1\123\1\56\1\143\2\uffff"+
 		"\1\143\1\uffff\1\56\1\114\1\164\2\uffff\1\145\1\105\1\154\1\56\1\uffff"+
@@ -3032,10 +3090,10 @@ public class QLexer extends Lexer {
 		"\1\56\1\uffff\1\156\1\141\1\154\1\147\1\137\1\uffff\1\56\1\143\2\145\1"+
 		"\56\1\uffff\1\164\1\170\1\162\1\uffff\1\145\2\137\1\162\2\56\1\137\2\uffff"+
 		"\1\56\1\uffff";
-	static final String DFA28_maxS =
+	static final String DFA29_maxS =
 		"\1\ufaff\1\46\1\162\1\154\1\75\1\101\1\165\1\75\1\156\1\133\1\75\1\141"+
 		"\1\75\1\145\1\72\1\174\1\145\1\76\1\122\1\150\12\uffff\1\156\6\uffff\1"+
-		"\170\1\146\1\71\5\uffff\1\145\1\163\2\uffff\1\114\1\162\1\156\2\uffff"+
+		"\170\1\146\1\71\6\uffff\1\145\1\163\2\uffff\1\114\1\162\1\156\2\uffff"+
 		"\2\ufaff\5\uffff\1\ufaff\1\116\1\114\2\uffff\1\170\1\72\3\uffff\1\160"+
 		"\2\uffff\1\125\1\151\1\146\2\uffff\1\146\1\uffff\1\146\1\ufaff\1\141\1"+
 		"\145\1\123\1\ufaff\1\143\2\uffff\1\162\1\uffff\1\ufaff\1\114\1\164\2\uffff"+
@@ -3046,54 +3104,43 @@ public class QLexer extends Lexer {
 		"\156\1\141\1\154\1\147\1\137\1\uffff\1\ufaff\1\143\2\145\1\ufaff\1\uffff"+
 		"\1\164\1\170\1\162\1\uffff\1\145\2\137\1\162\2\ufaff\1\137\2\uffff\1\ufaff"+
 		"\1\uffff";
-	static final String DFA28_acceptS =
+	static final String DFA29_acceptS =
 		"\24\uffff\1\36\1\37\1\40\1\41\1\42\1\43\1\45\1\47\1\50\1\51\1\uffff\1"+
-		"\61\1\62\1\63\1\64\1\65\1\66\3\uffff\1\73\1\75\1\76\1\2\1\1\2\uffff\1"+
-		"\5\1\6\3\uffff\1\12\1\13\2\uffff\1\16\1\60\1\17\1\20\1\21\3\uffff\1\23"+
-		"\1\35\2\uffff\1\46\1\30\1\27\1\uffff\1\32\1\44\3\uffff\1\67\1\70\1\uffff"+
-		"\1\72\7\uffff\1\14\1\15\1\uffff\1\22\3\uffff\1\26\1\25\4\uffff\1\71\5"+
-		"\uffff\1\10\4\uffff\1\57\5\uffff\1\52\2\uffff\1\4\6\uffff\1\74\1\24\1"+
-		"\uffff\1\33\1\uffff\1\3\1\7\6\uffff\1\34\5\uffff\1\31\5\uffff\1\11\3\uffff"+
-		"\1\56\7\uffff\1\54\1\55\1\uffff\1\53";
-	static final String DFA28_specialS =
-		"\u00a9\uffff}>";
-	static final String[] DFA28_transitionS = {
-			"\1\37\26\uffff\1\14\1\50\1\uffff\1\24\1\52\1\1\1\50\1\25\1\26\1\27\1"+
-			"\30\1\31\1\21\1\47\1\32\1\45\11\46\1\16\1\33\1\12\1\4\1\7\1\34\1\35\5"+
-			"\51\1\5\2\51\1\36\4\51\1\13\5\51\1\22\6\51\1\11\1\uffff\1\40\1\41\1\51"+
-			"\1\uffff\1\51\1\2\2\51\1\3\1\6\2\51\1\10\4\51\1\15\3\51\1\20\4\51\1\23"+
+		"\61\1\62\1\63\1\64\1\65\1\66\3\uffff\1\73\1\75\1\76\1\77\1\2\1\1\2\uffff"+
+		"\1\5\1\6\3\uffff\1\12\1\13\2\uffff\1\16\1\60\1\17\1\20\1\21\3\uffff\1"+
+		"\23\1\35\2\uffff\1\46\1\30\1\27\1\uffff\1\32\1\44\3\uffff\1\67\1\70\1"+
+		"\uffff\1\72\7\uffff\1\14\1\15\1\uffff\1\22\3\uffff\1\26\1\25\4\uffff\1"+
+		"\71\5\uffff\1\10\4\uffff\1\57\5\uffff\1\52\2\uffff\1\4\6\uffff\1\74\1"+
+		"\24\1\uffff\1\33\1\uffff\1\3\1\7\6\uffff\1\34\5\uffff\1\31\5\uffff\1\11"+
+		"\3\uffff\1\56\7\uffff\1\54\1\55\1\uffff\1\53";
+	static final String DFA29_specialS =
+		"\u00aa\uffff}>";
+	static final String[] DFA29_transitionS = {
+			"\1\37\26\uffff\1\14\1\50\1\53\1\24\1\52\1\1\1\50\1\25\1\26\1\27\1\30"+
+			"\1\31\1\21\1\47\1\32\1\45\11\46\1\16\1\33\1\12\1\4\1\7\1\34\1\35\5\51"+
+			"\1\5\2\51\1\36\4\51\1\13\5\51\1\22\6\51\1\11\1\uffff\1\40\1\41\1\51\1"+
+			"\uffff\1\51\1\2\2\51\1\3\1\6\2\51\1\10\4\51\1\15\3\51\1\20\4\51\1\23"+
 			"\3\51\1\42\1\17\1\43\1\44\101\uffff\27\51\1\uffff\37\51\1\uffff\u1f08"+
 			"\51\u1040\uffff\u0150\51\u0170\uffff\u0080\51\u0080\uffff\u092e\51\u10d2"+
 			"\uffff\u5200\51\u5900\uffff\u0200\51",
-			"\1\53",
-			"\1\55",
+			"\1\54",
 			"\1\56",
 			"\1\57",
-			"\1\61",
-			"\1\62\5\uffff\1\63",
-			"\1\64",
-			"\1\66\7\uffff\1\67",
-			"\1\70",
-			"\1\73\17\uffff\1\72",
-			"\1\75\23\uffff\1\77\13\uffff\1\76",
-			"\1\100",
-			"\1\102",
+			"\1\60",
+			"\1\62",
+			"\1\63\5\uffff\1\64",
+			"\1\65",
+			"\1\67\7\uffff\1\70",
+			"\1\71",
+			"\1\74\17\uffff\1\73",
+			"\1\76\23\uffff\1\100\13\uffff\1\77",
+			"\1\101",
 			"\1\103",
-			"\1\105",
-			"\1\107",
+			"\1\104",
+			"\1\106",
 			"\1\110",
-			"\1\112",
+			"\1\111",
 			"\1\113",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
 			"\1\114",
 			"",
 			"",
@@ -3101,22 +3148,34 @@ public class QLexer extends Lexer {
 			"",
 			"",
 			"",
-			"\1\120\1\uffff\10\117\2\120\12\uffff\3\120\21\uffff\1\115\13\uffff\3"+
-			"\120\21\uffff\1\115",
-			"\1\120\1\uffff\12\121\12\uffff\3\120\35\uffff\3\120",
-			"\12\122",
+			"",
+			"",
+			"",
+			"",
+			"\1\115",
 			"",
 			"",
 			"",
 			"",
 			"",
-			"\1\123",
+			"",
+			"\1\121\1\uffff\10\120\2\121\12\uffff\3\121\21\uffff\1\116\13\uffff\3"+
+			"\121\21\uffff\1\116",
+			"\1\121\1\uffff\12\122\12\uffff\3\121\35\uffff\3\121",
+			"\12\123",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
 			"\1\124",
-			"",
-			"",
 			"\1\125",
+			"",
+			"",
 			"\1\126",
 			"\1\127",
+			"\1\130",
 			"",
 			"",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
@@ -3132,78 +3191,78 @@ public class QLexer extends Lexer {
 			"",
 			"",
 			"",
-			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\132\1\uffff\32\51\105\uffff"+
+			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\133\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\134",
 			"\1\135",
-			"",
-			"",
 			"\1\136",
+			"",
+			"",
 			"\1\137",
+			"\1\140",
 			"",
-			"",
-			"",
-			"\1\141",
 			"",
 			"",
 			"\1\142",
+			"",
+			"",
 			"\1\143",
 			"\1\144",
+			"\1\145",
 			"",
 			"",
-			"\1\120\1\uffff\10\117\2\120\12\uffff\3\120\35\uffff\3\120",
+			"\1\121\1\uffff\10\120\2\121\12\uffff\3\121\35\uffff\3\121",
 			"",
-			"\1\120\1\uffff\12\121\12\uffff\3\120\35\uffff\3\120",
-			"\1\51\1\uffff\12\122\7\uffff\3\51\1\147\1\146\1\147\24\51\4\uffff\1"+
-			"\51\1\uffff\3\51\1\147\1\146\1\147\24\51\105\uffff\27\51\1\uffff\37\51"+
+			"\1\121\1\uffff\12\122\12\uffff\3\121\35\uffff\3\121",
+			"\1\51\1\uffff\12\123\7\uffff\3\51\1\150\1\147\1\150\24\51\4\uffff\1"+
+			"\51\1\uffff\3\51\1\150\1\147\1\150\24\51\105\uffff\27\51\1\uffff\37\51"+
 			"\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff\u0080\51\u0080\uffff"+
 			"\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200\51",
-			"\1\150",
 			"\1\151",
 			"\1\152",
+			"\1\153",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\154",
+			"\1\155",
 			"",
 			"",
-			"\1\155\5\uffff\1\156\10\uffff\1\157",
+			"\1\156\5\uffff\1\157\10\uffff\1\160",
 			"",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\161",
 			"\1\162",
-			"",
-			"",
 			"\1\163",
+			"",
+			"",
 			"\1\164",
 			"\1\165",
+			"\1\166",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
 			"",
-			"\1\120\1\uffff\1\120\2\uffff\12\167",
+			"\1\121\1\uffff\1\121\2\uffff\12\170",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\170",
+			"\1\171",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\172",
-			"",
 			"\1\173",
-			"\1\174\6\uffff\1\175",
-			"\1\176",
+			"",
+			"\1\174",
+			"\1\175\6\uffff\1\176",
 			"\1\177",
+			"\1\u0080",
 			"",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
@@ -3213,15 +3272,15 @@ public class QLexer extends Lexer {
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\u0082",
+			"\1\u0083",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\u0084",
+			"\1\u0085",
 			"",
-			"\1\51\1\uffff\12\167\7\uffff\3\51\1\147\1\51\1\147\24\51\4\uffff\1\51"+
-			"\1\uffff\3\51\1\147\1\51\1\147\24\51\105\uffff\27\51\1\uffff\37\51\1"+
+			"\1\51\1\uffff\12\170\7\uffff\3\51\1\150\1\51\1\150\24\51\4\uffff\1\51"+
+			"\1\uffff\3\51\1\150\1\51\1\150\24\51\105\uffff\27\51\1\uffff\37\51\1"+
 			"\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff\u0080\51\u0080\uffff"+
 			"\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200\51",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
@@ -3233,14 +3292,14 @@ public class QLexer extends Lexer {
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\u0087",
 			"\1\u0088",
 			"\1\u0089",
 			"\1\u008a",
 			"\1\u008b",
-			"",
-			"",
 			"\1\u008c",
+			"",
+			"",
+			"\1\u008d",
 			"",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
@@ -3248,42 +3307,42 @@ public class QLexer extends Lexer {
 			"\51",
 			"",
 			"",
-			"\1\u008e",
 			"\1\u008f",
 			"\1\u0090",
 			"\1\u0091",
 			"\1\u0092",
+			"\1\u0093",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
 			"",
-			"\1\u0094",
 			"\1\u0095",
 			"\1\u0096",
 			"\1\u0097",
 			"\1\u0098",
+			"\1\u0099",
 			"",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\u009a",
 			"\1\u009b",
 			"\1\u009c",
+			"\1\u009d",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
 			"",
-			"\1\u009e",
 			"\1\u009f",
 			"\1\u00a0",
-			"",
 			"\1\u00a1",
+			"",
 			"\1\u00a2",
 			"\1\u00a3",
 			"\1\u00a4",
+			"\1\u00a5",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
@@ -3292,7 +3351,7 @@ public class QLexer extends Lexer {
 			"\27\51\1\uffff\37\51\1\uffff\u1f08\51\u1040\uffff\u0150\51\u0170\uffff"+
 			"\u0080\51\u0080\uffff\u092e\51\u10d2\uffff\u5200\51\u5900\uffff\u0200"+
 			"\51",
-			"\1\u00a7",
+			"\1\u00a8",
 			"",
 			"",
 			"\1\51\1\uffff\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51\105\uffff"+
@@ -3302,38 +3361,38 @@ public class QLexer extends Lexer {
 			""
 	};
 
-	static final short[] DFA28_eot = DFA.unpackEncodedString(DFA28_eotS);
-	static final short[] DFA28_eof = DFA.unpackEncodedString(DFA28_eofS);
-	static final char[] DFA28_min = DFA.unpackEncodedStringToUnsignedChars(DFA28_minS);
-	static final char[] DFA28_max = DFA.unpackEncodedStringToUnsignedChars(DFA28_maxS);
-	static final short[] DFA28_accept = DFA.unpackEncodedString(DFA28_acceptS);
-	static final short[] DFA28_special = DFA.unpackEncodedString(DFA28_specialS);
-	static final short[][] DFA28_transition;
+	static final short[] DFA29_eot = DFA.unpackEncodedString(DFA29_eotS);
+	static final short[] DFA29_eof = DFA.unpackEncodedString(DFA29_eofS);
+	static final char[] DFA29_min = DFA.unpackEncodedStringToUnsignedChars(DFA29_minS);
+	static final char[] DFA29_max = DFA.unpackEncodedStringToUnsignedChars(DFA29_maxS);
+	static final short[] DFA29_accept = DFA.unpackEncodedString(DFA29_acceptS);
+	static final short[] DFA29_special = DFA.unpackEncodedString(DFA29_specialS);
+	static final short[][] DFA29_transition;
 
 	static {
-		int numStates = DFA28_transitionS.length;
-		DFA28_transition = new short[numStates][];
+		int numStates = DFA29_transitionS.length;
+		DFA29_transition = new short[numStates][];
 		for (int i=0; i<numStates; i++) {
-			DFA28_transition[i] = DFA.unpackEncodedString(DFA28_transitionS[i]);
+			DFA29_transition[i] = DFA.unpackEncodedString(DFA29_transitionS[i]);
 		}
 	}
 
-	protected class DFA28 extends DFA {
+	protected class DFA29 extends DFA {
 
-		public DFA28(BaseRecognizer recognizer) {
+		public DFA29(BaseRecognizer recognizer) {
 			this.recognizer = recognizer;
-			this.decisionNumber = 28;
-			this.eot = DFA28_eot;
-			this.eof = DFA28_eof;
-			this.min = DFA28_min;
-			this.max = DFA28_max;
-			this.accept = DFA28_accept;
-			this.special = DFA28_special;
-			this.transition = DFA28_transition;
+			this.decisionNumber = 29;
+			this.eot = DFA29_eot;
+			this.eof = DFA29_eof;
+			this.min = DFA29_min;
+			this.max = DFA29_max;
+			this.accept = DFA29_accept;
+			this.special = DFA29_special;
+			this.transition = DFA29_transition;
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( AND | AND2 | BREAK | ELSE | EQ | EQ_ASSIGN | FALSE | FOR | FUNCTION | GE | GT | IF | IN | LBB | LE | LEFT_ASSIGN | LT | NA | NE | NEXT | NS_GET | NS_GET_INT | OR | OR2 | REPEAT | RIGHT_ASSIGN | TRUE | WHILE | T__79 | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | STR_CONST | NULL_CONST | SYMBOL | SPECIAL );";
+			return "1:1: Tokens : ( AND | AND2 | BREAK | ELSE | EQ | EQ_ASSIGN | FALSE | FOR | FUNCTION | GE | GT | IF | IN | LBB | LE | LEFT_ASSIGN | LT | NA | NE | NEXT | NS_GET | NS_GET_INT | OR | OR2 | REPEAT | RIGHT_ASSIGN | TRUE | WHILE | T__80 | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | STR_CONST | NULL_CONST | SYMBOL | SPECIAL | Comment );";
 		}
 	}
 

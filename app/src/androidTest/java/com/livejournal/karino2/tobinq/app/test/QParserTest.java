@@ -285,11 +285,11 @@ public class QParserTest extends TestCase {
         String code = "x<-1:24; sumMonths <- function(total) { n<-(length(total)/12);"
                 + "y<-1:n; for(i in 1:n) {b<-(12*(i-1))+1;e<-(12*(i-1))+12; y[i]<-mean(total[b:e]) }\n y}"
                 + "\nsumMonths(x)";
-        CommonTree actual = parseProg("code");
+        CommonTree actual = parseProg(code);
         assertNotNull(actual);
     }
 
-	private void assertEqualsNoType(String expect, Tree actual) {
+    private void assertEqualsNoType(String expect, Tree actual) {
 		assertEquals(expect, actual.getText());
 	}
 	

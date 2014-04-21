@@ -831,8 +831,14 @@ public class QInterpreterTest extends TestCase {
         assertQNumericEquals(4, actual.get(2));
     }
 
-	
-	private QObject callEvalExpr(String code) throws RecognitionException {
+    public void test_eval_comment() throws RecognitionException {
+        QObject actual = _intp.eval("#Hey this line is test\n3 #hello world \n#last line comment");
+        assertQNumericEquals(3, actual);
+    }
+
+
+
+    private QObject callEvalExpr(String code) throws RecognitionException {
 		Tree tree = parseExpression(code);
 		QObject actual = _intp.evalExprWithoutResolve(tree);
 		return actual;
