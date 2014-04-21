@@ -239,8 +239,8 @@ public class QInterpreter {
 		{
 			try
 			{
-				return evalCallFunction(term);
-			}
+		    return evalCallFunction(term);
+		}
 			catch(BlockException e)
 			{
 				Tree xxval = getParentXXValue(term);
@@ -306,7 +306,6 @@ public class QInterpreter {
 	// "(XXFOR (XXFORCOND i (XXBINARY : 1 10)) (XXEXPRLIST (XXBINARY <- b (XXBINARY * i 2)) (XXBINARY <- e (XXBINARY * i 13))))
 	private QObject evalFOR(Tree term) {
 		Tree forCond = term.getChild(0);
-		Tree forExp = term.getChild(1);
 		Tree sym = forCond.getChild(0);
 		Tree forCondExp = forCond.getChild(1);
 		if(sym.getType() != QParser.SYMBOL)
@@ -316,7 +315,8 @@ public class QInterpreter {
 		{
 			// for statements does not create env in R.
 			_curEnv.put(sym.getText(), condList.get(i));
-			evalExpr(forExp);
+            // forExpr might replace by this evalExpr. So we need to getChild every time.
+			evalExpr(term.getChild(1));
 		}
 		// for statements never return value in R (I think this is strange though).
 		return QObject.Null;
@@ -335,10 +335,13 @@ public class QInterpreter {
 	// or (XXSUBSCRIPT LBB lexpr sublist)
     public QObject evalSubscript(Tree term) {
         Tree converted;
+        Tree parent = term.getParent();
 		if(term.getChild(0).getType() == QParser.LBB)
             converted = FunctionCallBuilder.convertSubscriptBBToFuncall(term);
         else
             converted = FunctionCallBuilder.convertSubscriptBracketToFuncall(term);
+        if(parent != null)
+            parent.replaceChildren(term.getChildIndex(), term.getChildIndex(), converted);
         return evalCallFunction(converted);
     }
 
@@ -350,8 +353,8 @@ public class QInterpreter {
 		if(funcCand.getMode() == "function")
 		{
 			QFunction func = (QFunction)funcCand;
-            return callFuncWithArgTree(func, term.getChild(1));
-		}
+                return callFuncWithArgTree(func, term.getChild(1));
+            }
 		// error handling, can I use exception in JS env?
 		_console.write("right value of func call is not function. After investigate exception, I'll handle.");
 		return QObject.Null;
@@ -671,17 +674,21 @@ public class QInterpreter {
             // hoge(2, a, values=c(1, 2))
             // (XXFUNCALL hoge (XXSUBLIST (XXSUB1 2) (XXSUB1 a) (XXSYMSUB1 values (XXFUNCALL c (XXSUBLIST (XXSUB1 1) (XXSUB1 2))))))
             if(arg1.getType() == QParser.SYMBOL) {
+                Tree parent = op.getParent();
                 Tree converted = FunctionCallBuilder.convertAssignToFuncall(op, arg1, arg2);
+                replaceBinaryOp(parent, converted);
                 return evalCallFunction(converted);
             }
             if(arg1.getType() == QParser.XXSUBSCRIPT) {
                 // (XXSUBSCRIPT '[' lexpr sublist)
                 // or (XXSUBSCRIPT LBB lexpr sublist)
+                Tree parent = op.getParent();
                 Tree converted;
                 if(arg1.getChild(0).getType() == QParser.LBB)
                     converted = FunctionCallBuilder.convertSubscriptBBAssignToFuncall(op, arg1, arg2);
                 else
                     converted = FunctionCallBuilder.convertSubscriptBracketAssignToFuncall(op, arg1, arg2);
+                replaceBinaryOp(parent, converted);
                 return evalCallFunction(converted);
             }
             throw new QException("assign: unsupported lexpr type(" + arg1.getType() + ")");
@@ -755,8 +762,17 @@ public class QInterpreter {
 		else 		throw new QException("NYI1");
 	}
 
+    private void replaceBinaryOp(Tree parent, Tree converted) {
+        if(parent!= null && parent.getParent() != null) {
+            parent.getParent().replaceChildren(parent.getChildIndex(), parent.getChildIndex(), converted);
+        }
+    }
+
     private QObject convertAndCallBinaryCall(String funcName, Tree arg1, Tree arg2) {
+        Tree parent = arg1.getParent();
         Tree converted = FunctionCallBuilder.convertBinaryCallToFuncall(funcName, arg1, arg2);
+        // Are you sure!?
+        replaceBinaryOp(parent, converted);
         return evalCallFunction(converted);
     }
 
