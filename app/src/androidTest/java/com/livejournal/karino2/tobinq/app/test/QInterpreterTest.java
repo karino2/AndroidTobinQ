@@ -943,7 +943,16 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(5, actual.get(2));
 		
 	}
-	
+
+    public void test_evalBinary_power() throws RecognitionException
+    {
+        QObject actual = evalSimpleBinary("(2:4)^(2:4)");
+        assertEquals(3, actual.getLength());
+        assertQNumericEquals(4, actual.get(0));
+        assertQNumericEquals(27, actual.get(1));
+        assertQNumericEquals(256, actual.get(2));
+    }
+
 	// @Test
 	public void test_evalPlus_normal()
 	{

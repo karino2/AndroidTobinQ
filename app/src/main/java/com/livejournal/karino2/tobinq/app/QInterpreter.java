@@ -656,6 +656,14 @@ public class QInterpreter {
 			}
 		});
 	}
+    public QObject evalPower(QObject arg1, QObject arg2) {
+        return evalBinaryDouble(arg1, arg2, new doubleBinaryOperable() {
+            public QObject execute(double i, double j) {
+                return QObject.createNumeric(Math.pow(i, j));
+            }
+
+        });
+    }
 
     public QObject evalBinary(Tree op, Tree arg1, Tree arg2) {
 		if(QParser.LEFT_ASSIGN == op.getType() ||
@@ -759,6 +767,10 @@ public class QInterpreter {
 		{
 			return evalAND(term1, term2);
 		}
+        else if("^".equals(op.getText()))
+        {
+            return evalPower(term1, term2);
+        }
 		else 		throw new QException("NYI1");
 	}
 
