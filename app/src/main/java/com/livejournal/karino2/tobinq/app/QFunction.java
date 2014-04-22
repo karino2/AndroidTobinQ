@@ -1302,10 +1302,15 @@ public class QFunction extends QObject {
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
                 QPromise promise = (QPromise)funcEnv.get("expr");
-                QObject resolved = intp.resolveOne(promise);
-                while(resolved instanceof QPromise) {
-                    promise = (QPromise)resolved;
-                    resolved = intp.resolveOne(promise);
+                try {
+                    QObject resolved = intp.resolveOne(promise);
+                    while (resolved instanceof QPromise) {
+                        promise = (QPromise) resolved;
+                        resolved = intp.resolveOne(promise);
+                    }
+                }catch(QException e) {
+                    // if symbol is not existed, eval fail. But that means this symbol is itself non-promise.
+                    // so prev promise must be the last promise.
                 }
 
                 Tree sexp = promise.getExpression();

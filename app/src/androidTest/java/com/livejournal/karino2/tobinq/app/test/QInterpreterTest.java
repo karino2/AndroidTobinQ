@@ -2,6 +2,7 @@ package com.livejournal.karino2.tobinq.app.test;
 
 import com.livejournal.karino2.tobinq.app.Environment;
 import com.livejournal.karino2.tobinq.app.FunctionCallBuilder;
+import com.livejournal.karino2.tobinq.app.QException;
 import com.livejournal.karino2.tobinq.app.QInterpreter;
 import com.livejournal.karino2.tobinq.app.QList;
 import com.livejournal.karino2.tobinq.app.QObject;
@@ -768,8 +769,18 @@ public class QInterpreterTest extends TestCase {
         assertEquals(QObject.NA, actual);
     }
 
+    public void test_eval_nonExistingSymbol()
+    {
+        try {
+            _intp.eval("notExist");
+            fail("should throw QException");
+        }catch(QException qe) {
+            assertEquals("Error: 1:0: object 'notExist' not found", qe.getMessage());
+        }
+    }
 
-	public void test_eval_substitute_insideFunction()
+
+    public void test_eval_substitute_insideFunction()
 	{
 		QObject actual = _intp.eval("f <- function(a) { substitute(a); }\nf(1+2+3)");
 		assertEquals("(XXBINARY + (XXBINARY + 1 2) 3)", actual.toString());

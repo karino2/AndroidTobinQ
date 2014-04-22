@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CharStream;
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 import com.livejournal.karino2.tobinq.app.ForestNode.Edge;
 import com.livejournal.karino2.tobinq.app.ForestNode.Traversable;
@@ -248,8 +250,12 @@ public class QInterpreter {
 				throw new BlockException(xxval);
 			}
 		}
-		if(term.getType() == QParser.SYMBOL)
-			return _curEnv.get(term.getText());
+		if(term.getType() == QParser.SYMBOL) {
+            QObject obj = _curEnv.get(term.getText());
+            if(obj != null)
+                return obj;
+            throw new QException("Error: " + term.getLine() + ":" + term.getCharPositionInLine()+ ": object '" + term.getText() + "' not found");
+        }
 		if(term.getType() == QParser.NULL_CONST)
 			return QObject.Null;		
 		if(term.getType() == QParser.TRUE)
@@ -711,6 +717,15 @@ public class QInterpreter {
         {
             return convertAndCallBinaryCall(op.getText(), arg1, arg2);
         }
+        /*
+        else if("%*%".equals(op.getText())){
+            return convertAndCallBinaryCall(op.getText(), arg1, arg2);
+        }else if("$".equals(op.getText()))
+        {
+            CommonTree node = new CommonTree(new CommonToken(QParser.STR_CONST, arg2.getText()));
+            return convertAndCallBinaryCall(op.getText(), arg1, node);
+        }
+        */
 
 
 		QObject term1 = evalExpr(arg1);
