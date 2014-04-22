@@ -205,10 +205,10 @@ seqExpression
 
 
 additiveExpression
-    :   (multiplicativeExpression -> multiplicativeExpression)
-	 ( additive_op additiveExpression
-		  -> ^(XXBINARY additive_op multiplicativeExpression additiveExpression)
-	 )?
+    :   (a=multiplicativeExpression -> $a)
+	 ( additive_op b=multiplicativeExpression
+		  -> ^(XXBINARY additive_op $additiveExpression $b)
+	 )*
     ;
 
 multiplicativeExpression

@@ -147,6 +147,13 @@ public class QParserTest extends TestCase {
         assertEquals("(XXBINARY * (XXBINARY / 2 3) 3)", actual.toStringTree());
     }
 
+    // "10-4+1"
+    public void test_additive_priority() throws RecognitionException
+    {
+        CommonTree actual = parseExpression("10-4+1");
+        assertEquals("(XXBINARY + (XXBINARY - 10 4) 1)", actual.toStringTree());
+    }
+
     // (XXBINARY : (XXBINARY %*% (XXFUNCALL matrix (XXSUBLIST (XXSUB1 (XXBINARY : 1 3)) (XXSYMSUB1 ncol 3))) 1) 3)
     public void test_seq_priority() throws RecognitionException {
         CommonTree actual = parseExpression("a * 1:2");

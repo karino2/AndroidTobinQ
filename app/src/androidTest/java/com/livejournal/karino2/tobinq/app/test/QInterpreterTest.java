@@ -722,6 +722,11 @@ public class QInterpreterTest extends TestCase {
 		
 	}
 
+    public void test_evalExpr_priority2() throws RecognitionException {
+        QObject actual = callEvalExpr("10-4+1");
+        assertQNumericEquals(7, actual);
+    }
+
     public void test_evalExpr_priorityDiv() throws RecognitionException
     {
         int expected = 2;
@@ -767,7 +772,7 @@ public class QInterpreterTest extends TestCase {
 	public void test_eval_substitute_insideFunction()
 	{
 		QObject actual = _intp.eval("f <- function(a) { substitute(a); }\nf(1+2+3)");
-		assertEquals("(XXBINARY + 1 (XXBINARY + 2 3))", actual.toString());
+		assertEquals("(XXBINARY + (XXBINARY + 1 2) 3)", actual.toString());
 	}
 
 
