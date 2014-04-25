@@ -823,11 +823,11 @@ public class QFunction extends QObject {
                             && rangeColNode.getType() == QParser.XXSUB0)
                     {
                         QObject rangeRow = intp.evalExprWithEnv(proEnv, rangeRowNode.getChild(0));
-                        if(rangeRow.getMode() == "logical")
-                            throw new QException("NYI: multi dimensional subscript with logical array");
                         if(!lexpr.isDataFrame())
                             throw new QException("NYI: multi dimensional subscript for none data frame");
                         QList df = (QList) lexpr;
+                        if(rangeRow.getMode() == "logical")
+                            return subscriptByRowLogical(df, rangeRow);
                         return df.subscriptByRow(rangeRow);
                     }
                     // other case, NYI.
@@ -836,6 +836,32 @@ public class QFunction extends QObject {
             }
         };
     }
+
+    private static QList subscriptByRowLogical(QList df, QObject rangeRow) {
+        if(rangeRow.getLength() != df.getRowNum())
+            rangeRow = rangeRow.recycle(df.getRowNum());
+
+        QList ret = df.dupBaseDataFrame();
+        int newRowIndex = 0;
+        for(int i = 0; i < df.getRowNum(); i++) {
+            if(rangeRow.get(i).isTrue()) {
+                ret.setRowName(newRowIndex, df.getRowName(i));
+                QList row = (QList)df.subscriptByRowIndex(i);
+                for(int col = 0; col < df.getLength(); col++)
+                {
+                    QList columnDf = ret.getColumn(col);
+                    columnDf.setRowName(newRowIndex, df.getRowName(i));
+                    QObject cell = row.rawGetByRowCol(0, col);
+                    cell.share();
+                    columnDf.rawSetByRowCol(newRowIndex, 0, cell);
+                }
+                newRowIndex++;
+            }
+        }
+
+        return ret;
+    }
+
     //  "(XXFUNCALL [[ (XXSUBLIST (XXSUB1 a) (XXSUB1 1)))"
     // [[
     public static QFunction createInternalSubscriptBB() {

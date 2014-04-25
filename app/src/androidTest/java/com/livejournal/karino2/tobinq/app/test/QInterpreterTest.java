@@ -371,7 +371,26 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(1, actual.get(0));
 	}
 
-	
+    public void test_evalExpr_dataFrame_logicalSubscriptMultiDim() throws RecognitionException
+    {
+        // setup
+        callEvalExpr("x<-1:3");
+        callEvalExpr("y<-4:6");
+        callEvalExpr("df<-data.frame(x, y)");
+
+        QObject actual_obj = callEvalExpr("df[c(FALSE, TRUE, FALSE),]");
+        assertEquals("data.frame", actual_obj.getQClass());
+        QList actual = (QList) actual_obj;
+        assertEquals(2, actual.getLength());
+        QObject xcol = actual.getBBInt(0);
+        assertEquals(1, xcol.getLength());
+        assertQNumericEquals(2, xcol.get(0));
+
+        QObject ycol = actual.getBBInt(1);
+        assertEquals(1, ycol.getLength());
+        assertQNumericEquals(5, ycol.get(0));
+    }
+
 	private QObject callSubscriptBB(String code) throws RecognitionException {
 		Tree tree = parseExpression(code);
         Tree converted = FunctionCallBuilder.convertSubscriptBBToFuncall(tree);
