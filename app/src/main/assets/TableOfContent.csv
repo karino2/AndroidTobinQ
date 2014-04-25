@@ -2,13 +2,14 @@ name,url,note,update date
 人口,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdExXNEhTX3NHWHc3a014eEdxWUs1bHc&single=true&gid=0&output=csv,http://www.stat.go.jp/data/nihon/02.htm 総務省「日本の統計 第二章 人口の推移と将来人口」より作成 人口の推移と将来人口（エクセル：62KB） 1920年～2010年まで,4/20/2014
 実質GDP,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdGVESWc4OGs2cVJxYVFLaTFZNHhOLVE&single=true&gid=0&output=csv,http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/2011/qe113/gdemenuja.html  内閣府の国民経済計算。時系列表1次速報値、実質年度。平成12年基準(93SNA)。 (17年基準じゃないので注意）。 データ期間:1980年1-3月期～2011年7-9月期 1次速報値 <2011年11月14日公表> 1980年度から2010年度まで。訂正: 1995年以降は17年基準に変更。http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/2012/toukei_2012.htmlの「平成6年1-3月期～平成24年10-12月期1次速報値（平成17年基準）」 以下の正式系列に合わせた。http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/old_keisu/old_keisu_top.html,4/14/2014
 国内総生産勘定(暦年),https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdFI1WW1IVnRkbFhvdmxRc3FOMC12c1E&single=true&gid=0&output=csv,http://www.esri.cao.go.jp/jp/sna/kakuhou/kekka/h21_kaku/h21_kaku_top.html#c1 内閣府 「国内総生産勘定(生産側及び支出側)（Excel形式：53KB）」より。 1980年～2009年までの暦年。生産および支出側。単位は10億円。,7/5/2012
-年齢階級別完全失業率(季節調整済み),https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdHZvV0IzaFBNQkowR21wNU4wS2FKb3c&single=true&gid=0&output=csv,オリジナル http://www.stat.go.jp/data/roudou/longtime/03roudou.htm 総務省「労働力調査」より作成 完全失業率【年齢階級別】（エクセル：548KB）　（昭和28年1月～） を元に、全年齢の揃う1983年からの値だけをアップロード。 2011年3月から8月は仮の数値らしい。,4/14/2014
+年齢階級別完全失業率(季節調整済み),https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdHZvV0IzaFBNQkowR21wNU4wS2FKb3c&single=true&gid=0&output=csv,オリジナル http://www.stat.go.jp/data/roudou/longtime/03roudou.htm 総務省「労働力調査」より作成 完全失業率【年齢階級別】（エクセル：548KB）　（昭和28年1月～） を元に、全年齢の揃う1983年からの値だけをアップロード。 2011年3月から8月は仮の数値らしい。季節調整値,4/14/2014
 人口推計,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdDljQ20yQzd1SGpFTXYyR3VzRDlUTXc&single=true&gid=0&output=csv,オリジナル http://www.stat.go.jp/data/nihon/02.htm 総務省「日本の統計 第二章 人口の推移と将来人口」より作成 人口の推移と将来人口（エクセル：62KB） 2015年～2105年まで,6/19/2013
 CPI,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdHhNczZ2WS0tZXNJZ3R4R0hPc3FOZ3c&single=true&gid=0&output=csv,"オリジナル: http://www.stat.go.jp/data/cpi/historic.htm 総務省統計局より作成。 「年度平均 （昭和45年度平均～平成23年度平均）」から「中分類指数（昭和45年度～最新年度）」を使用。
 2013年4月26日公表",6/19/2013
 所得階級別納税者数1989～2009,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdHVaTGw0TWE0TjNBVkZUYTBYVXNrS0E&single=true&gid=0&output=csv,オリジナル: http://www.nta.go.jp/kohyo/tokei/kokuzeicho/jikeiretsu/01_01.htm 国税庁申告所得税標本調査結果より作成。 1989以前は階級の取り方が違うので別テーブルとした。 最後の階級は9999万としてあるが、上限以下という意味。,6/19/2013
 所得階級別納税者数1975～1988,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdFlvWkYxdG5INUpzVDJpV3ZEUVZwZWc&single=true&gid=0&output=csv,オリジナル: http://www.nta.go.jp/kohyo/tokei/kokuzeicho/jikeiretsu/01_01.htm 国税庁申告所得税標本調査結果より作成。 最後の階級は9999万としてあるが、上限以下という意味。,7/7/2012
-名目GDP,https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddEdxdjJ6b2RidFc0TVNiZkJZeWtwY3c&single=true&gid=0&output=csv,http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/2011/qe113/gdemenuja.html  内閣府の国民経済計算。時系列表1次速報値、名目年度。 平成12年基準(93SNA)。データ期間:1980年1-3月期～2011年7-9月期 1次速報値 <2011年11月14日公表> 1980年度から2010年度まで。,7/5/2012
+名目GDP,https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddEdxdjJ6b2RidFc0TVNiZkJZeWtwY3c&single=true&gid=0&output=csv,"http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/old_keisu/old_keisu_top.html　に従い、1980〜1993年までは「名目GDP、2000年基準」を、1994年から2005年は「名目GDP、2005年基準」をつなげている。
+元データはそれぞれのコメントを参照。",4/25/2014
 実質GDP、平成17年基準(93SNA),https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddDgxTGhvQktvYzBNM2JSQnVKQzdyWGc&single=true&gid=0&output=csv,http://www.esri.cao.go.jp/jp/sna/menu.html 内閣府の国民経済計算の年次GDP実額の時系列データ（実質値）より。 1994年度から2011年度まで。平成17年基準。,7/5/2012
 地位別就業者数,https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddGpzQV9hTUMya1FpMnZBMVJqWWpURUE&single=true&gid=1&output=csv,http://www.stat.go.jp/data/roudou/longtime/03roudou.htm 統計局ホームページの労働力調査の長期時系列ページから、「従業上の地位別就業者数」より1953～2010まで作成。カッコ書きの部分は欠損値とし、1973年は沖縄を含む方の数字を残す。1972年以前は沖縄を含んでいないので扱いに注意。,7/5/2012
 従業者規模別非農林業雇用者数 男女計,https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddDRwNjh3Y0staHZ4X0R4MmhSYzk2ZHc&single=true&gid=1&output=csv,http://www.stat.go.jp/data/roudou/longtime/03roudou.htm 統計局ホームページの労働力調査の長期時系列ページから、「従業者規模別非農林業雇用者数」より1973～2010まで作成。単位は万人。1967から1973年までの沖縄を含まない数字は削除した。,7/5/2012
@@ -41,10 +42,27 @@ http://www.ipss.go.jp/ss-cost/j/fsss-h22/fsss_h22.asp ここからたどった�
 http://www.esri.cao.go.jp/jp/sna/data/data_list/minkan/files/files_minkan.html
 全企業の暦年・年度計数で、平成12年基準と平成17年基準から作成。
 http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/old_keisu/old_keisu_top.html
-に基づき1994年（平成6年)から平成17年基準を用いる",
+に基づき1994年（平成6年)から平成17年基準を用いる",4/20/2014
 民間企業資本ストック平成2年基準,https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddDkyTm5WazYwcWhtSDNRUXFCSDB0Unc&single=true&gid=0&output=csv,"単位は100m万円
 http://www.esri.cao.go.jp/jp/sna/data/data_list/minkan/files/files_minkan.html
 平成12年4-6月期1次速報(昭和30～) (平成2年基準:68SNA)(平成12年9月11日)(Excel形式：127KB)
 より作成。
 平成２年基準実質（？）
-1955〜1999年四半期ベース。",
+1955〜1999年四半期ベース。",4/20/2014
+実質GDP1990年基準,https://docs.google.com/spreadsheet/pub?key=0Ancau1TRtE7ddGZmVDNxbG1EMEdHYTJmeXc4amlTemc&single=true&gid=0&output=csv,"10億円単位
+平成2年基準
+http://www.esri.cao.go.jp/jp/sna/data/data_list/kakuhou/files/h10/12annual_report_j.html
+暦年実質より作成
+1955〜1998",4/21/2014
+国内総生産勘定、2005年基準,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdENxMkFLZ0xQOXpyZkxJeFhtc1p4blE&single=true&gid=0&output=csv,"10億円単位
+http://www.esri.cao.go.jp/jp/sna/data/data_list/kakuhou/files/h24/h24_kaku_top.html
+の国内総生産勘定(生産側及び支出側)（Excel形式：59KB）より作成。
+暦年。2005年基準。実質のはず（記載は無いが、基準があるので）",4/25/2014
+名目GDP、2005年基準,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdERnWnhxSDZaM3lNUEFVYUViRnZTY3c&single=true&gid=0&output=csv,"10億円単位
+http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/2013/qe134_2/gdemenuja.html
+名目年度より作成。年度。2005年基準
+2014/3/10公表されたデータ",4/25/2014
+名目GDP、2000年基準,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdEd5VE9HUXFoUHZUZVdBVzVzN2RWakE&single=true&gid=0&output=csv,"http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/2011/qe113/gdemenuja.html  内閣府の国民経済計算。時系列表1次速報値、名目年度。 平成12年基準(93SNA)。データ期間:1980年1-3月期～2011年7-9月期 1次速報値 <2011年11月14日公表> 1980年度から2010年度まで。
+２０００暦年連鎖価格ＧＤＰ需要項目別時系列表という物。2000年基準の名目GDPと同じである事を確認
+2000年基準の名目GDP系列として扱って良いはず。",4/25/2014
+年齢階級別完全失業率(季節調整済み)、1970年から,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdEN3b2VEWUtEMUR4SFphNmdJQ0N2Snc&single=true&gid=0&output=csv,オリジナル http://www.stat.go.jp/data/roudou/longtime/03roudou.htm 総務省「労働力調査」より作成 完全失業率【年齢階級別】（エクセル：548KB）　（昭和28年1月～） を元に。 2011年3月から8月は仮の数値らしい。季節調整値,4/25/2014
