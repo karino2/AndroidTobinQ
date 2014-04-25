@@ -984,6 +984,7 @@ public class QFunction extends QObject {
 		};
 	}
 
+    // which
     public static QPrimitive createWhich()
     {
         return new QPrimitive(parseFormalList("x, arr.ind=FALSE")) {
@@ -998,6 +999,46 @@ public class QFunction extends QObject {
                         ret.set(ridx++, QObject.createNumeric(i+1));
                 }
                 return ret;
+            }
+        };
+    }
+
+    // which.min
+    public static QPrimitive createWhichMin()
+    {
+        return new QPrimitive(parseFormalList("x")) {
+            @Override
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject x = getR(funcEnv, "x", intp);
+                QObject ret = new QObject(QObject.NUMERIC_TYPE);
+                int ridx = 0;
+                double min = getIR(x, 0, intp).getDouble();
+                for(int i = 1; i < x.getLength(); i++) {
+                    QObject elm = getIR(x, i, intp);
+                    if(elm.getDouble() < min)
+                        ridx = i;
+                }
+                return QObject.createNumeric(ridx+1);
+            }
+        };
+    }
+
+    // which.max
+    public static QPrimitive createWhichMax()
+    {
+        return new QPrimitive(parseFormalList("x")) {
+            @Override
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject x = getR(funcEnv, "x", intp);
+                QObject ret = new QObject(QObject.NUMERIC_TYPE);
+                int ridx = 0;
+                double max = getIR(x, 0, intp).getDouble();
+                for(int i = 1; i < x.getLength(); i++) {
+                    QObject elm = getIR(x, i, intp);
+                    if(elm.getDouble() > max)
+                        ridx = i;
+                }
+                return QObject.createNumeric(ridx+1);
             }
         };
     }

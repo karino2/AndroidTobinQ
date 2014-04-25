@@ -55,6 +55,8 @@ public class QInterpreter {
         _curEnv.put("t", QFunction.createTranspose());
         _curEnv.put("unique", QFunction.createUnique());
         _curEnv.put("which", QFunction.createWhich());
+        _curEnv.put("which.min", QFunction.createWhichMin());
+        _curEnv.put("which.max", QFunction.createWhichMax());
 
         // not primitive
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");
