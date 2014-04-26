@@ -232,7 +232,32 @@ public class QInterpreterTest extends TestCase {
 		assertEquals(QObject.Null, actual);
 		assertQNumericEquals(expected, _intp._curEnv.get("a"));
 	}
-	
+
+    public void test_evalExpr_ifelse_onlyIf() throws RecognitionException {
+        QObject actual = callEvalExpr("if(TRUE) 1");
+        assertQNumericEquals(1, actual);
+    }
+
+    public void test_evalExpr_ifelse_onlyIf_block() throws RecognitionException {
+        QObject actual = callEvalExpr("if(TRUE) {1; 2}");
+        assertQNumericEquals(2, actual);
+    }
+
+    public void test_evalExpr_ifelse_onlyIf_notmatch() throws RecognitionException {
+        QObject actual = callEvalExpr("if(FALSE) {1; 2}");
+        assertEquals(QObject.Null, actual);
+    }
+
+    public void test_evalExpr_ifelse_true() throws RecognitionException {
+        QObject actual = callEvalExpr("if(TRUE) 1 else 2");
+        assertQNumericEquals(1, actual);
+    }
+
+    public void test_evalExpr_ifelse_false() throws RecognitionException {
+        QObject actual = callEvalExpr("if(FALSE) 1 else 2");
+        assertQNumericEquals(2, actual);
+    }
+
 	public void test_evalExpr_leftAssign_subscript() throws RecognitionException
 	{
 		callEvalExpr("a<-1");

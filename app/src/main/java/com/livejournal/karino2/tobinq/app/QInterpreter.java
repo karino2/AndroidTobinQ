@@ -294,6 +294,8 @@ public class QInterpreter {
 			return new QFunction(term.getChild(0), term.getChild(1));
 		if(term.getType() == QParser.XXUNARY)
 			return evalUnary(term);
+        if(term.getType() == QParser.XXIFELSE)
+            return evalIfElse(term);
 		throw new QException("NYI2:" + term.getType());
 	}
 
@@ -329,6 +331,24 @@ public class QInterpreter {
 		// for statements never return value in R (I think this is strange though).
 		return QObject.Null;
 	}
+
+    // (XXIFELSE (XXIFCOND TRUE) 1)
+    private QObject evalIfElse(Tree term) {
+        Tree condExp = term.getChild(0).getChild(0);
+        Tree ifBody = term.getChild(1);
+        Tree elseBody = null;
+        if(term.getChildCount() == 3) {
+            elseBody = term.getChild(2);
+        }
+        QObject cond = evalExpr(condExp);
+        if(cond.isTrue()) {
+            return evalExpr(ifBody);
+        } else {
+            if(elseBody == null)
+                return QObject.Null;
+            return evalExpr(elseBody);
+        }
+    }
 
 	private Tree getParentXXValue(Tree start) {
 		Tree cur = start;
