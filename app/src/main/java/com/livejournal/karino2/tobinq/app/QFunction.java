@@ -1015,8 +1015,10 @@ public class QFunction extends QObject {
                 double min = getIR(x, 0, intp).getDouble();
                 for(int i = 1; i < x.getLength(); i++) {
                     QObject elm = getIR(x, i, intp);
-                    if(elm.getDouble() < min)
+                    if(elm.getDouble() < min) {
                         ridx = i;
+                        min = elm.getDouble();
+                    }
                 }
                 return QObject.createNumeric(ridx+1);
             }
@@ -1035,8 +1037,10 @@ public class QFunction extends QObject {
                 double max = getIR(x, 0, intp).getDouble();
                 for(int i = 1; i < x.getLength(); i++) {
                     QObject elm = getIR(x, i, intp);
-                    if(elm.getDouble() > max)
+                    if(elm.getDouble() > max) {
                         ridx = i;
+                        max = elm.getDouble();
+                    }
                 }
                 return QObject.createNumeric(ridx+1);
             }

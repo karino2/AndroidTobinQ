@@ -734,12 +734,12 @@ public class QInterpreterTest extends TestCase {
     }
 
     public void test_evalExpr_whichmin() throws RecognitionException {
-        QObject actual = callEvalExpr("which.min(c(2,3,1,5,2))");
+        QObject actual = callEvalExpr("which.min(c(3,4,1,5,2))");
         assertQNumericEquals(3, actual);
     }
 
     public void test_evalExpr_whichmax() throws RecognitionException {
-        QObject actual = callEvalExpr("which.max(c(2,3,1,5,2))");
+        QObject actual = callEvalExpr("which.max(c(2,3,1,5,2,3))");
         assertQNumericEquals(4, actual);
     }
 
