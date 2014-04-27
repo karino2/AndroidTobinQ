@@ -892,6 +892,26 @@ public class QFunction extends QObject {
                             return subscriptByRowLogical(df, rangeRow);
                         return df.subscriptByRow(rangeRow);
                     }
+                    // a[1, 2]
+                    // -> "(XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 1)( XXSUB1 2))"
+                    if(rangeRowNode.getType() == QParser.XXSUB1
+                            && rangeColNode.getType() == QParser.XXSUB1) {
+                        QObject rangeRow = intp.evalExprWithEnv(proEnv, rangeRowNode.getChild(0));
+                        QObject rangeCol = intp.evalExprWithEnv(proEnv, rangeColNode.getChild(0));
+                        int irow = rangeRow.getInt();
+                        int icol = rangeCol.getInt();
+                        if(!lexpr.isDataFrame()) {
+                            // assume as matrix.
+                            if(lexpr.getColNum() < icol ||
+                                    lexpr.getRowNum() < irow)
+                                throw new QException("out of bound for [,] access: (" + irow + ", " + icol+ ")");
+                            return lexpr.rawGetByRowCol(irow-1, icol-1);
+                        }
+                        QList df = (QList) lexpr;
+                        return df.getBBInt(icol-1).get(irow-1);
+                    }
+
+
                     // other case, NYI.
                     throw new QException("NYI: multi dimensional subscript");
                 }

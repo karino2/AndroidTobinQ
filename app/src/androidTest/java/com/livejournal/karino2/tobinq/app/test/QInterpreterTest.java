@@ -181,6 +181,11 @@ public class QInterpreterTest extends TestCase {
                 actual.toString());
     }
 
+    public void test_evalExpr_matrix_multiDim() throws RecognitionException {
+        QObject actual = callEvalExpr("matrix(1:6, 2, 3)[2, 3]");
+        assertQNumericEquals(6, actual);
+    }
+
     public void test_evalExpr_matrix_toString_precision() throws RecognitionException
     {
         QObject actual = callEvalExpr("matrix(1.2345)");
@@ -322,6 +327,19 @@ public class QInterpreterTest extends TestCase {
 		
 		assertNotNull(actual.toString());
 	}
+
+    public void test_evalExpr_dataFrame_subscriptMultiDim() throws RecognitionException
+    {
+        // setup
+        callEvalExpr("x<-1:3");
+        callEvalExpr("y<-4:6");
+        callEvalExpr("df<-data.frame(x, y)");
+
+        QObject actual = callSubscript("df[1, 2]");
+
+        assertQNumericEquals(4, actual);
+    }
+
 	
 	public void test_evalExpr_dataFrame_subscript_multiDimension_row() throws RecognitionException
 	{
