@@ -2,7 +2,9 @@ package com.livejournal.karino2.tobinq.app.test;
 
 import com.livejournal.karino2.tobinq.app.CsvTable;
 import com.livejournal.karino2.tobinq.app.CsvTableConverter;
+import com.livejournal.karino2.tobinq.app.Environment;
 import com.livejournal.karino2.tobinq.app.QFunction;
+import com.livejournal.karino2.tobinq.app.QInterpreter;
 import com.livejournal.karino2.tobinq.app.QList;
 import com.livejournal.karino2.tobinq.app.QObject;
 
@@ -11,6 +13,7 @@ import junit.framework.TestCase;
 import static com.livejournal.karino2.tobinq.app.QObject.createCharacter;
 import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.assertQCharEquals;
 import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.assertQNumericEquals;
+import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.createInterpreter;
 import static com.livejournal.karino2.tobinq.app.test.QInterpreterTest.createNumeric;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotSame;
@@ -143,12 +146,19 @@ public class QTypesTest extends TestCase {
 		assertEquals("data.frame", df.getQClass());
 		assertEquals(true, ((QList)df).isDataFrame());
 	}
+
+    public QList createDataFrameFromVector(QObject args, QInterpreter intp) {
+        QFunction func = QFunction.createDataFrame();
+        Environment funcEnv = new Environment(intp._curEnv);
+        funcEnv.put(func.ARGNAME, args);
+        return (QList)func.callPrimitive(funcEnv, intp);
+    }
 	
 	public void test_dataFrameFromVector_names() {
 
 		QObject args = createListOfX12();
 
-		QObject df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QObject df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		assertEquals(createCharacter("X"), df.getAttribute("names"));
 	}
 
@@ -156,7 +166,7 @@ public class QTypesTest extends TestCase {
 
 		QObject args = createListOfX12();
 		
-		QObject df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QObject df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		assertEquals(createCharacter("1"), df.getAttribute("row.names").get(0));
 		assertEquals(createCharacter("2"), df.getAttribute("row.names").get(1));
 	}
@@ -236,13 +246,13 @@ public class QTypesTest extends TestCase {
 	private QList createDataFrame3(QObject x, QObject y, QObject z) {
 		QObject args = createList12(x, y);		
 		args.set(2, z);
-		QList df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QList df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		return df;
 	}
 	
 	private QList createDataFrame2(QObject x, QObject y) {
 		QObject args = createList12(x, y);		
-		QList df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QList df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		return df;
 	}
 
@@ -337,7 +347,7 @@ public class QTypesTest extends TestCase {
 		QObject y = createVector12("y");		
 		args.set(0, x);
 		args.set(1, y);
-		QObject df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QObject df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		
         assertEquals("  x y\n1 1 1\n2 2 2", df.toString());
 	}
@@ -348,7 +358,7 @@ public class QTypesTest extends TestCase {
 		QObject y = createVector12("y");		
 		args.set(0, x);
 		args.set(1, y);
-		QObject df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QObject df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		
 		assertEquals(y, df.getBB(createCharacter("y")));
 	}
@@ -356,7 +366,7 @@ public class QTypesTest extends TestCase {
 	public void test_dataFrameFromVector_contents_row1Class() {
 		QObject args = createListOfX12();
 		
-		QObject df = QList.createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
+		QObject df = createDataFrameFromVector(args, QInterpreterTest.createInterpreter());
 		
 		assertEquals("list", df.get(0).getMode());
 		assertEquals("data.frame", df.get(0).getQClass());
@@ -394,7 +404,7 @@ public class QTypesTest extends TestCase {
             QList args = new QList();
             args.set(0, x);
             args.set(1, y);
-            QList.validateArg(args);
+            createDataFrameFromVector(args, createInterpreter());
             fail("should throw RuntimeException");
         }catch(RuntimeException e) {
 

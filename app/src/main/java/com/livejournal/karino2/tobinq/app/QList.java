@@ -217,12 +217,7 @@ public class QList extends QObject {
 		return df;
 	}
 	
-	protected static QObject rowNames(QObject args, QInterpreter intp) {
-		QObject o2 = intp.resolveIfNecessary(args.get(0));
-		int rowNum = o2.getLength();
-		return defaultRowNames(rowNum);
-	}
-	
+
 	static QObject defaultRowNames(int rowNum) {
 		QObjectBuilder rowBuilder = new QObjectBuilder();
 		for(int j = 0; j < rowNum; j++)
@@ -238,62 +233,6 @@ public class QList extends QObject {
     }
 
 
-    // This function is very likey at QFunction. But this function use many intenral method.
-    // So I place this method here for a while.
-    // args must be list of vector.
-	public static QList createDataFrameFromVector(QObject args, QInterpreter intp)
-	{
-		validateArg(args);
-
-		QList ret = createDataFrame();
-
-		QObject rowNames = rowNames(args, intp);
-		ret.setRowNamesAttr(rowNames);
-
-		QObjectBuilder nameBldr = new QObjectBuilder();
-		for(int i = 0; i < args.getLength(); i++)
-		{
-            QObject original = args.get(i);
-			QObject o = resolve(original, intp);
-			QList df = QList.copyVectorAsDataFrame(o);
-
-			QObject name = null;
-			if(QObject.Null.equals(o.getAttribute("names"))) {
-                if(original instanceof QPromise) {
-                    QPromise promise = (QPromise) original;
-                    Tree sexp = promise.getExpression();
-                    if(sexp.getType() == QParser.SYMBOL) {
-                        name = QObject.createCharacter(sexp.getText());
-                    }
-                }
-                if(name == null)
-                    name = QObject.createCharacter("V" + (i + 1));
-            }
-			else
-				name = o.getAttribute("names");
-
-			nameBldr.add(name);
-			df.setNamesAttr(name);
-			df.setRowNamesAttr(rowNames);
-			// inside set, df is copied. so you must call here.
-			ret.set(i, df);
-		}
-		ret.setNamesAttr(nameBldr.result());
-		return ret;
-	}
-
-	public static void validateArg(QObject args) {
-		if(args.getMode() != LIST_TYPE)
-			throw new QException("data.frame arg is not list");
-		int len = args.get(0).getLength();
-		for(int i = 0; i < args.getLength(); i++)
-		{
-			if(args.get(i).getLength() != len)
-			{
-				throw new QException("data.frame arg length mismatch: 0's=" + len + ", " + i + "'s=" + args.get(i).getLength());
-			}
-		}
-	}
 
 	public QList dupBaseDataFrame() {
 		QList df = QList.createDataFrame();

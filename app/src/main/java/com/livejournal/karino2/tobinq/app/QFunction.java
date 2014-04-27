@@ -657,7 +657,7 @@ public class QFunction extends QObject {
 
     interface TargetEnvRetriever {
         Environment getEnv(String symName, Environment funcEnv);
-            }
+    }
 
     static class EnclosedEnvRetriever implements  TargetEnvRetriever {
 
@@ -682,27 +682,27 @@ public class QFunction extends QObject {
         }
 
         @Override
-            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
-                QPromise promiseTarget = (QPromise)funcEnv.get("target");
-                Tree expression = promiseTarget.getExpression();
-                if(expression.getType() != QParser.SYMBOL)
-                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
+        public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+            QPromise promiseTarget = (QPromise)funcEnv.get("target");
+            Tree expression = promiseTarget.getExpression();
+            if(expression.getType() != QParser.SYMBOL)
+                throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
 
-                String symName = expression.getText();
-                QObject vals = getR(funcEnv, "values", intp);
-                vals.share();
+            String symName = expression.getText();
+            QObject vals = getR(funcEnv, "values", intp);
+            vals.share();
 
             Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
             cur.put(symName, vals);
-                return QObject.Null;
-            }
+            return QObject.Null;
+        }
     }
 
     // <<-
     public static QPrimitive createEnclosedAssign()
     {
         return new AssignOperation(new EnclosedEnvRetriever());
-            }
+    }
 
 
     //  "(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))"
@@ -720,81 +720,81 @@ public class QFunction extends QObject {
         }
 
         @Override
-            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
-                QObject args = funcEnv.get(ARGNAME);
-                QPromise promiseTarget = (QPromise)args.get(0);
-                QObject rightVal = getIR(args, args.getLength()-1, intp);
-                if(args.getLength() != 3)
-                    throw new QException("NYI: multi dimensional assignment.");
+        public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+            QObject args = funcEnv.get(ARGNAME);
+            QPromise promiseTarget = (QPromise)args.get(0);
+            QObject rightVal = getIR(args, args.getLength()-1, intp);
+            if(args.getLength() != 3)
+                throw new QException("NYI: multi dimensional assignment.");
 
-                QObject range = getIR(args, 1, intp);
-                if(range.getMode().equals("logical")) {
-                    return assignByLogicalSubscript(funcEnv, promiseTarget, range, rightVal, intp);
-                }
-
-
-                return assignByNumericSubscript(funcEnv, promiseTarget, range, rightVal, intp);
-            }
-            private QObject assignByLogicalSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
-                QObject targetCand = intp.resolveIfNecessary(promiseTarget);
-
-                if(range.getLength() != targetCand.getLength()) {
-                    range = range.recycle(targetCand.getLength());
-                }
-
-
-                if(targetCand.getLength() != rightVal.getLength()) {
-                    rightVal = rightVal.recycle(targetCand.getLength());
-                }
-
-                Tree expression = promiseTarget.getExpression();
-                if(expression.getType() != QParser.SYMBOL)
-                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
-
-                String symName = expression.getText();
-                if(targetCand.isShared())
-                    targetCand = targetCand.QClone();
-
-
-                int ridx = 0;
-                for (int i = 0; i < range.getLength(); i++) {
-                    if(range.get(i).isTrue()) {
-                        QObject rval = getIR(rightVal, ridx, intp);
-                        rval.share();
-                        targetCand.set(i, rval);
-                        ridx++;
-                    }
-                }
-            Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
-            cur.put(symName, targetCand);
-                return QObject.Null;
+            QObject range = getIR(args, 1, intp);
+            if(range.getMode().equals("logical")) {
+                return assignByLogicalSubscript(funcEnv, promiseTarget, range, rightVal, intp);
             }
 
-            private QObject assignByNumericSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
-                if(range.getLength() != rightVal.getLength()) {
-                    rightVal = rightVal.recycle(range.getLength());
-                }
 
-                Tree expression = promiseTarget.getExpression();
-                if(expression.getType() != QParser.SYMBOL)
-                    throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
+            return assignByNumericSubscript(funcEnv, promiseTarget, range, rightVal, intp);
+        }
+        private QObject assignByLogicalSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
+            QObject targetCand = intp.resolveIfNecessary(promiseTarget);
 
-                String symName = expression.getText();
-                QObject targetCand = intp.resolveIfNecessary(promiseTarget);
-                if(targetCand.isShared())
-                    targetCand = targetCand.QClone();
+            if(range.getLength() != targetCand.getLength()) {
+                range = range.recycle(targetCand.getLength());
+            }
 
 
-                for (int i = 0; i < range.getLength(); i++) {
-                    int idx = range.get(i).getInt();
-                    QObject rval = getIR(rightVal, i, intp);
+            if(targetCand.getLength() != rightVal.getLength()) {
+                rightVal = rightVal.recycle(targetCand.getLength());
+            }
+
+            Tree expression = promiseTarget.getExpression();
+            if(expression.getType() != QParser.SYMBOL)
+                throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
+
+            String symName = expression.getText();
+            if(targetCand.isShared())
+                targetCand = targetCand.QClone();
+
+
+            int ridx = 0;
+            for (int i = 0; i < range.getLength(); i++) {
+                if(range.get(i).isTrue()) {
+                    QObject rval = getIR(rightVal, ridx, intp);
                     rval.share();
-                    targetCand.set(idx - 1, rval);
+                    targetCand.set(i, rval);
+                    ridx++;
                 }
+            }
             Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
             cur.put(symName, targetCand);
-                return QObject.Null;
+            return QObject.Null;
+        }
+
+        private QObject assignByNumericSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
+            if(range.getLength() != rightVal.getLength()) {
+                rightVal = rightVal.recycle(range.getLength());
             }
+
+            Tree expression = promiseTarget.getExpression();
+            if(expression.getType() != QParser.SYMBOL)
+                throw new QException("Left expr of assign is not symbol: " + expression.toStringTree());
+
+            String symName = expression.getText();
+            QObject targetCand = intp.resolveIfNecessary(promiseTarget);
+            if(targetCand.isShared())
+                targetCand = targetCand.QClone();
+
+
+            for (int i = 0; i < range.getLength(); i++) {
+                int idx = range.get(i).getInt();
+                QObject rval = getIR(rightVal, i, intp);
+                rval.share();
+                targetCand.set(idx - 1, rval);
+            }
+            Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
+            cur.put(symName, targetCand);
+            return QObject.Null;
+        }
     }
 
     // "(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 "rightHandVal")))"
@@ -1240,10 +1240,67 @@ public class QFunction extends QObject {
 			public boolean isPrimitive() {return true; }
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
-				QObject arg = funcEnv.get(ARGNAME);
-				return QList.createDataFrameFromVector(arg, intp);
+				QObject args = funcEnv.get(ARGNAME);
+
+                validateArg(args);
+
+                QList ret = QList.createDataFrame();
+
+                QObject rowNames = rowNames(args, intp);
+                ret.setRowNamesAttr(rowNames);
+
+                QObjectBuilder nameBldr = new QObjectBuilder();
+                for(int i = 0; i < args.getLength(); i++)
+                {
+                    QObject original = args.get(i);
+                    QObject o = resolve(original, intp);
+                    QList df = QList.copyVectorAsDataFrame(o);
+
+                    QObject name = null;
+                    if(QObject.Null.equals(o.getAttribute("names"))) {
+                        if(original instanceof QPromise) {
+                            QPromise promise = (QPromise) original;
+                            Tree sexp = promise.getExpression();
+                            if(sexp.getType() == QParser.SYMBOL) {
+                                name = QObject.createCharacter(sexp.getText());
+                            }
+                        }
+                        if(name == null)
+                            name = QObject.createCharacter("V" + (i + 1));
+                    }
+                    else
+                        name = o.getAttribute("names");
+
+                    nameBldr.add(name);
+                    df.setNamesAttr(name);
+                    df.setRowNamesAttr(rowNames);
+                    // inside set, df is copied. so you must call here.
+                    ret.set(i, df);
+                }
+                ret.setNamesAttr(nameBldr.result());
+                return ret;
 			}
+            QObject rowNames(QObject args, QInterpreter intp) {
+                QObject o2 = intp.resolveIfNecessary(args.get(0));
+                int rowNum = o2.getLength();
+                return QList.defaultRowNames(rowNum);
+            }
+
+            void validateArg(QObject args) {
+                if(args.getMode() != QList.LIST_TYPE)
+                    throw new QException("data.frame arg is not list");
+                int len = args.get(0).getLength();
+                for(int i = 0; i < args.getLength(); i++)
+                {
+                    if(args.get(i).getLength() != len)
+                    {
+                        throw new QException("data.frame arg length mismatch: 0's=" + len + ", " + i + "'s=" + args.get(i).getLength());
+                    }
+                }
+            }
+
 		};
+
 	}
 
 	public static QFunction createList()
