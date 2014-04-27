@@ -288,14 +288,23 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(12, actual.get(2));
 	}
 
-    // NYI
-    /*
     public void test_evalExpr_dataFrame_explicitName() throws RecognitionException {
         QObject actual = callEvalExpr("data.frame(a=1:2)");
         assertQCharEquals("a", actual.getAttribute("names"));
         assertEquals(2, actual.getAttribute("row.names").getLength());
     }
-    */
+
+    public void test_evalExpr_dataFrame_explicitNameMultiRow() throws RecognitionException {
+        QList actual = (QList)callEvalExpr("data.frame(a=1:2, b=3:4)");
+        assertEquals(2, actual.getAttribute("names").getLength());
+        assertQCharEquals("a", actual.getAttribute("names").get(0));
+        assertQCharEquals("b", actual.getAttribute("names").get(1));
+        assertEquals(2, actual.getAttribute("row.names").getLength());
+        assertQNumericEquals(1, actual.getBBInt(0).get(0));
+        assertQNumericEquals(2, actual.getBBInt(0).get(1));
+        assertQNumericEquals(3, actual.getBBInt(1).get(0));
+        assertQNumericEquals(4, actual.getBBInt(1).get(1));
+    }
 
 	public void test_evalExpr_dataFrame_subscript() throws RecognitionException
 	{

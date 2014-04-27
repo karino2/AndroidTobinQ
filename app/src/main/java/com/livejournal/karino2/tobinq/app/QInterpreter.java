@@ -533,14 +533,19 @@ public class QInterpreter {
 		}
 	}
 
+    // (XXSUBLIST (XXSUB1 1) (XXSYMSUB1 beg 4))
 	private void assignToDefaultArgs(Tree subList, Environment funcEnv) {
 		QObject args = new QList();
 		int argNum = 0;
 		for(int i = 0; i < subList.getChildCount(); i++)
 		{
-            Tree expression = subList.getChild(i).getChild(0);
-            if(expression != null) {
-                QObject arg = new QPromise(_curEnv, expression);
+            Tree argExp = subList.getChild(i);
+            if(argExp.getType() == QParser.XXSUB1) {
+                QObject arg = new QPromise(_curEnv, argExp.getChild(0));
+                args.set(argNum++, arg);
+            } else if(argExp.getType() == QParser.XXSYMSUB1) {
+                // Special case. Function side would handle this case.
+                QObject arg = new QPromise(_curEnv, argExp);
                 args.set(argNum++, arg);
             }
 		}
