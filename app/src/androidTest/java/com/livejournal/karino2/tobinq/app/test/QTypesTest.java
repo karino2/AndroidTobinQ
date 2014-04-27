@@ -2,6 +2,7 @@ package com.livejournal.karino2.tobinq.app.test;
 
 import com.livejournal.karino2.tobinq.app.CsvTable;
 import com.livejournal.karino2.tobinq.app.CsvTableConverter;
+import com.livejournal.karino2.tobinq.app.DataFrameBuilder;
 import com.livejournal.karino2.tobinq.app.Environment;
 import com.livejournal.karino2.tobinq.app.QFunction;
 import com.livejournal.karino2.tobinq.app.QInterpreter;
@@ -404,7 +405,7 @@ public class QTypesTest extends TestCase {
             QList args = new QList();
             args.set(0, x);
             args.set(1, y);
-            createDataFrameFromVector(args, createInterpreter());
+            DataFrameBuilder.validateArg(args);
             fail("should throw RuntimeException");
         }catch(RuntimeException e) {
 

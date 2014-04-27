@@ -1233,7 +1233,7 @@ public class QFunction extends QObject {
 			}
 		};
 	}
-	
+
 	public static QFunction createDataFrame()
 	{
 		return new QFunction(null, null){
@@ -1241,65 +1241,10 @@ public class QFunction extends QObject {
 			public QObject callPrimitive(Environment funcEnv, QInterpreter intp)
 			{
 				QObject args = funcEnv.get(ARGNAME);
-
-                validateArg(args);
-
-                QList ret = QList.createDataFrame();
-
-                QObject rowNames = rowNames(args, intp);
-                ret.setRowNamesAttr(rowNames);
-
-                QObjectBuilder nameBldr = new QObjectBuilder();
-                for(int i = 0; i < args.getLength(); i++)
-                {
-                    QObject original = args.get(i);
-                    QObject o = resolve(original, intp);
-                    QList df = QList.copyVectorAsDataFrame(o);
-
-                    QObject name = null;
-                    if(QObject.Null.equals(o.getAttribute("names"))) {
-                        if(original instanceof QPromise) {
-                            QPromise promise = (QPromise) original;
-                            Tree sexp = promise.getExpression();
-                            if(sexp.getType() == QParser.SYMBOL) {
-                                name = QObject.createCharacter(sexp.getText());
-                            }
-                        }
-                        if(name == null)
-                            name = QObject.createCharacter("V" + (i + 1));
-                    }
-                    else
-                        name = o.getAttribute("names");
-
-                    nameBldr.add(name);
-                    df.setNamesAttr(name);
-                    df.setRowNamesAttr(rowNames);
-                    // inside set, df is copied. so you must call here.
-                    ret.set(i, df);
-                }
-                ret.setNamesAttr(nameBldr.result());
-                return ret;
+                DataFrameBuilder builder = new DataFrameBuilder();
+                return builder.createDataFrame(args, funcEnv, intp);
 			}
-            QObject rowNames(QObject args, QInterpreter intp) {
-                QObject o2 = intp.resolveIfNecessary(args.get(0));
-                int rowNum = o2.getLength();
-                return QList.defaultRowNames(rowNum);
-            }
-
-            void validateArg(QObject args) {
-                if(args.getMode() != QList.LIST_TYPE)
-                    throw new QException("data.frame arg is not list");
-                int len = args.get(0).getLength();
-                for(int i = 0; i < args.getLength(); i++)
-                {
-                    if(args.get(i).getLength() != len)
-                    {
-                        throw new QException("data.frame arg length mismatch: 0's=" + len + ", " + i + "'s=" + args.get(i).getLength());
-                    }
-                }
-            }
-
-		};
+        };
 
 	}
 

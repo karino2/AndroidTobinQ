@@ -206,17 +206,6 @@ public class QList extends QObject {
 	}
 	
 	
-	protected static QList copyVectorAsDataFrame(QObject o) {
-		QList df = createDataFrame();
-		QObjectBuilder bldr = new QObjectBuilder();
-		for(int i = 0; i < o.getLength(); i++) {
-            o.get(i).share();
-            bldr.add(o.get(i));
-        }
-		df.set(0, bldr.result());
-		return df;
-	}
-	
 
 	static QObject defaultRowNames(int rowNum) {
 		QObjectBuilder rowBuilder = new QObjectBuilder();
