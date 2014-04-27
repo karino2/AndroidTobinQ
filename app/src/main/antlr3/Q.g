@@ -23,6 +23,7 @@ IN='in';
 IF='if';
 LBB='[[';
 LEFT_ASSIGN='<-';
+ENCLOSED_ASSIGN = '<<-';
 LT='<';
 LE='<=';
 NE='!=';
@@ -164,7 +165,7 @@ relationalOp
 
 // '?' is not assign, but the same precedance.
 assign_op:
-	(LEFT_ASSIGN | RIGHT_ASSIGN | '?')
+	(LEFT_ASSIGN | RIGHT_ASSIGN | ENCLOSED_ASSIGN | '?')
 	;
 
 // SPECIAL is higher priority than multicative, but need to reduce call stack...

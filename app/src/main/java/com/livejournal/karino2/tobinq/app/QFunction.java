@@ -639,15 +639,49 @@ public class QFunction extends QObject {
 		return new ForestIterater<QObjectForestAdapter>(root);
 	}
 
-    //  "(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))"
-    // <-
-    public static QFunction createInternalAssign()
-    {
-        return new QFunction(parseFormalList("target, values"), null) {
-            public boolean isPrimitive() {
-                return true;
+    static Environment findEnclosedEnv(String symName, Environment funcEnv) {
+        Environment cur = funcEnv._parent;
+        cur = cur._parent;
+        while(true) {
+            QObject obj = cur.get(symName);
+            if(obj != null) {
+                return cur;
+            }
+            Environment parent = cur._parent;
+            if(parent == null) {
+                return cur;
+            }
+            cur = parent;
+        }
+    }
+
+    interface TargetEnvRetriever {
+        Environment getEnv(String symName, Environment funcEnv);
             }
 
+    static class EnclosedEnvRetriever implements  TargetEnvRetriever {
+
+        @Override
+        public Environment getEnv(String symName, Environment funcEnv) {
+            return findEnclosedEnv(symName, funcEnv);
+        }
+    }
+    static class ParentEnvRetriever implements TargetEnvRetriever {
+
+        @Override
+        public Environment getEnv(String symName, Environment funcEnv) {
+            return funcEnv._parent;
+        }
+    }
+
+    static class AssignOperation extends QPrimitive {
+        TargetEnvRetriever targetEnvRetriever;
+        AssignOperation(TargetEnvRetriever envRetriever ) {
+            super(parseFormalList("target, values"));
+            targetEnvRetriever = envRetriever;
+        }
+
+        @Override
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
                 QPromise promiseTarget = (QPromise)funcEnv.get("target");
                 Tree expression = promiseTarget.getExpression();
@@ -657,21 +691,35 @@ public class QFunction extends QObject {
                 String symName = expression.getText();
                 QObject vals = getR(funcEnv, "values", intp);
                 vals.share();
-                funcEnv._parent.put(symName, vals);
+
+            Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
+            cur.put(symName, vals);
                 return QObject.Null;
             }
-        };
     }
 
-    // "(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 "rightHandVal")))"
-    // [<-
-    public static QFunction createInternalBracketAssign()
+    // <<-
+    public static QPrimitive createEnclosedAssign()
     {
-        return new QFunction(null, null) {
-            public boolean isPrimitive() {
-                return true;
+        return new AssignOperation(new EnclosedEnvRetriever());
             }
 
+
+    //  "(XXFUNCALL <- (XXSUBLIST (XXSUB1 a) (XXSYMSUB1 values b)))"
+    // <-
+    public static QFunction createInternalAssign()
+    {
+        return new AssignOperation(new ParentEnvRetriever());
+    }
+
+    static class SubscriptAssignOperation extends QPrimitive {
+        TargetEnvRetriever targetEnvRetriever;
+        SubscriptAssignOperation(TargetEnvRetriever envRetriever ) {
+            super(null);
+            targetEnvRetriever = envRetriever;
+        }
+
+        @Override
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
                 QObject args = funcEnv.get(ARGNAME);
                 QPromise promiseTarget = (QPromise)args.get(0);
@@ -687,7 +735,6 @@ public class QFunction extends QObject {
 
                 return assignByNumericSubscript(funcEnv, promiseTarget, range, rightVal, intp);
             }
-
             private QObject assignByLogicalSubscript(Environment funcEnv, QPromise promiseTarget, QObject range, QObject rightVal, QInterpreter intp) {
                 QObject targetCand = intp.resolveIfNecessary(promiseTarget);
 
@@ -718,7 +765,8 @@ public class QFunction extends QObject {
                         ridx++;
                     }
                 }
-                funcEnv._parent.put(symName, targetCand);
+            Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
+            cur.put(symName, targetCand);
                 return QObject.Null;
             }
 
@@ -743,11 +791,25 @@ public class QFunction extends QObject {
                     rval.share();
                     targetCand.set(idx - 1, rval);
                 }
-                funcEnv._parent.put(symName, targetCand);
+            Environment cur = targetEnvRetriever.getEnv(symName, funcEnv);
+            cur.put(symName, targetCand);
                 return QObject.Null;
             }
-        };
     }
+
+    // "(XXFUNCALL [<- (XXSUBLIST (XXSUB1 a) (XXSUB1 1) (XXSUB1 "rightHandVal")))"
+    // [<-
+    public static QFunction createInternalBracketAssign()
+    {
+        return new SubscriptAssignOperation(new ParentEnvRetriever());
+    }
+
+    // [<<-
+    public static QFunction createEnclosedBracketAssign()
+    {
+        return new SubscriptAssignOperation(new EnclosedEnvRetriever());
+    }
+
 
     // [[<-
     public static QFunction createInternalBBAssign() {

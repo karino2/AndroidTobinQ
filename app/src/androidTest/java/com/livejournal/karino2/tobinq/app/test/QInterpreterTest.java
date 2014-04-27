@@ -95,6 +95,26 @@ public class QInterpreterTest extends TestCase {
         assertEquals(QObject.createNumeric(expected2), actual.get(1));
     }
 
+    public void test_eval_localAssign()
+    {
+        QObject actual = _intp.eval("a<- 1; f<-function() {a <- 3}; f(); a");
+        assertQNumericEquals(1, actual);
+    }
+
+    public void test_eval_enclosedAssign()
+    {
+        QObject actual = _intp.eval("a<- 1; f<-function() {a <<- 3}; f(); a");
+        assertQNumericEquals(3, actual);
+    }
+
+    public void test_eval_enclosedAssignSubscript()
+    {
+        QObject actual = _intp.eval("a<- 1; f<-function() {a[2] <<- 3}; f(); a");
+        assertEquals(2, actual.getLength());
+        assertQNumericEquals(1, actual.get(0));
+        assertQNumericEquals(3, actual.get(1));
+    }
+
     public void test_eval_logicalAssign()
     {
         String code = "a <- 1:3; a[c(FALSE, TRUE, TRUE)] <- 5;a";

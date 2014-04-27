@@ -67,10 +67,12 @@ public class QInterpreter {
         // internal
         _curEnv.put("<-", QFunction.createInternalAssign());
         _curEnv.put("[<-", QFunction.createInternalBracketAssign());
+        _curEnv.put("[<<-", QFunction.createEnclosedBracketAssign());
         _curEnv.put("[[<-", QFunction.createInternalBBAssign());
         _curEnv.put("[", QFunction.createInternalSubscriptBracket());
         _curEnv.put("[[", QFunction.createInternalSubscriptBB());
         _curEnv.put("%*%", QFunction.createSpecialMultiply());
+        _curEnv.put("<<-", QFunction.createEnclosedAssign());
 	}
 
     public void registerNonePrimitiveFunction(String name, String formal, String body)
@@ -695,7 +697,8 @@ public class QInterpreter {
 
     public QObject evalBinary(Tree op, Tree arg1, Tree arg2) {
 		if(QParser.LEFT_ASSIGN == op.getType() ||
-				QParser.EQ_ASSIGN == op.getType())
+				QParser.EQ_ASSIGN == op.getType() ||
+                QParser.ENCLOSED_ASSIGN == op.getType())
 		{
 
             // a <- c(1, 2)
