@@ -1284,6 +1284,99 @@ public class QFunction extends QObject {
 			}
 		};
 	}
+
+    // rbind
+    public static QPrimitive createRbind()
+    {
+        return new QPrimitive(null) {
+            @Override
+            public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
+                QObject args = resolve(funcEnv.get(ARGNAME), intp);
+                QObject first = getIR(args, 0, intp);
+                HashMap<String, Integer> colNameIndexMap = new HashMap<String, Integer>();
+                QObject colNames = first.getAttribute("names");
+                setupColNamesMap(colNameIndexMap, colNames);
+
+                QList ret = (QList)first.QClone();
+                for(int i = 1; i < args.getLength(); i++) {
+                    QObject arg = getIR(args, i, intp);
+                    if(arg.isDataFrame()) {
+                        appendOneDataFrame(colNameIndexMap, colNames, ret, (QList) arg);
+                    } else {
+                        appendOneVector(ret, arg);
+                    }
+                }
+                return ret;
+            }
+
+            private void appendOneVector(QList ret, QObject oneArg) {
+                if(oneArg.getLength() != ret.getColNum())
+                    throw new QException("Error: rbind arg vector length is not the same as data.frame column num");
+                int originalRowNum = ret.getRowNum();
+                for(int icol = 0; icol < oneArg.getLength(); icol++) {
+                    QObject obj = oneArg.get(icol);
+                    obj.share();
+                    ret.getColumn(icol).rawSetByRowCol(originalRowNum, 0, obj);
+                }
+                QObject rowNames = ret.getRowNamesAttr();
+                if(rowNames.isShared())
+                    rowNames.QClone();
+                appendDefaultRowName(rowNames, originalRowNum+1);
+                ret.setRowNamesAttr(rowNames);
+            }
+
+            private void appendOneDataFrame(HashMap<String, Integer> colNameIndexMap, QObject colNames, QList ret, QList dfArg) {
+                QObject names2 = dfArg.getAttribute("names");
+                if(colNames.getLength() != names2.getLength())
+                    throw new QException("Error: rbind args are not the same col num.");
+                int additionalRowLength = 0;
+                int originalRowNum = ret.getRowNum();
+                for(int j = 0; j < names2.getLength(); j++) {
+                    QObject vect = dfArg.getBBInt(j);
+                    Integer targetIndex = colNameIndexMap.get(names2.get(j).getValue());
+                    if(targetIndex == null)
+                        throw new QException("Error: rbind colName of args is not the same.");
+                    appendVectorToColumn(ret, vect, targetIndex, originalRowNum);
+                    additionalRowLength = vect.getLength(); // only last assigned value is used.
+                }
+                appendRowNamesRange(ret, additionalRowLength);
+            }
+
+            private void appendRowNamesRange(QList ret, int additionalRowLength) {
+                QObject rowNames = ret.getRowNamesAttr();
+                if(rowNames.isShared())
+                    rowNames = rowNames.QClone();
+                appendRowNames(rowNames, additionalRowLength);
+                ret.setRowNamesAttr(rowNames);
+            }
+
+            private void appendRowNames(QObject rowNames, int additionalRowLength) {
+                int originalRowNum = rowNames.getLength();
+                for(int irow = originalRowNum; irow < originalRowNum+additionalRowLength; irow++) {
+                    appendDefaultRowName(rowNames, irow);
+                }
+            }
+
+            private void appendDefaultRowName(QObject rowNames, int irow) {
+                rowNames.set(irow, QObject.createCharacter(String.valueOf(irow+1)));
+            }
+
+            private void appendVectorToColumn(QList ret, QObject vect, int targetCol, int originalRowNum) {
+                for(int irow = 0; irow < vect.getLength(); irow++) {
+                    QObject obj = vect.get(irow);
+                    obj.share();
+                    ret.getColumn(targetCol).rawSetByRowCol(originalRowNum+irow, 0, obj);
+                }
+            }
+
+            private void setupColNamesMap(HashMap<String, Integer> colNameIndexMap, QObject colNames) {
+                for(int i = 0; i < colNames.getLength(); i++) {
+                    colNameIndexMap.put((String)colNames.get(i).getValue(), i);
+                }
+            }
+        };
+    }
+
 	public static QFunction createLength()
 	{
 		return new QFunction(null, null){

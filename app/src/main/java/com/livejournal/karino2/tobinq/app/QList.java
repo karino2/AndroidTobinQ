@@ -99,7 +99,7 @@ public class QList extends QObject {
         }
         return bldr.result();
     }
-	private QObject getRowNamesAttr() {
+	QObject getRowNamesAttr() {
 		QObject rowNames = getAttribute("row.names");
 		return rowNames;
 	}

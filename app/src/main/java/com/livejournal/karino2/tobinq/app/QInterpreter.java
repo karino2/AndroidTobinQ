@@ -57,6 +57,7 @@ public class QInterpreter {
         _curEnv.put("which", QFunction.createWhich());
         _curEnv.put("which.min", QFunction.createWhichMin());
         _curEnv.put("which.max", QFunction.createWhichMax());
+        _curEnv.put("rbind", QFunction.createRbind());
 
         // not primitive
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");

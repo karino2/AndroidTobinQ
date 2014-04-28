@@ -468,8 +468,45 @@ public class QInterpreterTest extends TestCase {
         Tree converted = FunctionCallBuilder.convertSubscriptBBToFuncall(tree);
         return _intp.evalCallFunction(converted);
     }
-	
-	public void test_evalEq_true()
+
+
+    public void test_evalExpr_rbind_dataFrame() throws RecognitionException {
+        callEvalExpr("df1 <- data.frame(a=1:2, b=3:4)");
+        callEvalExpr("df2 <- data.frame(a=5:6, b=7:8)");
+        QList df = (QList) callEvalExpr("rbind(df1, df2)");
+        assertEquals(2, df.getLength());
+        assertQCharEquals("a", df.getAttribute("names").get(0));
+        assertQCharEquals("b", df.getAttribute("names").get(1));
+        assertEquals(4, df.getBBInt(0).getLength());
+        assertQNumericEquals(1, df.getBBInt(0).get(0));
+        assertQNumericEquals(5, df.getBBInt(0).get(2));
+        assertQNumericEquals(3, df.getBBInt(1).get(0));
+        assertQNumericEquals(7, df.getBBInt(1).get(2));
+    }
+
+    public void test_evalExpr_rbind_vector() throws RecognitionException {
+        callEvalExpr("df1 <- data.frame(a=1:2, b=3:4)");
+        QList df = (QList) callEvalExpr("rbind(df1, c(5, 6))");
+        assertEquals(2, df.getLength());
+        assertQCharEquals("a", df.getAttribute("names").get(0));
+        assertQCharEquals("b", df.getAttribute("names").get(1));
+        assertEquals(3, df.getBBInt(0).getLength());
+        assertQNumericEquals(1, df.getBBInt(0).get(0));
+        assertQNumericEquals(5, df.getBBInt(0).get(2));
+        assertQNumericEquals(3, df.getBBInt(1).get(0));
+        assertQNumericEquals(6, df.getBBInt(1).get(2));
+    }
+
+    public void test_evalExpr_rbind_three() throws RecognitionException {
+        callEvalExpr("df1 <- data.frame(a=1:2, b=3:4)");
+        callEvalExpr("df2 <- data.frame(a=5:6, b=7:8)");
+        callEvalExpr("df3 <- data.frame(a=9:10, b=11:12)");
+        QList df = (QList) callEvalExpr("rbind(df1, df2, df3)");
+        assertEquals(6, df.getBBInt(0).getLength());
+    }
+
+
+    public void test_evalEq_true()
 	{
 		verifyEq(true, 1, 1);		
 	}
