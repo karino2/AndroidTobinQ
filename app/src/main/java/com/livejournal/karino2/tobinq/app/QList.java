@@ -80,7 +80,7 @@ public class QList extends QObject {
 		return getNamesAttr().get(colIndex);
 	}
 	
-	private QObject getNamesAttr() {
+	QObject getNamesAttr() {
 		return getAttribute("names");
 	}
 	public void setNamesAttr(QObject namesObj)
@@ -297,26 +297,4 @@ public class QList extends QObject {
 			get(col).get(0).set(row, obj);		
 	}
 	
-	QObject subscriptByRow(QObject rowRange) {
-		if(rowRange.getLength () == 1)
-		{
-			int  index = rowRange.getInt();
-			return subscriptByRowIndex(index-1);
-		}
-		QList df = dupBaseDataFrame();
-		
-		for(int newRowIndex = 0; newRowIndex < rowRange.getLength(); newRowIndex++)
-		{
-			int orgRowIndex = rowRange.get(newRowIndex).getInt() -1;
-			df.setRowName(newRowIndex, getRowName(orgRowIndex));
-			QList row = (QList)subscriptByRowIndex(orgRowIndex);
-			for(int col = 0; col < getLength(); col++)
-			{
-				QList columnDf = df.getColumn(col);
-				columnDf.setRowName(newRowIndex, getRowName(orgRowIndex));
-				columnDf.rawSetByRowCol(newRowIndex, 0, row.rawGetByRowCol(0, col));
-			}
-		}
-		return df;
-	}
 }

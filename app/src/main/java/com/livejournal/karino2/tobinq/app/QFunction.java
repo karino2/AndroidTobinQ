@@ -15,6 +15,7 @@ import org.antlr.runtime.tree.Tree;
 
 import com.livejournal.karino2.tobinq.app.ForestNode.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -857,8 +858,6 @@ public class QFunction extends QObject {
             private void validateSubscriptBracket(Tree sublistTree) {
                 if(sublistTree.getChildCount() > 2)
                     throw new QException("NYI: multi dimentional array more than 2");
-                if(sublistTree.getChild(0).getType() != QParser.XXSUB1)
-                    throw new QException("Sublist with assign: gramatically accepted, but what situation?");
             }
 
             public QObject callPrimitive(Environment funcEnv, QInterpreter intp) {
@@ -890,8 +889,23 @@ public class QFunction extends QObject {
                         QList df = (QList) lexpr;
                         if(rangeRow.getMode() == "logical")
                             return subscriptByRowLogical(df, rangeRow);
-                        return df.subscriptByRow(rangeRow);
+                        return subscriptByRowInt(df, rangeRow);
                     }
+
+                    // a[, c('hoge', 'ika')]
+                    // -> "(XXSUBSCRIPT [ a (XXSUBLIST  XXSUB0 (XXSUB1 ...)))"
+                    if(rangeRowNode.getType() == QParser.XXSUB0
+                            && rangeColNode.getType() != QParser.XXSUB0) {
+                        QObject rangeCol = intp.evalExprWithEnv(proEnv, rangeColNode.getChild(0));
+                        if(!lexpr.isDataFrame())
+                            throw new QException("NYI: multi dimensional subscript for none data frame");
+
+                        if (rangeCol.isCharacter())
+                            return subscriptByColumnStringVector((QList) lexpr, rangeCol);
+                        throw new QException("NYI: subscript col by non string");
+
+                    }
+
                     // a[1, 2]
                     // -> "(XXSUBSCRIPT [ a (XXSUBLIST (XXSUB1 1)( XXSUB1 2))"
                     if(rangeRowNode.getType() == QParser.XXSUB1
@@ -916,6 +930,78 @@ public class QFunction extends QObject {
                     throw new QException("NYI: multi dimensional subscript");
                 }
             }
+
+            private int getIndex(QObject names, String val) {
+                for(int i = 0; i < names.getLength(); i++)
+                {
+                    if(val.equals(names.get(i).getValue()))
+                        return i;
+                }
+                return -1;
+            }
+
+            private QObject subscriptByColumnStringVector(QList original, QObject rangeCol) {
+                ArrayList<Integer> indices = collectMatchedColumnIndices(original, rangeCol);
+
+                QList df = QList.createDataFrame();
+
+                QObject rowNames = original.getRowNamesAttr();
+                rowNames.share();
+                df.setRowNamesAttr(rowNames);
+
+                int idest = 0;
+                QObject destColNames = null;
+                for(int icol : indices) {
+                    QList col = original.getColumn(icol);
+                    col.share();
+                    QObject colName = col.getNamesAttr();
+                    if(destColNames == null) {
+                        destColNames = colName.QClone();
+                    } else {
+                        colName.share();
+                        destColNames.set(idest, colName);
+                    }
+                    df.set(idest++, col);
+                }
+                df.setNamesAttr(destColNames);
+                return df;
+            }
+
+            private ArrayList<Integer> collectMatchedColumnIndices(QList original, QObject rangeCol) {
+                ArrayList<Integer> indices = new ArrayList<Integer>();
+                QObject colNames = original.getNamesAttr();
+                for(int i = 0;  i < rangeCol.getLength(); i++) {
+                    int idx = getIndex(colNames, (String)rangeCol.get(i).getValue());
+                    if(idx == -1)
+                        throw new QException("Error: non matched col name ("+ rangeCol.get(i).getValue() + ")");
+                    indices.add(idx);
+                }
+                return indices;
+            }
+
+            QObject subscriptByRowInt(QList original, QObject rowRange) {
+                if(rowRange.getLength () == 1)
+                {
+                    int  index = rowRange.getInt();
+                    return original.subscriptByRowIndex(index - 1);
+                }
+                QList df = original.dupBaseDataFrame();
+
+                for(int newRowIndex = 0; newRowIndex < rowRange.getLength(); newRowIndex++)
+                {
+                    int orgRowIndex = rowRange.get(newRowIndex).getInt() -1;
+                    df.setRowName(newRowIndex, original.getRowName(orgRowIndex));
+                    QList row = (QList)original.subscriptByRowIndex(orgRowIndex);
+                    for(int col = 0; col < original.getLength(); col++)
+                    {
+                        QList columnDf = df.getColumn(col);
+                        columnDf.setRowName(newRowIndex, original.getRowName(orgRowIndex));
+                        columnDf.rawSetByRowCol(newRowIndex, 0, row.rawGetByRowCol(0, col));
+                    }
+                }
+                return df;
+            }
+
         };
     }
 

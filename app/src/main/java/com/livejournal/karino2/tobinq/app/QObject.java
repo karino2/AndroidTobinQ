@@ -245,7 +245,11 @@ public class QObject {
 		}
 		return ret;
 	}
-	
+
+    public boolean isCharacter()
+    {
+        return getMode().equals("character");
+    }
 	public boolean isNumber()
 	{
 		return getMode() == "numeric" || getMode() == "integer";

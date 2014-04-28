@@ -377,20 +377,43 @@ public class QInterpreterTest extends TestCase {
 		callEvalExpr("df<-data.frame(x, y)");
 
 		QObject actual_obj = callSubscript("df[2:3,]");
-		
-		assertEquals("data.frame", actual_obj.getQClass());
-		QList actual = (QList) actual_obj;
-		assertEquals(2, actual.getLength());
-		QObject xcol = actual.getBBInt(0);
-		assertEquals(2, xcol.getLength());
-		assertQNumericEquals(2, xcol.get(0));
-		assertQNumericEquals(3, xcol.get(1));
-		
-		QObject ycol = actual.getBBInt(1);
-		assertEquals(2, ycol.getLength());
-		assertQNumericEquals(5, ycol.get(0));
-		assertQNumericEquals(6, ycol.get(1));
-	}
+
+        assertEquals("data.frame", actual_obj.getQClass());
+        QList actual = (QList) actual_obj;
+        assertEquals(2, actual.getLength());
+        QObject xcol = actual.getBBInt(0);
+        assertEquals(2, xcol.getLength());
+        assertQNumericEquals(2, xcol.get(0));
+        assertQNumericEquals(3, xcol.get(1));
+
+        QObject ycol = actual.getBBInt(1);
+        assertEquals(2, ycol.getLength());
+        assertQNumericEquals(5, ycol.get(0));
+        assertQNumericEquals(6, ycol.get(1));
+    }
+
+    public void test_evalExpr_dataFrame_subscript_multiDimension_multicol() throws RecognitionException
+    {
+        callEvalExpr("x<-1:3");
+        callEvalExpr("y<-4:6");
+        callEvalExpr("z<-7:9");
+        callEvalExpr("df<-data.frame(z, y, x)");
+
+        QObject actual_obj = callSubscript("df[, c('x', 'y')]");
+
+        assertEquals("data.frame", actual_obj.getQClass());
+        QList actual = (QList) actual_obj;
+        assertEquals(2, actual.getLength());
+        QObject xcol = actual.getBBInt(0);
+        assertEquals(3, xcol.getLength());
+        assertQNumericEquals(1, xcol.get(0));
+        assertQNumericEquals(3, xcol.get(2));
+
+        QObject ycol = actual.getBBInt(1);
+        assertEquals(3, ycol.getLength());
+        assertQNumericEquals(4, ycol.get(0));
+        assertQNumericEquals(6, ycol.get(2));
+    }
 
 	private QObject callSubscript(String code) throws RecognitionException {
 		Tree tree = parseExpression(code);
