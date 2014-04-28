@@ -1337,7 +1337,9 @@ public class QFunction extends QObject {
                     if(targetIndex == null)
                         throw new QException("Error: rbind colName of args is not the same.");
                     appendVectorToColumn(ret, vect, targetIndex, originalRowNum);
-                    additionalRowLength = vect.getLength(); // only last assigned value is used.
+                    // only last assigned value is used.
+                    // Sometime last column is empty by operational accident. So I put max here.
+                    additionalRowLength = Math.max(additionalRowLength, vect.getLength());
                 }
                 appendRowNamesRange(ret, additionalRowLength);
             }
