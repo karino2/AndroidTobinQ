@@ -66,3 +66,17 @@ http://www.esri.cao.go.jp/jp/sna/data/data_list/sokuhou/files/2013/qe134_2/gdeme
 ２０００暦年連鎖価格ＧＤＰ需要項目別時系列表という物。2000年基準の名目GDPと同じである事を確認
 2000年基準の名目GDP系列として扱って良いはず。",4/25/2014
 年齢階級別完全失業率(季節調整済み)、1970年から,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdEN3b2VEWUtEMUR4SFphNmdJQ0N2Snc&single=true&gid=0&output=csv,オリジナル http://www.stat.go.jp/data/roudou/longtime/03roudou.htm 総務省「労働力調査」より作成 完全失業率【年齢階級別】（エクセル：548KB）　（昭和28年1月～） を元に。 2011年3月から8月は仮の数値らしい。季節調整値,4/25/2014
+統合勘定、2005年基準,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdFRhUkpNVUtXdEdQbXF4eFU2REo0S2c&single=true&gid=0&output=csv,"http://www.esri.cao.go.jp/jp/sna/data/data_list/kakuhou/files/h24/h24_kaku_top.html
+国民経済計算確報、ストック編、統合勘定、統合勘定（Excel形式：92KB）より作成。
+暦年、10億円単位
+ストックの資本を見るのに、減耗が考慮されているデータが欲しくて。",4/27/2014
+統合勘定、2000年基準,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdHlHa0s1VmlWWE9aOEhOd1VYdzF6Znc&single=true&gid=0&output=csv,"http://www.esri.cao.go.jp/jp/sna/data/data_list/kakuhou/files/h21/h21_kaku_top.html
+ストック編、統合勘定、統合勘定 (平成24年1月20日訂正）（Excel形式：72KB）より作成。
+暦年、10億円単位",4/27/2014
+統合勘定、1998年基準,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdENlV01rYVhRaW5iOUdTc1dDV011Ymc&single=true&gid=0&output=csv,"http://www.esri.cao.go.jp/jp/sna/data/data_list/kakuhou/files/h10/12annual_report_j.html
+ストック編、統合勘定、統合勘定（Excel形式：40KB）より作成。
+暦年、10億円単位",4/27/2014
+社会保障財源の項目別推移,https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdDhZOUN0UGZJQjlGTlN3ZWFNZVV5aXc&single=true&gid=0&output=csv,"http://www.ipss.go.jp/ss-cost/j/fsss-h23/fsss_h23.asp
+国立社会保障人口問題研究所の社会保障費用統計（平成23年度）。
+第14表　 社会保障財源の項目別推移 より作成。
+単位は億円。年度。",4/27/2014
