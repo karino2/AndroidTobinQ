@@ -29,15 +29,12 @@ import java.util.List;
 public class ScriptListActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     final int SETTING_ACTIVITY_ID = 1;
-    private final int STATUS_NOTIFICAITON_ID = R.layout.activity_script_list;
-    NotificationManager notificationManager;
+    UpdateChecker checker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_script_list);
-
-        retriever = new Retriever(new DefaultHttpClient(), getDatabase());
 
         adapter = new SimpleCursorAdapter(this, R.layout.script_list_item, null,
                 new String[]{"title", "description", "date", "docId"}, new int[]{R.id.tvTitle, R.id.tvDescription, R.id.tvDate,  R.id.tvRemoteLocal}, 0);
@@ -81,9 +78,13 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         });
         getSupportLoaderManager().initLoader(0, null, this);
 
-        Retriever.lastScriptUpdateAt = getLastReceiveTime();
+        checker = new UpdateChecker(this, (NotificationManager)getSystemService(NOTIFICATION_SERVICE), new UpdateChecker.UpdateListener() {
+            @Override
+            public void onUpdate() {
+                reloadCursor();
+            }
+        });
 
-        notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
     }
 
@@ -91,22 +92,12 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     protected void onStart() {
         super.onStart();
 
-        hideNotification();
-
         if(-1 == getDatabase().latestUpdatedAt()) {
             showMessage("Script list empty. Try sync...");
-            startSync();
-            return;
         }
 
-        long lastCheck = getLastCheckedTime();
-        if(currentTime()-lastCheck > 24*60*60*1000) {
-            startSync();
-            return;
-        }
+        checker.startSyncIfNecessary();
     }
-
-    Retriever retriever;
 
     private boolean isNullOrEmpty(String string) {
         if(string == null)
@@ -135,8 +126,6 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         return true;
     }
 
-    long startCheck = -1;
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -148,7 +137,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             return true;
         }
         if(id==R.id.action_sync) {
-            startSync();
+            checker.startSync();
             return true;
         }
         if(id ==R.id.action_settings) {
@@ -158,58 +147,6 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
         return super.onOptionsItemSelected(item);
     }
 
-    private void startSync() {
-        startCheck = currentTime();
-        showNotification(getString(R.string.notification_title), "Sync scripts...", "Sync scripts...");
-        retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
-            @Override
-            public void onReady(List<ScriptEntity> ents) {
-                hideNotification();
-                writeLastCheckedTime(startCheck);
-                if (ents.size() >= 1) {
-                    writeLastReceiveTime(startCheck);
-                    showNotification(getString(R.string.notification_title), ents.size() + " chart updated.", ents.size() + " chart updated.");
-                }
-                reloadCursor();
-            }
-
-            @Override
-            public void onFail(String message) {
-                showNotification(getString(R.string.notification_title), "Sync scripts fail: " + message, "Sync script fail.");
-                writeLastCheckedTime(startCheck);
-                startCheck = -1;
-            }
-        });
-    }
-
-    void hideNotification() {
-        showNotification(null, null, null);
-    }
-
-    private void showNotification(String title, String message, String ticker) {
-        if(title == null) {
-            notificationManager.cancel(STATUS_NOTIFICAITON_ID);
-            return;
-        }
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, new Intent(this, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
-        /*
-        PendingIntent contentIntent = PendingIntent.getActivities(this, 0,
-                new Intent[]{new Intent(this, ScriptListActivity.class)}, PendingIntent.FLAG_CANCEL_CURRENT);
-                */
-
-        notificationManager.notify(STATUS_NOTIFICAITON_ID, new NotificationCompat.Builder(this)
-                .setContentTitle(title)
-                .setTicker(ticker)
-                .setContentText(message)
-                .setContentIntent(contentIntent)
-                .setSmallIcon(R.drawable.ic_stat)
-                .build());
-    }
-
-    private long currentTime() {
-        return (new Date()).getTime();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == SETTING_ACTIVITY_ID) {
@@ -217,39 +154,6 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             return;
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    private long getLastCheckedTime() {
-        SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
-        return prefs.getLong("lastCheckedTime", -1);
-    }
-
-    private void writeLastCheckedTime(long lastChecked) {
-        SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
-        writeLastCheckedTimeStatic(lastChecked, prefs);
-    }
-
-    public static void writeLastCheckedTimeStatic(long lastChecked, SharedPreferences prefs) {
-        prefs.edit()
-                .putLong("lastCheckedTime", lastChecked)
-                .commit();
-    }
-
-    void writeLastReceiveTime(long succeedAt) {
-        SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
-        writeLastReceiveTimeStatic(succeedAt, prefs);
-    }
-
-    public static void writeLastReceiveTimeStatic(long succeedAt, SharedPreferences prefs) {
-        Retriever.lastScriptUpdateAt = succeedAt;
-        prefs.edit()
-                .putLong("lastReceiveTime", succeedAt)
-                .commit();
-    }
-
-    long getLastReceiveTime() {
-        SharedPreferences prefs = getSharedPreferences("script_list", MODE_PRIVATE);
-        return prefs.getLong("lastReceiveTime", -1);
     }
 
 
