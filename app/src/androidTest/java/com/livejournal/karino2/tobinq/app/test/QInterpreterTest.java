@@ -528,6 +528,13 @@ public class QInterpreterTest extends TestCase {
         assertEquals(6, df.getBBInt(0).getLength());
     }
 
+    public void test_evalExpr_eqeq() throws RecognitionException {
+        QObject result = callEvalExpr("c('abc', 'def', 'hij')=='def'");
+        assertEquals(false, result.get(0).isTrue());
+        assertEquals(true, result.get(1).isTrue());
+        assertEquals(false, result.get(2).isTrue());
+    }
+
 
     public void test_evalEq_true()
 	{

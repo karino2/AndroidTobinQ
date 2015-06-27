@@ -561,6 +561,10 @@ public class QInterpreter {
 	interface doubleBinaryOperable {
 		QObject execute(double i, double j);
 	}
+
+    interface stringBinaryOperable {
+        QObject execute(String i, String j);
+    }
 	
 	QObject evalBinaryGeneric(QObject arg1, QObject arg2, binaryOperable op)
 	{
@@ -591,6 +595,14 @@ public class QInterpreter {
 			}			
 		});
 	}
+    QObject evalBinaryString(QObject arg1, QObject arg2, final stringBinaryOperable op)
+    {
+        return evalBinaryGeneric(arg1, arg2, new binaryOperable() {
+            public QObject execute(QObject i, QObject j) {
+                return op.execute((String)i.getValue(), (String)j.getValue());
+            }
+        });
+    }
 
 	public QObject evalPlus(QObject arg1, QObject arg2)
 	{
@@ -671,6 +683,14 @@ public class QInterpreter {
 		});
 	}
 	public QObject evalEQ(QObject arg1, QObject arg2) {
+        if(arg1.isCharacter()) {
+            return evalBinaryString(arg1, arg2, new stringBinaryOperable() {
+                @Override
+                public QObject execute(String i, String j) {
+                    return QObject.createLogical(i.equals(j));
+                }
+            });
+        }
 		return evalBinaryDouble(arg1, arg2, new doubleBinaryOperable() {
 			public QObject execute(double i, double j) {
 				return QObject.createLogical(i == j);
@@ -679,6 +699,14 @@ public class QInterpreter {
 		});
 	}
 	public QObject evalNE(QObject arg1, QObject arg2) {
+        if(arg1.isCharacter()) {
+            return evalBinaryString(arg1, arg2, new stringBinaryOperable() {
+                @Override
+                public QObject execute(String i, String j) {
+                    return QObject.createLogical(!i.equals(j));
+                }
+            });
+        }
 		return evalBinaryDouble(arg1, arg2, new doubleBinaryOperable() {
 			public QObject execute(double i, double j) {
 				return QObject.createLogical(i != j);
