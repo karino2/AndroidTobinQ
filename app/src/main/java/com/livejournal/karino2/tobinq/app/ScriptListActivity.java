@@ -91,6 +91,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     @Override
     protected void onStart() {
         super.onStart();
+        AlarmReceiver.RegisterAlarmIfNecessary(this);
 
         if(-1 == getDatabase().latestUpdatedAt()) {
             showMessage("Script list empty. Try sync...");

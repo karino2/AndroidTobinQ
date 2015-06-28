@@ -93,9 +93,13 @@ public class UpdateChecker {
 
     Database getDatabase() { return Database.getInstance(context); }
 
-    SharedPreferences getSharedPreferences() {
-        return  context.getSharedPreferences("script_list", Activity.MODE_PRIVATE);
+    public static SharedPreferences getSharedPreferences(Context context1) {
+        return  context1.getSharedPreferences("script_list", Activity.MODE_PRIVATE);
 
+    }
+
+    SharedPreferences getSharedPreferences() {
+        return getSharedPreferences(context);
     }
 
     private long getLastCheckedTime() {

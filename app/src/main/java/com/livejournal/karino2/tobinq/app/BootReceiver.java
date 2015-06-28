@@ -13,16 +13,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent2) {
         if (intent2.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            AlarmManager alarmMgr;
-            alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-
-            Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-            PendingIntent alarmPIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
-
-            alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                AlarmManager.INTERVAL_HOUR,
-                AlarmManager.INTERVAL_DAY, alarmPIntent);
-
+            AlarmReceiver.RegisterAlarm(context);
         }
     }
 }
