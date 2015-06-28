@@ -1500,7 +1500,7 @@ public class QFunction extends QObject {
 	}
 
     // Caution! Very tricky! This content is basically the same as
-    // https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdEE4YnJ3dERMclRqazV0ZjJuN0k0UWc&single=true&gid=0&output=csv
+    // https://docs.google.com/spreadsheets/d/1ewK3UAagbha5Jk_TPTXAINKEDX-WoDWYv0NhN3YS4rM/export?format=csv
     // But I want to skip one http round trip, so I put this file in asset folder and assume
     // facade will set this value.
     public static CsvTable tableOfContents;
