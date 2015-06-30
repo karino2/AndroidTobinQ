@@ -1,13 +1,10 @@
 package com.livejournal.karino2.tobinq.app;
 
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
@@ -19,11 +16,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 
 public class ScriptListActivity extends ActionBarActivity implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -43,20 +37,22 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             @Override
             public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
                 // docId
-                if(columnIndex == 1) {
-                    TextView tv = (TextView)view;
-                    if(isNullOrEmpty(cursor.getString(columnIndex)))
+                if (columnIndex == 1) {
+                    TextView tv = (TextView) view;
+                    if (isNullOrEmpty(cursor.getString(columnIndex))) {
                         tv.setText("local");
-                    else
+                    } else {
                         tv.setText("remote");
+                        tv.setTag(cursor.getString(columnIndex));
+                    }
 
                     //4 is script
-                    ((View)view.getParent()).setTag(cursor.getString(4));
+                    ((View) view.getParent()).setTag(cursor.getString(4));
                     return true;
                 }
                 // date
-                if(columnIndex == 5) {
-                    TextView tv = (TextView)view;
+                if (columnIndex == 5) {
+                    TextView tv = (TextView) view;
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm");
                     tv.setText(sdf.format(new Date(cursor.getLong(columnIndex))));
                     return true;
@@ -73,6 +69,8 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
                 Intent intent = new Intent(ScriptListActivity.this, EvalActivity.class);
                 intent.putExtra("script_content", script);
                 intent.putExtra("description", ((TextView)view.findViewById(R.id.tvDescription)).getText());
+                intent.putExtra("docId", (String)view.findViewById(R.id.tvRemoteLocal).getTag());
+                intent.putExtra("title", (String)((TextView)view.findViewById(R.id.tvTitle)).getText());
                 startActivity(intent);
             }
         });
@@ -115,7 +113,6 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
     }
 
     Database getDatabase() { return Database.getInstance(this); }
-
 
 
 

@@ -3,6 +3,8 @@ package com.livejournal.karino2.tobinq.app;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
@@ -11,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -35,6 +38,8 @@ public class EvalActivity extends ActionBarActivity {
     GraphicalView chart;
 
     String script;
+    String docId;
+    String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +47,8 @@ public class EvalActivity extends ActionBarActivity {
 
         if(script == null) {
             script = getIntent().getStringExtra("script_content");
+            docId = getIntent().getStringExtra("docId");
+            title = getIntent().getStringExtra("title");
             ((TextView)findViewById(R.id.tvDescription)).setText(getIntent().getStringExtra("description"));
         }
 
@@ -94,6 +101,8 @@ public class EvalActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString("received_script", script);
+        outState.putString("received_docId", docId);
+        outState.putString("received_title", title);
         super.onSaveInstanceState(outState);
     }
 
@@ -101,6 +110,8 @@ public class EvalActivity extends ActionBarActivity {
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         script = savedInstanceState.getString("received_script");
+        docId = savedInstanceState.getString("received_docId");
+        title = savedInstanceState.getString("received_title");
     }
 
     Handler handler = new Handler();
@@ -111,11 +122,31 @@ public class EvalActivity extends ActionBarActivity {
         return (EditText)findViewById(rid);
     }
 
+
+    boolean isDebug() {
+        PackageManager pm = getPackageManager();
+        try {
+            ApplicationInfo ai = pm.getApplicationInfo(getPackageName(), 0);
+            if((ai.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0)
+            {
+                return true;
+            }
+            return false;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.eval, menu);
+        if(isDebug()) {
+            SubMenu sm = menu.addSubMenu("Debug");
+            getMenuInflater().inflate(R.menu.admin, sm);
+        }
         return true;
     }
 
@@ -153,7 +184,7 @@ public class EvalActivity extends ActionBarActivity {
             startActivity(new Intent(this, SettingActivity.class));
             return true;
         }
-        if(id == R.id.action_share) {
+        if(id == R.id.action_admin_share) {
             Bitmap bitmap = chart.toBitmap();
             try {
                 Intent intent = getFileSaver().saveAndCreateSendIntent(bitmap);
@@ -170,6 +201,16 @@ public class EvalActivity extends ActionBarActivity {
             startActivity(intent);
             return true;
         }
+        if(id == R.id.action_share) {
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, title);
+            intent.putExtra(Intent.EXTRA_TEXT, "http://tobinqscriptbackend.appspot.com/web/detail.jsp?id=" + docId);
+            startActivity(Intent.createChooser(intent, "Share URL"));
+            return true;
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
