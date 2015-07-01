@@ -2,6 +2,7 @@ package com.livejournal.karino2.tobinq.app;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -33,6 +34,14 @@ import java.util.Date;
 
 
 public class EvalActivity extends ActionBarActivity {
+    public static void startEvalActivity(Context context, String docId, String title, String script, String description) {
+        Intent intent = new Intent(context, EvalActivity.class);
+        intent.putExtra("script_content", script);
+        intent.putExtra("description", description);
+        intent.putExtra("docId", docId);
+        intent.putExtra("title", title);
+        context.startActivity(intent);
+    }
 
     InterpreterFacade interpreter;
     GraphicalView chart;

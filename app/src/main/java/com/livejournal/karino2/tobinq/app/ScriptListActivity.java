@@ -66,12 +66,7 @@ public class ScriptListActivity extends ActionBarActivity implements LoaderManag
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String script = (String)view.getTag();
-                Intent intent = new Intent(ScriptListActivity.this, EvalActivity.class);
-                intent.putExtra("script_content", script);
-                intent.putExtra("description", ((TextView)view.findViewById(R.id.tvDescription)).getText());
-                intent.putExtra("docId", (String)view.findViewById(R.id.tvRemoteLocal).getTag());
-                intent.putExtra("title", (String)((TextView)view.findViewById(R.id.tvTitle)).getText());
-                startActivity(intent);
+                EvalActivity.startEvalActivity(ScriptListActivity.this, (String)view.findViewById(R.id.tvRemoteLocal).getTag(), (String)((TextView)view.findViewById(R.id.tvTitle)).getText(), script, (String)((TextView)view.findViewById(R.id.tvDescription)).getText());
             }
         });
         getSupportLoaderManager().initLoader(0, null, this);

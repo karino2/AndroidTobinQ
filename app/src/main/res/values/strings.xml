@@ -20,5 +20,8 @@
     <string name="action_share">Share</string>
     <string name="notification_title">ChartDeli</string>
     <string name="action_toggle_chart">Toggle View Chart</string>
+    <string name="title_activity_open_url">OpenUrlActivity</string>
+    <string name="text_loading">Loading...</string>
+    <string name="text_load_error">Chart not found.</string>
 
 </resources>

@@ -43,4 +43,8 @@ public class ScriptEntity {
     public void setDate(long date) {
         this._updatedAt = date;
     }
+
+    public String getTitle() {
+        return title;
+    }
 }
