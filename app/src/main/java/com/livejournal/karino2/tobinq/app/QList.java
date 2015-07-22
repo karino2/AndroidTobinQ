@@ -112,7 +112,7 @@ public class QList extends QObject {
 	{
 		if(_vector.size() > i)
 			return _vector.get(i);
-		return QObject.NA;
+		return QObject.NA.QClone();
 	}
 	
 	public QObject QClone() {

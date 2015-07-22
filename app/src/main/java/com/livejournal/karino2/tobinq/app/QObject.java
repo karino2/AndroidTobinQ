@@ -13,7 +13,7 @@ public class QObject {
 	public static final String NUMERIC_TYPE = "numeric";
 	public static final String CALL_TYPE = "call"; // s expression.
 	
-	public static final QObject NA = new QObject("logical");
+	public static final QObject NA = new QObject("logical", 2);
 	public static final QObject Null = new QObject("NULL");
 	public static QObject TRUE = new QObject("logical", 1);
 	public static QObject FALSE = new QObject("logical", 0);
@@ -83,8 +83,6 @@ public class QObject {
         if(getMode().equals("promise"))
             throw new RuntimeException("clone Promise!");
 
-		if(this == QObject.NA)
-			return this;
 		if(getLength() == 1){
 			return new QObject(getMode(), _val, _attributes);
 		}
@@ -144,7 +142,7 @@ public class QObject {
 
 	public String toStringOne(QObject obj)
 	{
-		if(obj == QObject.NA)
+		if(obj.isNA())
 			return "NA";
 
 		if(obj.getLength() == 0) {
@@ -301,7 +299,7 @@ public class QObject {
 
     public boolean isNA()
     {
-        return QObject.NA.equals(this);
+		return getMode() == "logical" && (Integer)_val == 2;
     }
 
     public QObject get(int i)
@@ -320,7 +318,7 @@ public class QObject {
                 return this;
         }
 		if(_vector == null)
-			return QObject.NA;
+			return QObject.NA.QClone();
 		return _vector.get(i);
 	}
 
@@ -366,8 +364,8 @@ public class QObject {
 
     public void set(int i, QObject qObject) {
 		if(this == QObject.NA)
-			return;
-		ensureVector();		
+			throw new RuntimeException("Must use NA via QClone, but this is original NA object.");
+		ensureVector();
 		if(getLength() < i+1)
 		{
 			extendVectorAndFillNA(i+1);
@@ -382,7 +380,10 @@ public class QObject {
 	}
 
 	public void extendVectorAndFillNA(int upto) {
-		extendVectorAndFillValue(upto, NA);
+		for(int i = _vector.size(); i < upto; i++)
+		{
+			_vector.add(i, NA.QClone());
+		}
 	}
 	
 	// slow.

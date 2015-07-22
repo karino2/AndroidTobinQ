@@ -94,7 +94,7 @@ public class QInterpreter {
 
 
     public QInterpreter(Writable console) {
-		this(console, null,  null);
+		this(console, null, null);
 	}	
 
 
@@ -610,8 +610,10 @@ public class QInterpreter {
 	{
 		return evalBinaryGeneric(arg1, arg2, new binaryOperable() {
 			public QObject execute(QObject i, QObject j) {
+				if(i.isNA() || j.isNA())
+					return QObject.NA.QClone();
 				return op.execute(i.getDouble(), j.getDouble());
-			}			
+			}
 		});
 	}
     QObject evalBinaryString(QObject arg1, QObject arg2, final stringBinaryOperable op)

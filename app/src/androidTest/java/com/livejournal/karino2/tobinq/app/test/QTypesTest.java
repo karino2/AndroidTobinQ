@@ -69,7 +69,30 @@ public class QTypesTest extends TestCase {
 	{
 		assertEquals("NA", QObject.NA.toString());
 	}
-	
+
+	public void test_NA_lengthOne()
+	{
+		assertEquals(1, QObject.NA.getLength());
+	}
+
+	public void test_NAQClone_isNA()
+	{
+		assertEquals(QObject.NA, QObject.NA.QClone());
+	}
+
+	public void test_QNA_set()
+	{
+		QObject a = QObject.NA.QClone();
+		a.set(2, QObject.createInt(3));
+
+
+		assertEquals(3, a.getLength());
+		assertEquals(QObject.NA, a.get(0));
+		assertEquals(QObject.NA, a.get(1));
+		assertEquals(QObject.createInt(3), a.get(2));
+
+	}
+
 	public void test_QInt_set()
 	{
 		QObject a = QObject.createInt(1);

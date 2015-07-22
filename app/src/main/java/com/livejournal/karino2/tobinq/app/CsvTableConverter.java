@@ -44,7 +44,7 @@ public class CsvTableConverter {
             for(int col = 0; col < table.getColNum(); col++)
             {
                 if(table.isNA(row+1, col))
-                    cols.get(col).rawSetByRowCol(row, 0, QObject.NA);
+                    cols.get(col).rawSetByRowCol(row, 0, QObject.NA.QClone());
                 else {
                     if(DataType.NUMERIC == getColumnType(col)) {
                         cols.get(col).rawSetByRowCol(row, 0, QObject.createNumeric(table.getCellNumeric(row + 1, col)));

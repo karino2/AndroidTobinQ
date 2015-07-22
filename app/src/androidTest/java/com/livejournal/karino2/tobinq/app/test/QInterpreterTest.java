@@ -240,6 +240,15 @@ public class QInterpreterTest extends TestCase {
         assertEquals("     [,1]\n[1,]   22\n[2,]   28", actual.toString());
     }
 
+    public void test_evalExpr_NAVector() throws RecognitionException {
+        QObject result = callEvalExpr("c(NA, NA, NA)");
+        assertEquals(3, result.getLength());
+        for(int i = 0; i < 3; i++) {
+            assertEquals(QObject.NA, result.get(i));
+        }
+    }
+
+
 
     public void test_evalExpr_exprList() throws RecognitionException
 	{
@@ -535,7 +544,6 @@ public class QInterpreterTest extends TestCase {
         assertEquals(false, result.get(2).isTrue());
     }
 
-
     public void test_evalEq_true()
 	{
 		verifyEq(true, 1, 1);		
@@ -573,11 +581,11 @@ public class QInterpreterTest extends TestCase {
 	}
 	
 	void verifyNe(boolean expected, int arg1, int arg2) {
-		verifyBinary(expected, arg1, arg2, new BinaryCallable() {			
-			public QObject evalBinary(QObject a1, QObject a2) {
-				return _intp.evalNE(a1, a2);
-			}
-		});
+		verifyBinary(expected, arg1, arg2, new BinaryCallable() {
+            public QObject evalBinary(QObject a1, QObject a2) {
+                return _intp.evalNE(a1, a2);
+            }
+        });
 	}
 
 	
@@ -1163,6 +1171,21 @@ public class QInterpreterTest extends TestCase {
 		assertQNumericEquals(4, actual.get(0));
 		assertQNumericEquals(5, actual.get(1));
 	}
+
+    public void test_evalPlus_toNA()
+    {
+        QObject vector = QObject.createInt(1);
+        QObject r2 = QObject.NA;
+        QObject r3 = QObject.createInt(3);
+        vector.set(1, r2);
+        // c(1, NA) + 3 = (4, NA)
+        QObject actual = _intp.evalPlus(vector, r3);
+
+        assertEquals(2, actual.getLength());
+        assertQNumericEquals(4, actual.get(0));
+        assertEquals(QObject.NA, actual.get(1));
+    }
+
 		
 	static public QObject createNumeric(int i) {
 		return QObject.createNumeric(i);
