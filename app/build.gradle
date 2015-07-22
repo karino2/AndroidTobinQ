@@ -14,8 +14,8 @@ android {
     defaultConfig {
         minSdkVersion 8
         targetSdkVersion 19
-        versionCode 11
-        versionName "0.11"
+        versionCode 12
+        versionName "0.12"
     }
     lintOptions {
         checkReleaseBuilds false
