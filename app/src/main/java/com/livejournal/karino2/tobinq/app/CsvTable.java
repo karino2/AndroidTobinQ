@@ -8,9 +8,6 @@ public class CsvTable implements Serializable {
 	public CsvTable(String[][] lines) {
 		m_lines = lines;
 	}
-	public CsvTable() {
-		m_lines = new String[][]{{}};
-	}
 	public int getRowNum() { return m_lines.length; }
 	public int getColNum() 
 	{

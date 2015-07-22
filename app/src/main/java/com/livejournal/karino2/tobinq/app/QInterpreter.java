@@ -63,6 +63,12 @@ public class QInterpreter {
         registerNonePrimitiveFunction("class", "obj", "attributes(obj)[[\"class\"]]");
         registerNonePrimitiveFunction("dim", "obj", "attributes(obj)[[\"dim\"]]");
         registerNonePrimitiveFunction("$", "obj, sym", "obj[[deparse(substitute(sym))]]");
+		_curEnv.put("g_tobinq_table", QObject.Null);
+		registerNonePrimitiveFunction("Qurl", "name", "{\n if(is.null(g_tobinq_table)) { \n"
+				+ "g_tobinq_table <- read.csv('https://docs.google.com/spreadsheet/pub?key=0AnKwf3jHs-oIdEE4YnJ3dERMclRqazV0ZjJuN0k0UWc&single=true&gid=0&output=csv')\n"
+				+ "}\n"
+				+"g_tobinq_table[g_tobinq_table[['name']]==name,][['url']] }");
+
 
 
         // internal

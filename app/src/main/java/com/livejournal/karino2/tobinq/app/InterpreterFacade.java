@@ -34,41 +34,13 @@ public class InterpreterFacade {
         }
     };
 
-    public void loadTableOfContents()
-    {
-        try {
-            String csvText = readTableOfContentsAsString();
-            CsvTable table = CsvTableRetriever.textToTableStatic(csvText);
-            interpreter.registerFunction("Qurl", QFunction.createQurl(table));
-        } catch (FileNotFoundException e) {
-            interpreter.getConsole().write("init script not found: " + e.getMessage());
-        } catch (IOException e) {
-        }
-    }
-
-    private String readTableOfContentsAsString() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(assetManager.open("TableOfContent.csv")));
-        try {
-            StringWriter writer = new StringWriter();
-            int n;
-            char[] buf = new char[2048];
-            while ((n = reader.read(buf)) != -1) {
-                writer.write(buf, 0, n);
-            }
-            return writer.toString();
-        }finally {
-            reader.close();
-        }
-    }
 
     Activity activity;
-    AssetManager assetManager;
     NotificationManager notificationManager;
 
     public InterpreterFacade(Writable console, Plotable plotable, NotifyListener notifyListener, Retriever retriever, Activity act) {
         activity = act;
         notificationManager = (NotificationManager)activity.getSystemService(Activity.NOTIFICATION_SERVICE);
-        assetManager = activity.getAssets();
 
         notify = notifyListener;
         interpreter = new QInterpreter(console, plotable, new CsvTableRetriever(new CsvTableRetriever.ResumeListener() {
@@ -101,7 +73,6 @@ public class InterpreterFacade {
                 }
             }
         }, retriever));
-        loadTableOfContents();
     }
 
     private final int STATUS_NOTIFICAITON_ID = R.layout.activity_scratch;
