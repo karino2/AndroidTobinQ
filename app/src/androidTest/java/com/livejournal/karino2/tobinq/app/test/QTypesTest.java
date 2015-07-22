@@ -64,6 +64,11 @@ public class QTypesTest extends TestCase {
 		QObject b = QObject.createInt(6);
 		assertNotSame(a, b);
 	}
+
+	public void test_NA_toString()
+	{
+		assertEquals("NA", QObject.NA.toString());
+	}
 	
 	public void test_QInt_set()
 	{

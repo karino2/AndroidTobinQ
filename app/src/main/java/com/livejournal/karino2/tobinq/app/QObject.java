@@ -144,14 +144,15 @@ public class QObject {
 
 	public String toStringOne(QObject obj)
 	{
-        if(obj.getLength() == 0) {
+		if(obj == QObject.NA)
+			return "NA";
+
+		if(obj.getLength() == 0) {
             return obj.getMode() + "(0)";
         }
 		if(obj.getMode() == "logical")
 		{
-			if(obj == QObject.NA)
-				return "NA";
-			else if((Integer)obj._val == 1)
+			if((Integer)obj._val == 1)
 				return "TRUE";
 			else
 				return "FALSE";
