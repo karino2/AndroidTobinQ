@@ -252,11 +252,19 @@ public class QInterpreter {
 		{
 			try
 			{
-		    return evalCallFunction(term);
-		}
+			    return evalCallFunction(term);
+			}
 			catch(BlockException e)
 			{
-				Tree xxval = getParentXXValue(term);
+				Tree xxval = getParentXXValueWithoutException(term);
+				if(xxval == null) {
+					// still inside some XXFUNCALL, rollback stack one more.
+					// this if block is unnecessary, but add for clearity.
+					// This code throw current position of XXVALUE inside XXFUNCALL, so this will cause
+					// next yield to invoke the same sentences inside XXFUNCALL, this might cause some side effect.
+					// But for now, we avoid to make suspendedValue stack and just re-invoke XXFUNCALL.
+					throw new BlockException();
+				}
                 suspendedValue = xxval;
 				throw new BlockException(xxval);
 			}
@@ -359,13 +367,18 @@ public class QInterpreter {
         }
     }
 
-	private Tree getParentXXValue(Tree start) {
+	private Tree getParentXXValueWithoutException(Tree start) {
 		Tree cur = start;
 		while(cur != null && cur.getType() != QParser.XXVALUE )
 			cur = cur.getParent();
-		if(cur == null)
-			throw new RuntimeException("Invalid AST tree. no XXVALUE in parent.");
 		return cur;
+	}
+
+	private Tree getParentXXValue(Tree start) {
+		Tree res = getParentXXValueWithoutException(start);
+		if(res == null)
+			throw new RuntimeException("Invalid AST tree. no XXVALUE in parent.");
+		return res;
 	}
 
 	// (XXSUBSCRIPT '[' lexpr sublist)
