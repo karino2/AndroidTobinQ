@@ -16,9 +16,10 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import org.achartengine.GraphicalView;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
+
+import okhttp3.OkHttpClient;
 
 
 public class ScratchActivity extends ActionBarActivity {
@@ -57,7 +58,7 @@ public class ScratchActivity extends ActionBarActivity {
                 showMessage(message);
             }
         }
-        , new Retriever(new DefaultHttpClient(), getDatabase()),
+        , new Retriever(new OkHttpClient(), getDatabase()),
                 this);
 
 

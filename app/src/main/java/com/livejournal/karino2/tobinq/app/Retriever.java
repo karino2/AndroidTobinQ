@@ -5,33 +5,32 @@ import android.os.AsyncTask;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
 /**
  * Created by karino on 4/10/14.
  */
 public class Retriever {
     Database database;
-    DefaultHttpClient httpClient;
+    OkHttpClient httpClient;
 
     public static long lastScriptUpdateAt = -1;
 
-    public Retriever(DefaultHttpClient http, Database db) {
+    public Retriever(OkHttpClient http, Database db) {
         this.httpClient = http;
         this.database = db;
     }
 
-    boolean isResponse200(HttpResponse res) {
-        return res.getStatusLine().getStatusCode() == 200;
-        // return (res.getStatusLine().getStatusCode() & 200) != 0;
+    boolean isResponse200(Response res) {
+        return res.code() == 200;
     }
 
 
@@ -108,11 +107,15 @@ public class Retriever {
             else
                 url = baseUrl +  "?cond=_updatedAt.gt." + String.valueOf(lastChecked);
 
-            HttpGet httpGet = new HttpGet(url);
+            Request httpGet = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .build();
+
             try {
-                HttpResponse res = httpClient.execute(httpGet);
-                if(res.getStatusLine().getStatusCode() != 200) {
-                    errorMessage = "HttpGet is not 200: " + res.getStatusLine().getStatusCode();
+                Response res = httpClient.newCall(httpGet).execute();
+                if(res.code() != 200) {
+                    errorMessage = "HttpGet is not 200: " + res.code();
                     return false;
                 }
                 results = readScripts(res);
@@ -123,10 +126,11 @@ public class Retriever {
             }
         }
 
-        private List<ScriptEntity> readScripts(HttpResponse response) throws IOException {
+        private List<ScriptEntity> readScripts(Response response) throws IOException {
             Gson gson = new Gson();
             ArrayList<ScriptEntity> res = new ArrayList<ScriptEntity>();
-            JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+            JsonReader reader = new JsonReader(new InputStreamReader(response.body().byteStream(), "UTF-8"));
+            // JsonReader reader = new JsonReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
             reader.beginArray();
             while (reader.hasNext()) {
                 ScriptEntity ent = gson.fromJson(reader, ScriptEntity.class);
@@ -156,9 +160,9 @@ public class Retriever {
             resultListener = listener;
         }
 
-        String readBody(HttpResponse res) throws IOException {
+        String readBody(Response res) throws IOException {
             BufferedReader reader;
-            reader = new BufferedReader(new InputStreamReader(res.getEntity().getContent(), "UTF-8"));
+            reader = new BufferedReader(new InputStreamReader(res.body().byteStream(), "UTF-8"));
             StringBuilder builder = new StringBuilder();
             String line = reader.readLine();
             boolean first = true;
@@ -177,11 +181,14 @@ public class Retriever {
 
         @Override
         protected Boolean doInBackground(Object... params) {
-            HttpGet httpGet = new HttpGet(url);
+            Request httpGet = new Request.Builder()
+                    .url(url)
+                    .get()
+                    .build();
             try {
-                HttpResponse res = httpClient.execute(httpGet);
-                if(res.getStatusLine().getStatusCode() != 200) {
-                    errorMessage = "HttpGet is not 200: " + res.getStatusLine().getStatusCode();
+                Response res = httpClient.newCall(httpGet).execute();
+                if(res.code() != 200) {
+                    errorMessage = "HttpGet is not 200: " + res.code();
                     return false;
                 }
                 responseText = readBody(res);

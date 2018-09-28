@@ -8,10 +8,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 
-import org.apache.http.impl.client.DefaultHttpClient;
-
 import java.util.Date;
 import java.util.List;
+
+import okhttp3.OkHttpClient;
 
 /**
  * Created by karino on 6/27/15.
@@ -35,7 +35,7 @@ public class UpdateChecker {
         notificationManager = nm;
         updateListener = ul;
 
-        retriever = new Retriever(new DefaultHttpClient(), getDatabase());
+        retriever = new Retriever(new OkHttpClient(), getDatabase());
 
         Retriever.lastScriptUpdateAt = getLastReceiveTime();
     }

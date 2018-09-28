@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.achartengine.GraphicalView;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -31,6 +30,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import okhttp3.OkHttpClient;
 
 
 public class EvalActivity extends ActionBarActivity {
@@ -85,7 +86,7 @@ public class EvalActivity extends ActionBarActivity {
             public void notifyStatus(String message) {
                 showMessage(message);
             }
-        }, new Retriever(new DefaultHttpClient(), getDatabase()),
+        }, new Retriever(new OkHttpClient(), getDatabase()),
                 this);
 
 
