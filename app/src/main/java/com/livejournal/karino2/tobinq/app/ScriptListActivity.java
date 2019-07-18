@@ -31,6 +31,8 @@ public class ScriptListActivity extends AppCompatActivity implements LoaderManag
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_script_list);
 
+
+
         adapter = new SimpleCursorAdapter(this, R.layout.script_list_item, null,
                 new String[]{"title", "description", "date", "docId"}, new int[]{R.id.tvTitle, R.id.tvDescription, R.id.tvDate,  R.id.tvRemoteLocal}, 0);
 
@@ -78,8 +80,6 @@ public class ScriptListActivity extends AppCompatActivity implements LoaderManag
                 reloadCursor();
             }
         });
-
-
     }
 
     @Override

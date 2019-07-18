@@ -1,5 +1,6 @@
 package com.livejournal.karino2.tobinq.app;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -16,7 +17,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import org.achartengine.GraphicalView;
 
@@ -26,6 +30,7 @@ import okhttp3.OkHttpClient;
 
 
 public class EvalActivity extends AppCompatActivity {
+    final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE_ID = 1;
     public static void startEvalActivity(Context context, String docId, String title, String script, String description) {
         Intent intent = new Intent(context, EvalActivity.class);
         intent.putExtra("script_content", script);
@@ -34,6 +39,24 @@ public class EvalActivity extends AppCompatActivity {
         intent.putExtra("title", title);
         context.startActivity(intent);
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode) {
+            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE_ID:
+                if(grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    saveAndShareChart();
+                } else {
+                    showMessage("Permission doesn't granted. Some feature of share would be fail.");
+                }
+
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
 
     InterpreterFacade interpreter;
     GraphicalView chart;
@@ -186,13 +209,11 @@ public class EvalActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.action_admin_share) {
-            Bitmap bitmap = chart.toBitmap();
-            try {
-                Intent intent = getFileSaver().saveAndCreateSendIntent(bitmap);
-                startActivity(intent);
-            } catch (IOException e) {
-                showMessage("save fail: " + e.getMessage());
-                return true;
+            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+            {
+                saveAndShareChart();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE_ID);
             }
             return true;
         }
@@ -213,6 +234,16 @@ public class EvalActivity extends AppCompatActivity {
 
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveAndShareChart() {
+        Bitmap bitmap = chart.toBitmap();
+        try {
+            Intent intent = getFileSaver().saveAndCreateSendIntent(bitmap);
+            startActivity(intent);
+        } catch (IOException e) {
+            showMessage("save fail: " + e.getMessage());
+        }
     }
 
 }
