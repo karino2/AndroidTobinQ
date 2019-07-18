@@ -86,7 +86,7 @@ public class Retriever {
     }
 
     class GetScriptEntityTask extends AsyncTask<Object, String, Boolean> {
-        final String baseUrl = "http://tobinqscriptbackend.appspot.com/_je/tobinqscripts";
+        final String baseUrl = "https://tobinqscriptbackend.appspot.com/_je/tobinqscripts";
 
         OnScriptEntityReadyListener resultListener;
         long lastChecked;
