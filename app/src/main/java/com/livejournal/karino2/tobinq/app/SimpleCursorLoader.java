@@ -2,7 +2,8 @@ package com.livejournal.karino2.tobinq.app;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.support.v4.content.CursorLoader;
+
+import androidx.loader.content.CursorLoader;
 
 /**
  * Created by karino on 4/12/14.

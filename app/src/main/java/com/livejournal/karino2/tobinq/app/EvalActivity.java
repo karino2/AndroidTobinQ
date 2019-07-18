@@ -1,17 +1,12 @@
 package com.livejournal.karino2.tobinq.app;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -21,20 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.achartengine.GraphicalView;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import okhttp3.OkHttpClient;
 
 
-public class EvalActivity extends ActionBarActivity {
+public class EvalActivity extends AppCompatActivity {
     public static void startEvalActivity(Context context, String docId, String title, String script, String description) {
         Intent intent = new Intent(context, EvalActivity.class);
         intent.putExtra("script_content", script);

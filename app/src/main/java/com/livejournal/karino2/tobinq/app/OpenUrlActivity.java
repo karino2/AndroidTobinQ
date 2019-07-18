@@ -2,20 +2,16 @@ package com.livejournal.karino2.tobinq.app;
 
 import android.app.NotificationManager;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.Handler;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 
-public class OpenUrlActivity extends ActionBarActivity  {
+
+public class OpenUrlActivity extends AppCompatActivity {
 
     Handler handler = new Handler();
     UpdateChecker checker;

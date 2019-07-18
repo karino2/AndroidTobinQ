@@ -2,7 +2,6 @@ package com.livejournal.karino2.tobinq.app;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -15,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.achartengine.GraphicalView;
 
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.io.IOException;
 import okhttp3.OkHttpClient;
 
 
-public class ScratchActivity extends ActionBarActivity {
+public class ScratchActivity extends AppCompatActivity {
     PopupWindow popup;
     GraphicalView chart;
 

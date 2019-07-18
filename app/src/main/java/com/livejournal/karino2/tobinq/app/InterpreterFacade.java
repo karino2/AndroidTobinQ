@@ -5,7 +5,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.res.AssetManager;
-import android.support.v4.app.NotificationCompat;
+
+import androidx.core.app.NotificationCompat;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -87,7 +88,7 @@ public class InterpreterFacade {
         }
         PendingIntent contentIntent = PendingIntent.getActivity(activity, 0, new Intent(activity, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
 
-        notificationManager.notify(STATUS_NOTIFICAITON_ID, new NotificationCompat.Builder(activity)
+        notificationManager.notify(STATUS_NOTIFICAITON_ID, new NotificationCompat.Builder(activity, UpdateChecker.CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setTicker(message)

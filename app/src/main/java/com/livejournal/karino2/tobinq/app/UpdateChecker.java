@@ -6,7 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v4.app.NotificationCompat;
+
+import androidx.core.app.NotificationCompat;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import okhttp3.OkHttpClient;
  */
 public class UpdateChecker {
     private final int STATUS_NOTIFICATION_ID = R.layout.activity_script_list;
+    public static final String CHANNEL_ID = "TOUKEI_GRAPH_CHANNEL";
 
 
     Context context;
@@ -154,7 +156,7 @@ public class UpdateChecker {
                 new Intent[]{new Intent(this, ScriptListActivity.class)}, PendingIntent.FLAG_CANCEL_CURRENT);
                 */
 
-        notificationManager.notify(STATUS_NOTIFICATION_ID, new NotificationCompat.Builder(context)
+        notificationManager.notify(STATUS_NOTIFICATION_ID, new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setContentTitle(title)
                 .setTicker(ticker)
                 .setContentText(message)
