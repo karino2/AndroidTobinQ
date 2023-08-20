@@ -2,17 +2,12 @@ apply plugin: 'com.android.application'
 
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.0"
-
     defaultConfig {
+        compileSdk 33
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 33
         versionCode 14
         versionName "0.14"
-    }
-    lintOptions {
-        checkReleaseBuilds false
     }
 
     buildTypes {
@@ -23,6 +18,10 @@ android {
         debug {
             applicationIdSuffix ".debug"
         }
+    }
+    namespace 'com.livejournal.karino2.tobinq.app'
+    lint {
+        checkReleaseBuilds false
     }
 }
 
