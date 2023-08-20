@@ -191,7 +191,7 @@ public class EvalActivity extends AppCompatActivity {
     OneTimeFileSaver fileSaver;
     OneTimeFileSaver getFileSaver() {
         if(fileSaver == null) {
-            fileSaver = new OneTimeFileSaver("QChart", "QChartDelivery", getContentResolver());
+            fileSaver = new OneTimeFileSaver(this, "QChart",  getContentResolver());
         }
         return fileSaver;
     }

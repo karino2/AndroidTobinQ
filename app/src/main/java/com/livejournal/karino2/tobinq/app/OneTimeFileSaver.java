@@ -2,12 +2,16 @@ package com.livejournal.karino2.tobinq.app;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
+
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -21,12 +25,12 @@ import java.util.Date;
  * Created by karino on 4/13/14.
  */
 public class OneTimeFileSaver {
+    Context context;
     ContentResolver resolver;
     String dbTitle;
-    String folderName;
-    public OneTimeFileSaver(String contentDBTitle, String folderName, ContentResolver resol) {
+    public OneTimeFileSaver(Context context, String contentDBTitle, ContentResolver resol) {
+        this.context = context;
         dbTitle = contentDBTitle;
-        this.folderName = folderName;
         resolver = resol;
     }
 
@@ -40,17 +44,7 @@ public class OneTimeFileSaver {
         stream.close();
         return result;
     }
-    public Uri putFileToContentDB(File file) {
 
-        ContentValues content = new ContentValues(4);
-
-        content.put(MediaStore.Images.ImageColumns.TITLE, dbTitle);
-        content.put(MediaStore.Images.ImageColumns.DATE_ADDED,
-                System.currentTimeMillis() / 1000);
-        content.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
-        content.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
-        return resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, content);
-    }
     public static String newFileName() {
         SimpleDateFormat timeStampFormat = new SimpleDateFormat("yyyyMMddHHmmssSS");
         String filename = timeStampFormat.format(new Date()) + ".png";
@@ -75,20 +69,21 @@ public class OneTimeFileSaver {
 
         deleteAllFiles(getFileStoreDirectory());
         File file = saveBitmap(filledBitmap);
-        Uri uri = putFileToContentDB(file);
-
+        Uri uri = FileProvider.getUriForFile(context, "com.livejournal.karino2.tobinq.app.fileprovider", file);
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
         intent.setType("image/png");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         return intent;
 
     }
 
 
     public File getFileStoreDirectory() throws IOException {
-        File dir = new File(android.os.Environment.getExternalStorageDirectory(), folderName);
+        // File dir = android.os.Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File dir = new File(context.getFilesDir(), "images");
         ensureDirExist(dir);
         return dir;
     }
