@@ -35,20 +35,34 @@ public class Retriever {
 
 
     public interface OnScriptEntityReadyListener {
-        void onReady(List<ScriptEntity> ents);
+        void onReady(List<ScriptEntity> ents, String lastModified);
+        void onNotModified();
         void onFail(String message);
     }
 
-    public void retrieveScriptList(long lastChecked, final OnScriptEntityReadyListener listener) {
-        GetScriptEntityTask task = new GetScriptEntityTask(lastChecked, new OnScriptEntityReadyListener() {
+    public void retrieveScriptList(final long lastChecked, String lmodified, final OnScriptEntityReadyListener listener) {
+        final GetScriptEntityTask task = new GetScriptEntityTask(lmodified, new OnScriptEntityReadyListener() {
             @Override
-            public void onReady(List<ScriptEntity> ents) {
+            public void onReady(List<ScriptEntity> ents, String lastModified) {
+                ArrayList<ScriptEntity> filtered = new ArrayList<ScriptEntity>();
                 for(ScriptEntity ent : ents) {
+                    if (ent._updatedAt > lastChecked)
+                    {
+                        filtered.add(ent);
+                    }
+                }
+
+                for(ScriptEntity ent : filtered) {
                     database.saveScript(ent);
                     // ent.id must be filled by above save
                     assert(ent.id != -1);
                 }
-                listener.onReady(ents);
+                listener.onReady(filtered, lastModified);
+            }
+
+            @Override
+            public void onNotModified() {
+                listener.onNotModified();
             }
 
             @Override
@@ -85,14 +99,20 @@ public class Retriever {
         task.execute();
     }
 
+    /*
+        Retrieve scripts.json from server.
+        It takes into account of LastModified header.
+        But it does not check each entry's _updateAt.
+     */
     class GetScriptEntityTask extends AsyncTask<Object, String, Boolean> {
-        final String baseUrl = "https://tobinqscriptbackend.appspot.com/_je/tobinqscripts";
+        final String baseUrl = "https://karino2.github.io/TobinQJsonBackend/scripts.json";
 
         OnScriptEntityReadyListener resultListener;
-        long lastChecked;
-        GetScriptEntityTask(long lastChecked, OnScriptEntityReadyListener listener) {
+
+        String lastModified;
+        GetScriptEntityTask(String lastModified, OnScriptEntityReadyListener listener) {
             resultListener = listener;
-            this.lastChecked = lastChecked;
+            this.lastModified = lastModified;
         }
 
 
@@ -101,29 +121,39 @@ public class Retriever {
 
         @Override
         protected Boolean doInBackground(Object... params) {
-            String url;
-            if(lastChecked == -1)
-                url = baseUrl;
-            else
-                url = baseUrl +  "?cond=_updatedAt.gt." + String.valueOf(lastChecked);
+            String url = baseUrl;
 
-            Request httpGet = new Request.Builder()
-                    .url(url)
-                    .get()
-                    .build();
+            Request httpGet = createRequest(url);
 
             try {
                 Response res = httpClient.newCall(httpGet).execute();
+                if (res.code() == 304)
+                    return true;
                 if(res.code() != 200) {
                     errorMessage = "HttpGet is not 200: " + res.code();
                     return false;
                 }
+                lastModified = res.header("Last-Modified");
                 results = readScripts(res);
                 return true;
             } catch (IOException e) {
                 errorMessage = "fail retrieve:" + e.getMessage();
                 return false;
             }
+        }
+
+        private Request createRequest(String url) {
+            if (lastModified.equals(""))
+                return new Request.Builder()
+                    .url(url)
+                    .get()
+                    .build();
+            else
+                return new Request.Builder()
+                        .url(url)
+                        .get()
+                        .header("If-Modified-Since", lastModified)
+                        .build();
         }
 
         private List<ScriptEntity> readScripts(Response response) throws IOException {
@@ -143,8 +173,12 @@ public class Retriever {
 
         @Override
         protected void onPostExecute(Boolean success) {
-            if(success)
-                resultListener.onReady(results);
+            if(success){
+                if (results != null)
+                    resultListener.onReady(results, lastModified);
+                else
+                    resultListener.onNotModified();
+            }
             else
                 resultListener.onFail(errorMessage);
         }

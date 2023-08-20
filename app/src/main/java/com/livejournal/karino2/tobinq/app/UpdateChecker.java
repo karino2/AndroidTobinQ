@@ -65,17 +65,24 @@ public class UpdateChecker {
     public void startSync() {
         startCheck = currentTime();
         showNotification(getString(R.string.notification_title), "Sync scripts...", "Sync scripts...");
-        retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), new Retriever.OnScriptEntityReadyListener() {
+        retriever.retrieveScriptList(getDatabase().latestUpdatedAt(), getLastModified(), new Retriever.OnScriptEntityReadyListener() {
             @Override
-            public void onReady(List<ScriptEntity> ents) {
+            public void onReady(List<ScriptEntity> ents, String lastModified) {
                 hideNotification();
                 writeLastCheckedTime(startCheck);
+                writeLastModified(lastModified);
                 if (ents.size() >= 1) {
                     writeLastReceiveTime(startCheck);
                     showNotification(getString(R.string.notification_title), ents.size() + " chart updated.", ents.size() + " chart updated.");
                 }
                 updateListener.onUpdate();
                 // reloadCursor();
+            }
+
+            @Override
+            public void onNotModified()
+            {
+                writeLastCheckedTime(startCheck);
             }
 
             @Override
@@ -118,6 +125,22 @@ public class UpdateChecker {
         prefs.edit()
                 .putLong("lastCheckedTime", lastChecked)
                 .commit();
+    }
+
+    public static void writeLastModifiedStatic(String lastModified, SharedPreferences prefs) {
+        prefs.edit()
+                .putString("lastModifiedHeader", lastModified)
+                .commit();
+    }
+
+    public void writeLastModified(String lastModified) {
+        SharedPreferences prefs = getSharedPreferences();
+        writeLastModifiedStatic(lastModified, prefs);
+    }
+
+    public String getLastModified() {
+        SharedPreferences prefs = getSharedPreferences();
+        return prefs.getString("lastModifiedHeader", "");
     }
 
     void writeLastReceiveTime(long succeedAt) {

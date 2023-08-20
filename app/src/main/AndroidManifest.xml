@@ -59,8 +59,8 @@
                 <action android:name="android.intent.action.VIEW"></action>
                 <category android:name="android.intent.category.DEFAULT"></category>
                 <category android:name="android.intent.category.BROWSABLE"></category>
-                <data android:scheme="http" android:host="tobinqscriptbackend.appspot.com"
-                    android:pathPrefix="/web/detail.jsp"></data>
+                <data android:scheme="https" android:host="karino2.github.io"
+                    android:pathPrefix="/TobinQJsonBackend/pages"></data>
             </intent-filter>
         </activity>
     </application>

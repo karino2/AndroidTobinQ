@@ -24,8 +24,12 @@ public class OpenUrlActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if(intent != null) {
+            // https://karino2.github.io/TobinQJsonBackend/pages/nMOGwQc7E6SuQ4a2SwLlrAvQTtkZpKop.html
             Uri data = Uri.parse(intent.getDataString());
-            docId = data.getQueryParameter("id");
+            // nMOGwQc7E6SuQ4a2SwLlrAvQTtkZpKop.html
+            String fileName = data.getLastPathSegment();
+            // trim .html
+            docId = fileName.substring(0, fileName.length()-5);
         }
 
         checker = new UpdateChecker(this, (NotificationManager)getSystemService(NOTIFICATION_SERVICE), new UpdateChecker.UpdateListener() {

@@ -227,7 +227,7 @@ public class EvalActivity extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             intent.putExtra(Intent.EXTRA_SUBJECT, title);
-            intent.putExtra(Intent.EXTRA_TEXT, "http://tobinqscriptbackend.appspot.com/web/detail.jsp?id=" + docId);
+            intent.putExtra(Intent.EXTRA_TEXT, "https://karino2.github.io/TobinQJsonBackend/pages/" + docId +".html");
             startActivity(Intent.createChooser(intent, "Share URL"));
             return true;
         }
