@@ -69,7 +69,7 @@ public class OneTimeFileSaver {
 
         deleteAllFiles(getFileStoreDirectory());
         File file = saveBitmap(filledBitmap);
-        Uri uri = FileProvider.getUriForFile(context, "com.livejournal.karino2.tobinq.app.fileprovider", file);
+        Uri uri = FileProvider.getUriForFile(context, context.getPackageName() + ".fileprovider", file);
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_SEND);
