@@ -29,7 +29,6 @@ import okhttp3.OkHttpClient;
 
 
 public class ScratchActivity extends AppCompatActivity {
-    final int PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE_ID = 1;
     PopupWindow popup;
     GraphicalView chart;
 
@@ -225,26 +224,6 @@ public class ScratchActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch(requestCode) {
-            case PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE_ID:
-                if(grantResults.length > 0 &&
-                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    try {
-                        startActivity(getFileSaver().saveAndCreateSendIntent(chart.toBitmap()));
-                    } catch (IOException e) {
-                        showMessage("Fail to save bitmap: " + e.getMessage());
-                    }
-                } else {
-                    showMessage("Permission doesn't granted. Some feature of share would be fail.");
-                }
-
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -255,14 +234,10 @@ public class ScratchActivity extends AppCompatActivity {
             return true;
         }
         if(id== R.id.action_share) {
-            if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    startActivity(getFileSaver().saveAndCreateSendIntent(chart.toBitmap()));
-                } catch (IOException e) {
-                    showMessage("Fail to save bitmap: " + e.getMessage());
-                }
-            } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},PERMISSION_REQUEST_WRITE_EXTERNAL_STORAGE_ID);
+            try {
+                startActivity(getFileSaver().saveAndCreateSendIntent(chart.toBitmap()));
+            } catch (IOException e) {
+                showMessage("Fail to save bitmap: " + e.getMessage());
             }
             return true;
         }
