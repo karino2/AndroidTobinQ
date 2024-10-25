@@ -1,6 +1,7 @@
 package com.livejournal.karino2.tobinq.app;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -20,6 +21,7 @@ import okhttp3.OkHttpClient;
 public class UpdateChecker {
     private final int STATUS_NOTIFICATION_ID = R.layout.activity_script_list;
     public static final String CHANNEL_ID = "TOUKEI_GRAPH_CHANNEL";
+
 
 
     Context context;
@@ -82,6 +84,7 @@ public class UpdateChecker {
             @Override
             public void onNotModified()
             {
+                hideNotification();
                 writeLastCheckedTime(startCheck);
             }
 
@@ -168,12 +171,20 @@ public class UpdateChecker {
         showNotification(null, null, null);
     }
 
+    public static void createNotificationChannel(Context context, NotificationManager notificationManager) {
+        String channelName = context.getString(R.string.notification_title) + " Channel";
+        NotificationChannel channel = new NotificationChannel(UpdateChecker.CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_LOW);
+        notificationManager.createNotificationChannel(channel);
+    }
+
     private void showNotification(String title, String message, String ticker) {
         if(title == null) {
             notificationManager.cancel(STATUS_NOTIFICATION_ID);
             return;
         }
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
+        createNotificationChannel(context, notificationManager);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
         /*
         PendingIntent contentIntent = PendingIntent.getActivities(this, 0,
                 new Intent[]{new Intent(this, ScriptListActivity.class)}, PendingIntent.FLAG_CANCEL_CURRENT);

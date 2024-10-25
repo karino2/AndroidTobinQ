@@ -86,8 +86,9 @@ public class InterpreterFacade {
             notificationManager.cancel(STATUS_NOTIFICAITON_ID);
             return;
         }
-        PendingIntent contentIntent = PendingIntent.getActivity(activity, 0, new Intent(activity, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent contentIntent = PendingIntent.getActivity(activity, 0, new Intent(activity, ScriptListActivity.class), PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
+        UpdateChecker.createNotificationChannel( activity, notificationManager );
         notificationManager.notify(STATUS_NOTIFICAITON_ID, new NotificationCompat.Builder(activity, UpdateChecker.CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(message)

@@ -1,5 +1,9 @@
 package com.livejournal.karino2.tobinq.app.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.Tree;
 
@@ -12,10 +16,10 @@ import com.livejournal.karino2.tobinq.app.ForestNode;
 import com.livejournal.karino2.tobinq.app.ForestNode.Edge;
 import com.livejournal.karino2.tobinq.app.QInterpreter;
 
-import junit.framework.TestCase;
+import org.junit.*;
 
 
-public class ForestIteraterTest extends TestCase {
+public class ForestIteraterTest {
 	class TreeForTest extends CommonTree
 	{
 		String _tag;
@@ -36,7 +40,7 @@ public class ForestIteraterTest extends TestCase {
 		return QInterpreter.createIterater(root);
 	}
 	
-	// // @Test
+	@Test
 	public void test_iterater()
 	{
 		/*

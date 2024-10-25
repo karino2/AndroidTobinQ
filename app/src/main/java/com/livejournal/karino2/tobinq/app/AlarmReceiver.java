@@ -72,7 +72,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 
         Intent alarmIntent = new Intent(context, AlarmReceiver.class);
-        PendingIntent alarmPIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, 0);
+        PendingIntent alarmPIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_IMMUTABLE);
 
         alarmMgr.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 AlarmManager.INTERVAL_HOUR,
