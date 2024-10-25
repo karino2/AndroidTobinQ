@@ -130,6 +130,20 @@ public class QLexer extends Lexer {
 	}
 	@Override public String getGrammarFileName() { return "Q.g"; }
 
+	// suppress warning by kairno2
+	@Override
+	public void reportError(RecognitionException e) {
+		if (e instanceof NoViableAltException ne)
+		{
+			// white space ignore.
+			if (ne.c == ' ')
+				return;
+		}
+		// NoViableAltException(' '@[1:1: Tokens : ( AND | AND2 | BREAK | ELSE | ENCLOSED_ASSIGN | EQ | EQ_ASSIGN | FALSE | FOR | FUNCTION | GE | GT | IF | IN | LBB | LE | LEFT_ASSIGN | LT | NA | NE | NEXT | NS_GET | NS_GET_INT | OR | OR2 | REPEAT | RIGHT_ASSIGN | TRUE | WHILE | T__81 | T__82 | T__83 | T__84 | T__85 | T__86 | T__87 | T__88 | T__89 | T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | HexLiteral | DecimalLiteral | OctalLiteral | FloatingPointLiteral | STR_CONST | NULL_CONST | SYMBOL | SPECIAL | Comment );])
+
+		super.reportError(e);
+	}
+
 	// $ANTLR start "AND"
 	public final void mAND() throws RecognitionException {
 		try {
