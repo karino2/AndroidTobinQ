@@ -85,7 +85,8 @@ public class ScriptListActivity extends AppCompatActivity implements LoaderManag
     @Override
     protected void onStart() {
         super.onStart();
-        AlarmReceiver.RegisterAlarmIfNecessary(this);
+
+        UpdateCheckWorker.Companion.registerWorker(this);
 
         if(-1 == getDatabase().latestUpdatedAt()) {
             showMessage("Script list empty. Try sync...");

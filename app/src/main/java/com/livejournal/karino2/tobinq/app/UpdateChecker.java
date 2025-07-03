@@ -46,6 +46,13 @@ public class UpdateChecker {
 
     long startCheck = -1;
 
+    private long checkInterval() {
+        if (getLastSyncSuccess())
+            return 24*60*60*1000;
+
+        // If last sync was fail, try next sync more often.
+        return 8*60*60*1000;
+    }
 
     public void startSyncIfNecessary() {
         hideNotification();
@@ -58,7 +65,7 @@ public class UpdateChecker {
         }
 
         long lastCheck = getLastCheckedTime();
-        if(currentTime()-lastCheck > 24*60*60*1000) {
+        if(currentTime()-lastCheck > checkInterval()) {
             startSync();
             return;
         }
@@ -72,8 +79,9 @@ public class UpdateChecker {
             public void onReady(List<ScriptEntity> ents, String lastModified) {
                 hideNotification();
                 writeLastCheckedTime(startCheck);
+                writeLastSyncSuccess(true);
                 writeLastModified(lastModified);
-                if (ents.size() >= 1) {
+                if (!ents.isEmpty()) {
                     writeLastReceiveTime(startCheck);
                     showNotification(getString(R.string.notification_title), ents.size() + " chart updated.", ents.size() + " chart updated.");
                 }
@@ -86,12 +94,14 @@ public class UpdateChecker {
             {
                 hideNotification();
                 writeLastCheckedTime(startCheck);
+                writeLastSyncSuccess(true);
             }
 
             @Override
             public void onFail(String message) {
                 showNotification(getString(R.string.notification_title), "Sync scripts fail: " + message, "Sync script fail.");
                 writeLastCheckedTime(startCheck);
+                writeLastSyncSuccess(false);
                 startCheck = -1;
             }
         });
@@ -107,13 +117,24 @@ public class UpdateChecker {
 
     public static SharedPreferences getSharedPreferences(Context context1) {
         return  context1.getSharedPreferences("script_list", Activity.MODE_PRIVATE);
-
     }
 
     SharedPreferences getSharedPreferences() {
         return getSharedPreferences(context);
     }
 
+    private boolean getLastSyncSuccess() {
+        SharedPreferences prefs = getSharedPreferences();
+        return prefs.getBoolean("lastSyncSuccess", false);
+    }
+
+    private void writeLastSyncSuccess(boolean success) {
+        SharedPreferences prefs = getSharedPreferences();
+        prefs.edit()
+                .putBoolean("lastSyncSuccess", success)
+                .apply();
+
+    }
     private long getLastCheckedTime() {
         SharedPreferences prefs = getSharedPreferences();
         return prefs.getLong("lastCheckedTime", -1);

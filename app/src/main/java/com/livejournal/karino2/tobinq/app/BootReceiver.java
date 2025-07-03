@@ -13,7 +13,7 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent2) {
         if (intent2.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            AlarmReceiver.RegisterAlarm(context);
+            UpdateCheckWorker.Companion.registerWorker(context);
         }
     }
 }
