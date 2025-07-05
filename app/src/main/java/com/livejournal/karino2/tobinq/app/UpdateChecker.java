@@ -99,7 +99,7 @@ public class UpdateChecker {
 
             @Override
             public void onFail(String message) {
-                showNotification(getString(R.string.notification_title), "Sync scripts fail: " + message, "Sync script fail.");
+                // showNotification(getString(R.string.notification_title), "Sync scripts fail: " + message, "Sync script fail.");
                 writeLastCheckedTime(startCheck);
                 writeLastSyncSuccess(false);
                 startCheck = -1;
